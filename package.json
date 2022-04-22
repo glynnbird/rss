@@ -1,0 +1,26 @@
+{
+  "name": "rss",
+  "version": "1.0.0",
+  "description": "RSS Reader and aggregator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/glynnbird/rss.git"
+  },
+  "keywords": [
+    "RSS"
+  ],
+  "author": "Glynn Bird <glynn.bird@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/glynnbird/rss/issues"
+  },
+  "homepage": "https://github.com/glynnbird/rss#readme",
+  "dependencies": {
+    "jsdom": "^19.0.0",
+    "rss-parser": "^3.12.0"
+  }
+}
