@@ -1,8 +1,8 @@
 const Parser = require('rss-parser');
 const parser = new Parser();
 
-
-const main = async function (spec) {
+const handler = async function (opts) {
+  const spec = opts.queryStringParameters // GET arguments
   let feed = await parser.parseURL(spec.url);
   console.log(feed.title);
   const cutoffDate = new Date(spec.date).getTime()
@@ -15,7 +15,4 @@ const main = async function (spec) {
   });
 }
 
-main({
-  url: 'https://www.theguardian.com/uk/rss',
-  date: '2022-04-22T00:00:00.000Z'
-})
+module.exports = { handler }
