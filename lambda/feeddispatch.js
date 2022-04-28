@@ -28,3 +28,5 @@ const handler = async function () {
     const ret = await lambda.invoke(params).promise()
   }
 }
+
+module.exports = { handler }
