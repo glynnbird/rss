@@ -18,8 +18,13 @@ resource "aws_dynamodb_table" "rssDB" {
    type = "S"
   }
 
-    attribute {
+  attribute {
    name = "GSI2PK"
+   type = "S"
+  }
+
+  attribute {
+   name = "GSI2SK"
    type = "S"
   }
 
@@ -33,6 +38,7 @@ resource "aws_dynamodb_table" "rssDB" {
   global_secondary_index {
     name = "gsi2"
     hash_key = "GSI2PK"
+    range_key = "GSI2SK"
     projection_type = "ALL"
   }
 
