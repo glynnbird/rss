@@ -24,9 +24,9 @@ const handler = async function () {
     const params = {
       FunctionName: FETCH_LAMBDA, // the lambda function we are going to invoke
       InvocationType: 'Event',
-      Payload: JSON.stringify({ feedid: feeds.feedid })
+      Payload: JSON.stringify({ feedid: feeds[i].feedid })
     }
-    console.log('invoking lambda for feed', feeds.feedid)
+    console.log('invoking lambda for feed', feeds[i].feedid)
     const ret = await lambda.invoke(params).promise()
   }
 }
