@@ -8,8 +8,10 @@ const handler = async function () {
   // load all feeds
   const req = {
     TableName: TABLE,
+    IndexName: 'gsi1',
     KeyConditions: {
-      pk: { ComparisonOperator: 'BEGINS_WITH', AttributeValueList: ['feed#'] }
+      GSI1PK: { ComparisonOperator: 'EQ', AttributeValueList: ['feed'] },
+      GSI1SK: { ComparisonOperator: 'BEGINS_WITH', AttributeValueList: ['#'] }
     }
   }
   console.log("loading feed list ")
