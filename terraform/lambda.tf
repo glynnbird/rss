@@ -112,3 +112,37 @@ output "addFeedFunctionUrl" {
   value = aws_lambda_function_url.addFeedFunctionUrl.function_url
 
 }
+
+resource "aws_lambda_function" "deleteFeed" {
+  filename         = "../lambda.zip"
+  function_name    = "deletefeed"
+  role             = aws_iam_role.rssLambdaRole.arn
+  handler          = "deletefeed.handler"
+  runtime          = "nodejs14.x"
+  timeout          = 10
+  source_code_hash = data.archive_file.lambda.output_base64sha256
+
+  environment {
+    variables = {
+      TABLE = aws_dynamodb_table.rssDB.name
+    }
+  }
+  #   tags = var.tags
+
+}
+
+resource "aws_lambda_function_url" "deleteFeedFunctionUrl" {
+  function_name      = aws_lambda_function.deleteFeed.function_name
+  authorization_type = "NONE"
+  cors {
+    allow_credentials = true
+    allow_origins     = ["*"]
+    allow_methods     = ["*"]
+    max_age           = 86400
+  }
+}
+
+output "deleteFeedFunctionUrl" {
+  value = aws_lambda_function_url.deleteFeedFunctionUrl.function_url
+
+}

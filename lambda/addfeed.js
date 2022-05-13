@@ -33,7 +33,6 @@ const handler = async function (spec) {
   // fetch of the feed fetches everything
   const item = {
     pk: `feed#${feedid}`,
-    sk: '#',
     feedid: feedid,
     timestamp: "2000-01-01T00:00:00.000Z",
     link: link,
