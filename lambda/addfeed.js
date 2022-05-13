@@ -13,17 +13,19 @@ const hash = function (str) {
 }
 
 const handler = async function (spec) {
+  console.log("spec is ", spec)
 
   // fetch the feed
+  let feed
   try {
-    let feed = await parser.parseURL(spec.url);
+    feed = await parser.parseURL(spec.queryStringParameters.url);
   } catch (e) {
     return { statusCode: 400, body: '{"ok":false}' }
   }
 
   const feed_name = feed.title
   const feedid = hash(feed.link)
-  const link = spec.url
+  const link = spec.queryStringParameters.url
   console.log(feed_name, feedid, link)
 
   // create dynamodb object
@@ -45,7 +47,7 @@ const handler = async function (spec) {
     TableName: TABLE,
     Item: item
   }
-  console.log("updating feed timestamp to ", feeddata.timestamp)
+  console.log("writing this:", item)
   await documentClient.put(params).promise()
   return { statusCode: 200, body: `{"ok": true, "feedid":"${feedid}"}` }
 

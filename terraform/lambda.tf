@@ -78,3 +78,37 @@ output "articlesFunctionUrl" {
   value = aws_lambda_function_url.articlesFunctionUrl.function_url
 
 }
+
+resource "aws_lambda_function" "addFeed" {
+  filename         = "../lambda.zip"
+  function_name    = "addfeed"
+  role             = aws_iam_role.rssLambdaRole.arn
+  handler          = "addfeed.handler"
+  runtime          = "nodejs14.x"
+  timeout          = 10
+  source_code_hash = data.archive_file.lambda.output_base64sha256
+
+  environment {
+    variables = {
+      TABLE = aws_dynamodb_table.rssDB.name
+    }
+  }
+  #   tags = var.tags
+
+}
+
+resource "aws_lambda_function_url" "addFeedFunctionUrl" {
+  function_name      = aws_lambda_function.addFeed.function_name
+  authorization_type = "NONE"
+  cors {
+    allow_credentials = true
+    allow_origins     = ["*"]
+    allow_methods     = ["*"]
+    max_age           = 86400
+  }
+}
+
+output "addFeedFunctionUrl" {
+  value = aws_lambda_function_url.addFeedFunctionUrl.function_url
+
+}
