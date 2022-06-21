@@ -30,7 +30,7 @@ const handler = async function (spec) {
   }
 
   const feed_name = feed.title
-  const feedid = hash(feed.link)
+  const feedid = hash(spec.queryStringParameters.url)
   const link = spec.queryStringParameters.url
   console.log(feed_name, feedid, link)
 
