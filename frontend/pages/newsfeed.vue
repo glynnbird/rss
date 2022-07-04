@@ -1,13 +1,10 @@
 <template>
   <div>
     Your articles
-
-    <ul v-if="articles">
-      <li v-bind:key="article.articleid" v-for="article in articles">
-        <a :href="article.link"> {{ article.title }}</a> <br />
-        <div v-html="article.content"></div>
-      </li>
-    </ul>
+    <v-card outlined v-bind:key="article.articleid" v-for="article in articles">
+        <v-card-title>{{ article.title }}</v-card-title>
+        <v-card-text v-html="article.content"> </v-card-text>
+    </v-card>
   </div>
 </template>
 
