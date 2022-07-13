@@ -28,6 +28,8 @@ const handler = async function (spec) {
   feed.items.forEach(item => {
     let doc = {}
     const ts = new Date(item.isoDate)
+    //TTL is the current time in seconds + the number of seconds in a month. In other words, expire docs after a month
+    const TTL = Math.floor(new Date().getTime()/1000) + (60*60*24*30)  
     if (ts.getTime() > cutoffDate) {
       console.log(item)
       //create a unique id for the article
@@ -47,6 +49,7 @@ const handler = async function (spec) {
       doc.GSI1SK = `#time#${item.isoDate}`
       doc.GSI2PK = "article"
       doc.GSI2SK = `#time#${item.isoDate}`
+      doc.TTL = TTL
 
 
       //insert it into the array

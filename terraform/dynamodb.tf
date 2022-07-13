@@ -44,5 +44,10 @@ resource "aws_dynamodb_table" "rssDB" {
 
   point_in_time_recovery {
     enabled = true
-  } 
+  }
+
+  ttl {
+    attribute_name = "TTL"
+    enabled        = true
+  }
 }

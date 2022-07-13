@@ -13,10 +13,6 @@ resource "aws_s3_bucket" "rssWebsite" {
   force_destroy = true
 }
 
-output "bucketUrl" {
-    value = aws_s3_bucket.rssWebsite
-  
-}
 resource "aws_s3_bucket_website_configuration" "rssWebsiteConfig" {
   bucket = aws_s3_bucket.rssWebsite.bucket
 
