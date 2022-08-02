@@ -6,14 +6,6 @@ data "archive_file" "lambda" {
   output_path = "../lambda.zip"
 }
 
-resource "random_string" "apikey" {
-  length           = 20
-  special          = false
-}
-
-output apikey {
-  value = random_string.apikey.result
-}
 
 resource "aws_lambda_function" "feedFetch" {
   filename         = "../lambda.zip"
@@ -28,7 +20,7 @@ resource "aws_lambda_function" "feedFetch" {
   environment {
     variables = {
       TABLE = aws_dynamodb_table.rssDB.name
-      API_KEY = random_string.apikey.result
+      API_KEY = var.API_KEY
     }
   }
   #   tags = var.tags
@@ -48,7 +40,7 @@ resource "aws_lambda_function" "feedDispatch" {
     variables = {
       TABLE        = aws_dynamodb_table.rssDB.name
       FETCH_LAMBDA = aws_lambda_function.feedFetch.function_name
-      API_KEY = random_string.apikey.result
+      API_KEY = var.API_KEY
     }
   }
   #   tags = var.tags
@@ -67,7 +59,7 @@ resource "aws_lambda_function" "articles" {
   environment {
     variables = {
       TABLE = aws_dynamodb_table.rssDB.name
-      API_KEY = random_string.apikey.result
+      API_KEY = var.API_KEY
     }
   }
   #   tags = var.tags
@@ -102,7 +94,7 @@ resource "aws_lambda_function" "addFeed" {
   environment {
     variables = {
       TABLE = aws_dynamodb_table.rssDB.name
-      API_KEY = random_string.apikey.result
+      API_KEY = var.API_KEY
     }
   }
   #   tags = var.tags
@@ -137,7 +129,7 @@ resource "aws_lambda_function" "deleteFeed" {
   environment {
     variables = {
       TABLE = aws_dynamodb_table.rssDB.name
-      API_KEY = random_string.apikey.result
+      API_KEY = var.API_KEY
     }
   }
   #   tags = var.tags
@@ -172,7 +164,7 @@ resource "aws_lambda_function" "getAllFeeds" {
   environment {
     variables = {
       TABLE = aws_dynamodb_table.rssDB.name
-      API_KEY = random_string.apikey.result
+      API_KEY = var.API_KEY
     }
   }
   #   tags = var.tags

@@ -49,3 +49,13 @@ resource "aws_s3_bucket_acl" "rssWebsiteACL" {
   bucket = aws_s3_bucket.rssWebsite.bucket
   acl    = "public-read"
 }
+
+output "applicationURL" {
+  value = aws_s3_bucket.rssWebsite.website_endpoint
+  
+}
+
+output "s3Bucket" {
+  value = aws_s3_bucket.rssWebsite.bucket
+  
+}
