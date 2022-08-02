@@ -1,20 +1,14 @@
 <template>
-  <div>
-    <button @click="logout">Log Out</button>
-  </div>
+  <div>Logging out...</div>
 </template>
 
 <script>
 import localstorage from "~/assets/js/localstorage";
 
 export default {
-
-  methods: {
-    logout: async function () {
-        console.log("logging out...")
-        const profile = localstorage.deleteProfile();
-        this.$router.push("/");
-    }
-  }
+  async asyncData({ store, redirect }) {
+    const profile = localstorage.deleteProfile();
+    redirect("/");
+  },
 };
 </script>
