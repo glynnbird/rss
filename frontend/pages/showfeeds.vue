@@ -5,9 +5,7 @@
       <v-card-text>
         <v-list-item :key="feed.feedid" v-for="feed in feeds"        >
           <v-list-item-avatar>
-            <v-icon class="light-blue lighten-1" dark>
-              mdi-rss
-            </v-icon>
+            <v-img :src="feed.icon" max-height="50"> </v-img>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>
@@ -41,25 +39,24 @@ export default {
     console.log("asyncdata profile is", profile);
     const url = `${config.getAllFeedsFunctionUrl.value}?apikey=${profile.apikey}`;
     const feeds = await $axios.$get(url);
-    console.log(feeds)
+    console.log(feeds);
 
     return { feeds: feeds.feeds };
   },
 
   methods: {
     deleteFeed: async function (feedid) {
-        //console.log(feedid)
-        const profile = this.$store.state.profile.profile;
-        const url = `${config.deleteFeedFunctionUrl.value}?apikey=${profile.apikey}&feedid=${feedid}`;
-        const articles = await this.$axios.$get(url);
-        console.log("feed deleted!")
-        //now remove the deleted feed from the list of feeds so that it disappears from the UI
-        this.feeds = this.feeds.filter(function (feed){
-            return feed.feedid != feedid
-        })
-        this.$router.push("/showfeeds");
-
-    }
+      //console.log(feedid)
+      const profile = this.$store.state.profile.profile;
+      const url = `${config.deleteFeedFunctionUrl.value}?apikey=${profile.apikey}&feedid=${feedid}`;
+      const articles = await this.$axios.$get(url);
+      console.log("feed deleted!");
+      //now remove the deleted feed from the list of feeds so that it disappears from the UI
+      this.feeds = this.feeds.filter(function (feed) {
+        return feed.feedid != feedid;
+      });
+      this.$router.push("/showfeeds");
+    },
   },
 };
 </script>

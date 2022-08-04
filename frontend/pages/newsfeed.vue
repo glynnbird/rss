@@ -1,18 +1,25 @@
 <template>
   <div>
     Your articles
-    <v-card outlined v-bind:key="article.articleid" v-for="article in articles">
-      <v-card-title>{{ article.title }}</v-card-title>
-      <v-card-text v-html="article.content"> </v-card-text>
-      <v-card-actions>
-        <v-btn :href="article.link" target="_new"
-          color="deep-purple lighten-2"
-          text
-        >
-          Read
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+    <v-list two-line>
+      <v-list-item
+        v-bind:key="article.articleid"
+        v-for="article in articles"
+        :href="article.link"
+        target="_new"
+      >
+        <v-list-item-avatar>
+          <img :src="article.icon" />
+        </v-list-item-avatar>
+
+        <v-list-item-content>
+          <v-list-item-title v-html="article.title"></v-list-item-title>
+          <v-list-item-subtitle
+            v-html="article.content"
+          ></v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
   </div>
 </template>
 

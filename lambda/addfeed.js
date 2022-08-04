@@ -5,6 +5,7 @@ const documentClient = new AWS.DynamoDB.DocumentClient()
 const Parser = require('rss-parser');
 const parser = new Parser();
 const crypto = require('crypto')
+const faviconer = require('faviconer')
 let params
 
 const hash = function (str) {
@@ -32,7 +33,9 @@ const handler = async function (spec) {
   const feed_name = feed.title
   const feedid = hash(spec.queryStringParameters.url)
   const link = spec.queryStringParameters.url
-  console.log(feed_name, feedid, link)
+  const pageURL = feed.link
+  console.log(feed_name, feedid, link, pageURL)
+  const iconURL = await faviconer.get(pageURL)
 
   // create dynamodb object
   // set the initial timestamp to be in the past so that the first
@@ -43,6 +46,7 @@ const handler = async function (spec) {
     timestamp: "2000-01-01T00:00:00.000Z",
     link: link,
     feed_name: feed_name,
+    icon: iconURL,
     GSI1PK: 'feed',
     GSI1SK: `#feed#${feedid}`
   }

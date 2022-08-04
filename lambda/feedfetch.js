@@ -45,6 +45,7 @@ const handler = async function (spec) {
       doc.title = item.title
       doc.content = item.content
       doc.feed_name = feeddata.feed_name
+      doc.icon = feeddata.icon
       doc.GSI1PK = `feed#${spec.feedid}`
       doc.GSI1SK = `#time#${item.isoDate}`
       doc.GSI2PK = "article"

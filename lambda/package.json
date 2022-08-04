@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/glynnbird/rss#readme",
   "dependencies": {
+    "faviconer": "^1.0.0",
     "jsdom": "^19.0.0",
     "rss-parser": "^3.12.0"
   }
