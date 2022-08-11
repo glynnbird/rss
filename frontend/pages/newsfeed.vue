@@ -36,9 +36,14 @@ export default {
     const profile = store.state.profile.profile;
     console.log("asyncdata profile is", profile);
     const url = `${config.articlesFunctionUrl.value}?apikey=${profile.apikey}`;
-    const articles = await $axios.$get(url);
-    //console.log(articles)
-
+    let articles = await $axios.$get(url);
+    articles = articles.map((a) => {
+      const c = a.content.replace(/(<\/[^>]+>)/,"$1\n")
+      const lines = c.split("\n")
+      a.content = lines[0]
+      return a
+    })
+    console.log(articles)
     return { articles };
   },
 
