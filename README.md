@@ -15,16 +15,17 @@ A news feed aggregator that can be deployed on AWS for near $0 for personal use.
 
 ### Pre-requisites
 
-1. An [AWS account]()
-2. A secret access key and access key ID to deploy infrastructure (link)
-3. [Terraform]()
-4. The [AWS SDK]() CLI tool installed on your machine
+1. An [AWS account](https://portal.aws.amazon.com/billing/signup?)
+2. A secret access key and access key ID to deploy infrastructure (follow the Security Credentials link in your account)
+3. [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
+4. The [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) tool installed on your machine.
+5. [NodeJS and npm](https://nodejs.org/en/download/) 
 
 
 ### Step 1 - Clone repo
 
 ```
-git clone xxx
+git clone https://github.com/glynnbird/rss.git
 cd rss
 ```
 
@@ -33,14 +34,17 @@ cd rss
 In the `terraform` directory, create a file called terraform.tfvars with the following data
 
 ```
-API_KEY = '<create a random string>'
+API_KEY = "<create a random string>"
 ```
 
 ### Step 3 - Create Infrastructure
 
-In the `terraform` directory type:
+In the root of the project type:
 
 ```
+cd lambda
+npm install
+cd ../terraform
 terraform init
 terraform apply --auto-approve
 terraform output -json > ../frontend/config.json
