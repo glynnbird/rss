@@ -43,7 +43,6 @@ export default {
       a.content = lines[0]
       return a
     })
-    console.log(articles)
     return { articles };
   },
 
