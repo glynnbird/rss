@@ -1,5 +1,7 @@
 <template>
   <div>
+    <v-progress-linear v-if="submitted" :indeterminate="true"></v-progress-linear>
+
     <v-card>
       <v-card-title>Add Feed</v-card-title>
       <v-card-subtitle>
@@ -10,7 +12,7 @@
           <v-text-field v-model="url" label="Feed URL" required></v-text-field>
 
           <v-btn
-            :disabled="saveDisabled"
+            :disabled="saveDisabled || submitted"
             color="success"
             class="mr-4"
             @click="onSubmit"
@@ -38,6 +40,7 @@ export default {
   data: function () {
     return {
       url: "",
+      submitted: false
     };
   },
   computed: {
@@ -50,6 +53,7 @@ export default {
   },
   methods: {
     onSubmit: async function () {
+      this.submitted=true
       const profile = this.$store.state.profile.profile;
       const url = `${config.addFeedFunctionUrl.value}?apikey=${profile.apikey}&url=${this.url}`;
       const articles = await this.$axios.$get(url);
