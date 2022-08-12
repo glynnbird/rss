@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <NavDrawer ref="drawer" />
-    <v-app-bar app class="light-blue">
+    <v-app-bar app class="light-blue" dense>
       <v-app-bar-nav-icon
         @click="$refs.drawer.show = !$refs.drawer.show"
       ></v-app-bar-nav-icon>
