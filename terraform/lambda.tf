@@ -15,16 +15,18 @@ resource "aws_lambda_function" "feedFetch" {
   runtime          = "nodejs14.x"
   timeout          = 10
   source_code_hash = data.archive_file.lambda.output_base64sha256
-  //  layers           = [aws_lambda_layer_version.choirlessAPILambdaLayer.arn]
-
+  
   environment {
     variables = {
       TABLE = aws_dynamodb_table.rssDB.name
       API_KEY = var.API_KEY
     }
   }
-  #   tags = var.tags
+}
 
+resource "aws_cloudwatch_log_group" "lambdaLGfeedFetch" {
+  name              = "/aws/lambda/${aws_lambda_function.feedFetch.function_name}"
+  retention_in_days = 7
 }
 
 resource "aws_lambda_function" "feedDispatch" {
@@ -43,8 +45,11 @@ resource "aws_lambda_function" "feedDispatch" {
       API_KEY = var.API_KEY
     }
   }
-  #   tags = var.tags
+}
 
+resource "aws_cloudwatch_log_group" "lambdaLGfeedDispatch" {
+  name              = "/aws/lambda/${aws_lambda_function.feedDispatch.function_name}"
+  retention_in_days = 7
 }
 
 resource "aws_lambda_function" "articles" {
@@ -62,8 +67,11 @@ resource "aws_lambda_function" "articles" {
       API_KEY = var.API_KEY
     }
   }
-  #   tags = var.tags
+}
 
+resource "aws_cloudwatch_log_group" "lambdaLGarticles" {
+  name              = "/aws/lambda/${aws_lambda_function.articles.function_name}"
+  retention_in_days = 7
 }
 
 resource "aws_lambda_function_url" "articlesFunctionUrl" {
@@ -79,7 +87,6 @@ resource "aws_lambda_function_url" "articlesFunctionUrl" {
 
 output "articlesFunctionUrl" {
   value = aws_lambda_function_url.articlesFunctionUrl.function_url
-
 }
 
 resource "aws_lambda_function" "addFeed" {
@@ -97,8 +104,11 @@ resource "aws_lambda_function" "addFeed" {
       API_KEY = var.API_KEY
     }
   }
-  #   tags = var.tags
+}
 
+resource "aws_cloudwatch_log_group" "lambdaLGaddFeed" {
+  name              = "/aws/lambda/${aws_lambda_function.addFeed.function_name}"
+  retention_in_days = 7
 }
 
 resource "aws_lambda_function_url" "addFeedFunctionUrl" {
@@ -114,7 +124,6 @@ resource "aws_lambda_function_url" "addFeedFunctionUrl" {
 
 output "addFeedFunctionUrl" {
   value = aws_lambda_function_url.addFeedFunctionUrl.function_url
-
 }
 
 resource "aws_lambda_function" "deleteFeed" {
@@ -132,8 +141,11 @@ resource "aws_lambda_function" "deleteFeed" {
       API_KEY = var.API_KEY
     }
   }
-  #   tags = var.tags
+}
 
+resource "aws_cloudwatch_log_group" "lambdaLGdeleteFeed" {
+  name              = "/aws/lambda/${aws_lambda_function.deleteFeed.function_name}"
+  retention_in_days = 7
 }
 
 resource "aws_lambda_function_url" "deleteFeedFunctionUrl" {
@@ -149,7 +161,6 @@ resource "aws_lambda_function_url" "deleteFeedFunctionUrl" {
 
 output "deleteFeedFunctionUrl" {
   value = aws_lambda_function_url.deleteFeedFunctionUrl.function_url
-
 }
 
 resource "aws_lambda_function" "getAllFeeds" {
@@ -167,8 +178,11 @@ resource "aws_lambda_function" "getAllFeeds" {
       API_KEY = var.API_KEY
     }
   }
-  #   tags = var.tags
+}
 
+resource "aws_cloudwatch_log_group" "lambdaLGgetAllFeeds" {
+  name              = "/aws/lambda/${aws_lambda_function.getAllFeeds.function_name}"
+  retention_in_days = 7
 }
 
 resource "aws_lambda_function_url" "getAllFeedsFunctionUrl" {
@@ -184,5 +198,4 @@ resource "aws_lambda_function_url" "getAllFeedsFunctionUrl" {
 
 output "getAllFeedsFunctionUrl" {
   value = aws_lambda_function_url.getAllFeedsFunctionUrl.function_url
-
 }
