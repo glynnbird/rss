@@ -14,14 +14,8 @@
         <Nuxt />
       </v-container>
     </v-main>
-    <v-footer app>
-      <v-col class="text-center" cols="12">
-        Copyright {{ new Date().getFullYear() }}
-      </v-col>
-    </v-footer>
   </v-app>
 </template>
-
 
 <script>
 export default {

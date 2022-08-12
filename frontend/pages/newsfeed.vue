@@ -1,26 +1,23 @@
 <template>
-  <div>
-    Your articles
-    <v-list two-line>
-      <v-list-item
-        v-bind:key="article.articleid"
-        v-for="article in articles"
-        :href="article.link"
-        target="_new"
-      >
-        <v-list-item-avatar>
-          <img :src="article.icon" />
-        </v-list-item-avatar>
+  <v-list two-line flat>
+    <v-list-item
+      v-bind:key="article.articleid"
+      v-for="article in articles"
+      :href="article.link"
+      target="_new"
+    >
+      <v-list-item-avatar>
+        <img :src="article.icon" />
+      </v-list-item-avatar>
 
-        <v-list-item-content>
-          <v-list-item-title v-html="article.title"></v-list-item-title>
-          <v-list-item-subtitle
-            v-html="article.content"
-          ></v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
-  </div>
+      <v-list-item-content>
+        <v-list-item-title v-html="article.title"></v-list-item-title>
+        <v-list-item-subtitle
+          v-html="article.content"
+        ></v-list-item-subtitle>
+      </v-list-item-content>
+    </v-list-item>
+  </v-list>
 </template>
 
 
