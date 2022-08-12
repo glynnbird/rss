@@ -22,7 +22,7 @@
         </v-list-item>
       </v-card-text>
     </v-card>
-    <br ></br>
+    <br />
     <v-btn nuxt="true" to="addfeed" color="primary">Add Feed</v-btn>
   </div>
 </template>
