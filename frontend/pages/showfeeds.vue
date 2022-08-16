@@ -45,7 +45,6 @@ export default {
 
     return { feeds: feeds.feeds };
   },
-
   methods: {
     deleteFeed: async function (feedid) {
       //console.log(feedid)
