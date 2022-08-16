@@ -52,6 +52,10 @@ const handler = async function (spec) {
       doc.GSI2SK = `#time#${item.isoDate}`
       doc.TTL = TTL
 
+      // only keep first line of content - keep data items smaller
+      const c = doc.content.replace(/(<\/[^>]+>)/,"$1\n")
+      const lines = c.split("\n")
+      doc.content = lines[0]
 
       //insert it into the array
       docs.push(doc)

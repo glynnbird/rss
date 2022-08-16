@@ -47,12 +47,12 @@ export default {
     console.log("asyncdata profile is", profile);
     const url = `${config.articlesFunctionUrl.value}?apikey=${profile.apikey}`;
     let articles = await this.$axios.$get(url);
-    articles = articles.map((a) => {
-      const c = a.content.replace(/(<\/[^>]+>)/,"$1\n")
-      const lines = c.split("\n")
-      a.content = lines[0]
-      return a
-    })
+    // articles = articles.map((a) => {
+    //   const c = a.content.replace(/(<\/[^>]+>)/,"$1\n")
+    //   const lines = c.split("\n")
+    //   a.content = lines[0]
+    //   return a
+    // })
     this.articles = articles
 
     // save recent articles to localstorage for faster load next time
