@@ -1,5 +1,10 @@
 <template>
   <div>
+    <v-progress-linear
+      v-if="busy"
+      indeterminate
+      color="teal">
+    </v-progress-linear>
     <v-card outlined>
       <v-card-title>Your Feeds</v-card-title>
       <v-card-text>
@@ -23,27 +28,48 @@
       </v-card-text>
     </v-card>
     <br />
-    <v-btn nuxt="true" to="addfeed" color="primary">Add Feed</v-btn>
+    <v-btn nuxt to="addfeed" color="primary">Add Feed</v-btn>
   </div>
 </template>
 
 
 <script>
+import localstorage from "~/assets/js/localstorage";
 const config = require("../config.json");
 export default {
   data: function () {
     return {
+      busy: true,
       feeds: [],
     };
   },
   async asyncData({ store, $axios }) {
+    // load feed lsit from local storage (profile)
     const profile = store.state.profile.profile;
+    const feeds = profile.feeds ? profile.feeds : []
+    console.log('feeds from profile', feeds)
+
+    return { feeds }
+  },
+  mounted: async function () {
+    // show we're busy
+    this.busy = true
+
+    // fetch feed list from API
+    const profile = this.$store.state.profile.profile;
     console.log("asyncdata profile is", profile);
     const url = `${config.getAllFeedsFunctionUrl.value}?apikey=${profile.apikey}`;
-    const feeds = await $axios.$get(url);
-    console.log(feeds);
+    const feeds = await this.$axios.$get(url);
+    this.feeds = feeds.feeds
 
-    return { feeds: feeds.feeds };
+    // save feed list to localstorage for faster load next time
+    const prof = JSON.parse(JSON.stringify(profile))
+    prof.feeds = feeds.feeds
+    localstorage.saveProfile(prof);
+    
+    // clear busy indicator
+    this.busy = false
+
   },
   methods: {
     deleteFeed: async function (feedid) {
