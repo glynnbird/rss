@@ -4,6 +4,7 @@ const AWS = require('aws-sdk')
 const parser = new Parser();
 const TABLE = process.env.TABLE
 const documentClient = new AWS.DynamoDB.DocumentClient()
+const stripHtml = require('string-strip-html').stripHtml
 let params
 
 const handler = async function (spec) {
@@ -55,7 +56,9 @@ const handler = async function (spec) {
       // only keep first line of content - keep data items smaller
       const c = doc.content.replace(/(<\/[^>]+>)/,"$1\n")
       const lines = c.split("\n")
-      doc.content = lines[0]
+
+      // strip HTML tags from content
+      doc.content = stripHtml(lines[0]).result 
 
       //insert it into the array
       docs.push(doc)
