@@ -8,7 +8,7 @@
     <v-list two-line flat>
       <v-list-item
         v-bind:key="article.articleid"
-        v-for="article in articles"
+        v-for="article in articlesAgo"
         :href="article.link"
         target="_new"
       >
@@ -49,6 +49,7 @@ const timeAgo = new TimeAgo('en-GB')
 export default {
   data: function () {
     return {
+      timer: 0,
       busy: false,
       articles: [],
     };
@@ -62,17 +63,6 @@ export default {
     console.log("asyncdata profile is", profile);
     const url = `${config.articlesFunctionUrl.value}?apikey=${profile.apikey}`;
     let articles = await this.$axios.$get(url);
-    // articles = articles.map((a) => {
-    //   const c = a.content.replace(/(<\/[^>]+>)/,"$1\n")
-    //   const lines = c.split("\n")
-    //   a.content = lines[0]
-    //   return a
-    // })
-        // add "ago"-style date to each article
-    articles = articles.map((a) => {
-      a.ago = timeAgo.format(new Date(a.timestamp))
-      return a
-    })
     this.articles = articles
 
     // save recent articles to localstorage for faster load next time
@@ -82,6 +72,9 @@ export default {
     
     // stop busy indicator
     this.busy = false
+
+    // increment the timer every second - to force the computed function to recalculate
+    setInterval(() => { this.timer++ }, 1000)
   },
   async asyncData({ store, $axios }) {
     // load recent article list from local storage (profile)
@@ -89,7 +82,21 @@ export default {
     let articles = profile.articles ? profile.articles : []
     return { articles }
   },
+  computed: {
+    articlesAgo () {
+      // this line does nothing but fools Vue.js into thinking that
+      // this computed element depends on this.timer, so it gets
+      // run every second - so the "ago" timings get updated as the page sits.
+      this.timer
+
+      // add "ago"-style date to each article
+      return this.articles.map((a) => {
+        a.ago = timeAgo.format(new Date(a.timestamp))
+        return a
+      })
+    }
+  },
 
   methods: {},
-};
+}
 </script>
