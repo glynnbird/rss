@@ -20,6 +20,7 @@ A news feed aggregator that can be deployed on AWS for near $0 for personal use.
 3. [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
 4. The [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) tool installed on your machine.
 5. [NodeJS and npm](https://nodejs.org/en/download/) 
+6. Twitter API access if you want to be able to handle Twitter feeds as well as RSS
 
 
 ### Step 1 - Clone repo
@@ -35,6 +36,7 @@ In the `terraform` directory, create a file called terraform.tfvars with the fol
 
 ```
 API_KEY = "<create a random string>"
+TWITTER_BEARER_TOKEN = "<twitter API bearer token>"
 ```
 
 ### Step 3 - Create Infrastructure
