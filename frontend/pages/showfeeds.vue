@@ -14,6 +14,8 @@
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>
+              <v-icon v-if="feed.feed_type && feed.feed_type==='twitter'">mdi-twitter</v-icon>
+              <v-icon v-if="!feed.feed_type || feed.feed_type==='rss'">mdi-rss</v-icon>
               {{ feed.feed_name }}
             </v-list-item-title>
             <v-list-item-subtitle>{{ feed.link}} {{feed.timestamp}}
