@@ -21,16 +21,31 @@
           <v-list-item-subtitle
             v-html="article.content"
           ></v-list-item-subtitle>
+          <v-list-item-subtitle >
+            <span class="evensmaller">{{ article.ago }}</span>
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </v-list>
   </div>
 </template>
 
+<style>
+.evensmaller {
+  font-size:10px
+}
+</style>
 
 <script>
 import localstorage from "~/assets/js/localstorage";
 const config = require("../config.json");
+
+// tools for converting ISO timestamps to "3 days ago"-style
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en'
+TimeAgo.addDefaultLocale(en)
+const timeAgo = new TimeAgo('en-GB')
+
 export default {
   data: function () {
     return {
@@ -53,6 +68,11 @@ export default {
     //   a.content = lines[0]
     //   return a
     // })
+        // add "ago"-style date to each article
+    articles = articles.map((a) => {
+      a.ago = timeAgo.format(new Date(a.timestamp))
+      return a
+    })
     this.articles = articles
 
     // save recent articles to localstorage for faster load next time
@@ -66,7 +86,7 @@ export default {
   async asyncData({ store, $axios }) {
     // load recent article list from local storage (profile)
     const profile = store.state.profile.profile;
-    const articles = profile.articles ? profile.articles : []
+    let articles = profile.articles ? profile.articles : []
     return { articles }
   },
 
