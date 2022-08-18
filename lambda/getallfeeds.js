@@ -4,9 +4,9 @@ const API_KEY = process.env.API_KEY
 const documentClient = new AWS.DynamoDB.DocumentClient()
 
 const handler = async function (spec) {
-  //first check if the API KEY is correct
-  if (!spec.queryStringParameters || !spec.queryStringParameters.apikey || spec.queryStringParameters.apikey !== API_KEY)  {
-    return { statusCode: 401, body: `{"ok": false}` }
+  // first check if the API KEY is correct
+  if (!spec.queryStringParameters || !spec.queryStringParameters.apikey || spec.queryStringParameters.apikey !== API_KEY) {
+    return { statusCode: 401, body: '{"ok": false}' }
   }
   // load all feeds
   const req = {
@@ -17,13 +17,13 @@ const handler = async function (spec) {
       GSI1SK: { ComparisonOperator: 'BEGINS_WITH', AttributeValueList: ['#'] }
     }
   }
-  console.log("loading feed list ")
+  console.log('loading feed list ')
   const response = await documentClient.query(req).promise()
   const feeds = response.Items
-    console.log("feeds", feeds)
+  console.log('feeds', feeds)
   const feedobj = {
-    ok:true,
-    feeds: feeds.map (function (i) {
+    ok: true,
+    feeds: feeds.map(function (i) {
       delete i.GSI1PK
       delete i.GSI1SK
       delete i.pk
@@ -31,8 +31,8 @@ const handler = async function (spec) {
     })
   }
 
-//return all feeds
-return { statusCode: 200, body: JSON.stringify(feedobj) }
+  // return all feeds
+  return { statusCode: 200, body: JSON.stringify(feedobj) }
 }
 
 module.exports = { handler }

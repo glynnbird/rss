@@ -5,11 +5,11 @@ const documentClient = new AWS.DynamoDB.DocumentClient()
 let params
 
 const handler = async function (spec) {
-  //first check if the API KEY is correct
+  // first check if the API KEY is correct
   if (!spec.queryStringParameters || !spec.queryStringParameters.apikey || spec.queryStringParameters.apikey !== API_KEY) {
-    return { statusCode: 401, body: `{"ok": false}` }
+    return { statusCode: 401, body: '{"ok": false}' }
   }
-  //first read articles in reverse chrono order
+  // first read articles in reverse chrono order
   params = {
     TableName: TABLE,
     IndexName: 'gsi2',
@@ -20,14 +20,13 @@ const handler = async function (spec) {
     ScanIndexForward: false,
     Limit: 100
   }
-  console.log("params are: ", params)
-  console.log("loading articles ")
+  console.log('params are: ', params)
+  console.log('loading articles ')
   const response = await documentClient.query(params).promise()
   const articledata = response.Items
-  console.log("article data is ", articledata)
+  console.log('article data is ', articledata)
 
   return articledata
-
 }
 
 module.exports = { handler }

@@ -20,6 +20,7 @@ resource "aws_lambda_function" "feedFetch" {
     variables = {
       TABLE = aws_dynamodb_table.rssDB.name
       API_KEY = var.API_KEY
+      TWITTER_BEARER_TOKEN = var.TWITTER_BEARER_TOKEN
     }
   }
 }
@@ -102,6 +103,7 @@ resource "aws_lambda_function" "addFeed" {
     variables = {
       TABLE = aws_dynamodb_table.rssDB.name
       API_KEY = var.API_KEY
+      TWITTER_BEARER_TOKEN = var.TWITTER_BEARER_TOKEN
     }
   }
 }
