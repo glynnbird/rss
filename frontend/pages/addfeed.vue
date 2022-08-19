@@ -47,6 +47,15 @@ export default {
       error: false
     };
   },
+  async asyncData({ redirect,store}) {
+    // load feed lsit from local storage (profile)
+    const profile = store.state.profile.profile;
+    if (!profile) {
+      //not logged in so bounce to home page
+      redirect('/')
+      return
+    }
+  },
   computed: {
     saveDisabled: function () {
       if (!this.url) {

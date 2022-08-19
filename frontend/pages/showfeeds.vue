@@ -45,9 +45,14 @@ export default {
       feeds: [],
     };
   },
-  async asyncData({ store, $axios }) {
+  async asyncData({ redirect,store}) {
     // load feed lsit from local storage (profile)
     const profile = store.state.profile.profile;
+    if (!profile) {
+      //not logged in so bounce to home page
+      redirect('/')
+      return
+    }
     const feeds = profile.feeds ? profile.feeds : []
     console.log('feeds from profile', feeds)
 

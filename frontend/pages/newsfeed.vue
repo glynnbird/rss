@@ -76,9 +76,14 @@ export default {
     // increment the timer every second - to force the computed function to recalculate
     setInterval(() => { this.timer++ }, 1000)
   },
-  async asyncData({ store, $axios }) {
+  async asyncData({ redirect, store, $axios }) {
     // load recent article list from local storage (profile)
     const profile = store.state.profile.profile;
+    if (!profile) {
+      //not logged in so bounce to home page
+      redirect('/')
+      return
+    }
     let articles = profile.articles ? profile.articles : []
     return { articles }
   },
