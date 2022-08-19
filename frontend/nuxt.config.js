@@ -9,8 +9,8 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - frontend2',
-    title: 'frontend2',
+    titleTemplate: '%s',
+    title: 'RSS',
     htmlAttrs: {
       lang: 'en'
     },
@@ -40,6 +40,7 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
+    '@nuxtjs/pwa'
   ],
   router: {
     middleware: ['loadProfile']
@@ -70,5 +71,16 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+  },
+  pwa: {
+    icon: true,
+    meta: {
+      name: 'RSS',
+      description: 'RSS news aggregator'
+    },
+    manifest: {
+      name: 'RSS',
+      short_name: 'RSS'
+    }
   }
 }
