@@ -26,7 +26,7 @@ export default {
     console.log("asyncdata profile is", store.state.profile.profile);
     if (store.state.profile.profile) {
       //already logged in, so bounce to newsfeed
-      redirect("newsfeed");
+      redirect("/newsfeed");
     }
   },
 

@@ -1,7 +1,9 @@
 <template>
   <div>
     <v-progress-linear v-if="submitted" :indeterminate="true"></v-progress-linear>
-
+    <v-alert v-model="error" dismissible type="error">
+      Unable to add feed. Please check your URL
+    </v-alert>
     <v-card>
       <v-card-title>Add Feed</v-card-title>
       <v-card-subtitle>
@@ -41,7 +43,8 @@ export default {
   data: function () {
     return {
       url: "",
-      submitted: false
+      submitted: false,
+      error: false
     };
   },
   computed: {
@@ -55,11 +58,19 @@ export default {
   methods: {
     onSubmit: async function () {
       this.submitted=true
+      this.error=false
       const profile = this.$store.state.profile.profile;
       const url = `${config.addFeedFunctionUrl.value}?apikey=${profile.apikey}&url=${this.url}`;
-      const articles = await this.$axios.$get(url);
-      console.log("feed added!")
-      this.$router.push("/showfeeds");
+      try {
+        const articles = await this.$axios.$get(url);
+        console.log("feed added!")
+        this.$router.push("/showfeeds");
+      } catch (e) {
+        this.submitted = false
+        this.error=true
+      }
+
+
     },
   },
 };
