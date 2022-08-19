@@ -39,6 +39,9 @@ API_KEY = "<create a random string>"
 TWITTER_BEARER_TOKEN = "<twitter API bearer token>"
 ```
 
+**NOTE:** The Twitter bearer token is optional. If you want to add twitter feeds, then you need to [get a developer account on Twitter](https://developer.twitter.com/en/portal/dashboard) and obtain the bearer token. If you don't want to do that, just put any random gibberish as a value for the TWITTER_BEARER_TOKEN variable, because it has to be defined there.
+
+
 ### Step 3 - Create Infrastructure
 
 In the root of the project type:
