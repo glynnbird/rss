@@ -34,6 +34,13 @@
 .evensmaller {
   font-size:10px
 }
+.v-list-item__title, .v-list-item__subtitle {
+    flex: 1 1 100%;
+    white-space: unset !important
+    /* overflow: hidden; */
+    /* text-overflow: ellipsis; */
+    /* white-space: nowrap; */
+}
 </style>
 
 <script>
