@@ -35,11 +35,11 @@
   font-size:10px
 }
 .v-list-item__title, .v-list-item__subtitle {
-    flex: 1 1 100%;
-    white-space: unset !important
-    /* overflow: hidden; */
-    /* text-overflow: ellipsis; */
-    /* white-space: nowrap; */
+  flex: 1 1 100%;
+  white-space: unset !important
+}
+.v-avatar {
+  align-self: flex-start;
 }
 </style>
 
