@@ -45,6 +45,7 @@
 }
 .v-list-item {
   padding: 0px;
+  border-bottom: 1px solid #eee
 }
 </style>
 
