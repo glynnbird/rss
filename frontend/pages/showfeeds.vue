@@ -1,10 +1,6 @@
 <template>
   <div>
-    <v-progress-linear
-      v-if="busy"
-      indeterminate
-      color="teal">
-    </v-progress-linear>
+    <v-progress-linear v-if="busy" indeterminate></v-progress-linear>
     <v-card outlined>
       <v-card-title>Your Feeds</v-card-title>
       <v-card-text>
