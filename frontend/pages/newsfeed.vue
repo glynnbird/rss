@@ -3,7 +3,6 @@
     <v-progress-linear
       v-if="busy"
         indeterminate
-        color="teal"
       ></v-progress-linear>
     <v-list two-line flat>
       <v-list-item
@@ -15,15 +14,14 @@
         <v-list-item-avatar>
           <img :src="article.icon" />
         </v-list-item-avatar>
-
         <v-list-item-content>
-          <v-list-item-title v-html="article.title"></v-list-item-title>
+          <v-list-item-title>
+            <div class="float-right smaller">{{ article.ago }}</div>
+            {{ article.title }}
+          </v-list-item-title>
           <v-list-item-subtitle
             v-html="article.content"
           ></v-list-item-subtitle>
-          <v-list-item-subtitle >
-            <span class="evensmaller">{{ article.ago }}</span>
-          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -33,6 +31,10 @@
 <style>
 .evensmaller {
   font-size:10px
+}
+.smaller {
+  font-size: 10px;
+  color: rgb(0,0,0,0.6)
 }
 .v-list-item__title, .v-list-item__subtitle {
   flex: 1 1 100%;
@@ -103,7 +105,7 @@ export default {
 
       // add "ago"-style date to each article
       return this.articles.map((a) => {
-        a.ago = timeAgo.format(new Date(a.timestamp))
+        a.ago = timeAgo.format(new Date(a.timestamp), 'mini')
         return a
       })
     }
