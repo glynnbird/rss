@@ -33,6 +33,7 @@
   font-size:10px
 }
 .smaller {
+  margin-left: 4px;
   font-size: 10px;
   color: rgb(0,0,0,0.6)
 }
