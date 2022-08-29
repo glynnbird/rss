@@ -43,6 +43,9 @@
 .v-avatar {
   align-self: flex-start;
 }
+.v-list-item {
+  padding: 0px;
+}
 </style>
 
 <script>
