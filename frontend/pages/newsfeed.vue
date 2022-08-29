@@ -4,7 +4,7 @@
       v-if="busy"
         indeterminate
       ></v-progress-linear>
-    <v-list two-line flat>
+    <v-list two-line flat dense>
       <v-list-item
         v-bind:key="article.articleid"
         v-for="article in articlesAgo"
