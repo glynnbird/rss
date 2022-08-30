@@ -29,7 +29,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .evensmaller {
   font-size:10px
 }
