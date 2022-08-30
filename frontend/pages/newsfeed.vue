@@ -10,6 +10,7 @@
         v-for="article in articlesAgo"
         :href="article.link"
         target="_new"
+        :class="{ 'v-list-item-divider': article.divider}"
       >
         <v-list-item-avatar>
           <img :src="article.icon" />
@@ -48,6 +49,9 @@
   padding: 0px;
   border-bottom: 1px solid #eee
 }
+.v-list-item-divider {
+  border-bottom: 3px solid #aaa
+}
 </style>
 
 <script>
@@ -72,12 +76,30 @@ export default {
     // indicate that we're busy 
     this.busy = true
 
+    // make a note of the id of the current newest article
+    console.log('newest', this.articles[0].articleid)
+    let articleid = null
+    if (this.articles.length > 0) {
+      articleid = this.articles[0].articleid
+    }
+
     // fetch newest news from the API
     const profile = this.$store.state.profile.profile;
     console.log("asyncdata profile is", profile);
     const url = `${config.articlesFunctionUrl.value}?apikey=${profile.apikey}`;
     let articles = await this.$axios.$get(url);
     this.articles = articles
+
+    // mark the oldest of the new ones (so that it gets highlighted on the page)
+    if (articleid) {
+      for(let i =0 ; i < this.articles.length; i++) {
+        const article = this.articles[i]
+        article.divider = false
+        if (article.articleid === articleid && i > 0) {
+          this.articles[i - 1].divider = true
+        }
+      }
+    }
 
     // save recent articles to localstorage for faster load next time
     const prof = JSON.parse(JSON.stringify(profile))
