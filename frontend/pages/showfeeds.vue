@@ -18,7 +18,7 @@
             </v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
-            <v-btn @click="deleteFeed (feed.feedid)"> 
+            <v-btn icon @click="deleteFeed (feed.feedid)"> 
               <v-icon color="light-blue darken-3"> mdi-delete </v-icon> 
             </v-btn>
           </v-list-item-action>

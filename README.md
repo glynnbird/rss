@@ -6,6 +6,7 @@ A news feed aggregator that can be deployed on AWS for near $0 for personal use.
 - HTTP API hosted on Lambda
 - periodic polling of RSS/Atom news feeds or Twitter users using Lambda
 - state stored in DynamoDB
+- PWA with LocalStorage to store state on the client side
 
 ## How it works
 
