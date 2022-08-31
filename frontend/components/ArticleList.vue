@@ -46,7 +46,7 @@
   font-size: 16px
 }
 .v-list-item__subtitle a:link, .v-list-item__subtitle a:visited, .v-list-item__subtitle a:hover {
-  color: rgba(0, 0, 0, 0.87);
+  color: rgba(0, 0, 0, 0.70);
   text-decoration: none;
   font-weight: normal;
   font-size: 14px
