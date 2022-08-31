@@ -7,10 +7,10 @@
         <v-icon v-else>mdi-share-variant</v-icon>
       </v-btn>
     </template>
-    <v-btn fab x-small dark color="blue" :href="whatsAppURL" target="_new">
+    <v-btn fab x-small dark color="blue" :href="twitterURL" target="_new">
       <v-icon>mdi-twitter</v-icon>
     </v-btn>
-    <v-btn fab x-small dark color="green" :href="twitterURL" target="_new">
+    <v-btn fab x-small dark color="green" :href="whatsAppURL" target="_new">
       <v-icon>mdi-whatsapp</v-icon>
     </v-btn>
     <v-btn fab x-small dark color="red" @click="copyLink">
@@ -37,6 +37,7 @@ export default {
       return `https://twitter.com/intent/tweet?url=${this.url}&text=${this.title}`
     },
     whatsAppURL () {
+      console.log(`whatsapp://send/?text=${this.title}%20${this.url}`)
       return `whatsapp://send/?text=${this.title}%20${this.url}`
     }
   }

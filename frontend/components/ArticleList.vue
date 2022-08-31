@@ -66,6 +66,10 @@
 .v-list-item-divider {
   border-bottom: 3px solid #aaa
 }
+.v-list-item__action-text {
+  width: 24px;
+  text-align: center
+}
 </style>
 
 <script>
