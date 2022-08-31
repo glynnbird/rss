@@ -9,6 +9,13 @@
         <v-list-item-title>Home</v-list-item-title>
       </v-list-item>
 
+      <v-list-item @click="onFavourites">
+        <v-list-item-icon>
+          <v-icon>mdi-star</v-icon>
+        </v-list-item-icon>
+        <v-list-item-title>Favourites</v-list-item-title>
+      </v-list-item>
+
       <v-list-item v-if="this.$store.state.profile.profile" @click="onFeedList">
         <v-list-item-icon>
           <v-icon>mdi-format-list-bulleted</v-icon>
@@ -45,6 +52,9 @@ export default {
   methods: {
     onHome: function () {
       this.$router.push("/");
+    },
+    onFavourites: function() {
+      this.$router.push("/favourites");
     },
     onFeedList: function () {
       this.$router.push("/showfeeds");

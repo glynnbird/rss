@@ -8,10 +8,15 @@ export const state = () => ({
 export const mutations = {
   save(state, obj) {
     state.profile = obj  
-    console.log("profile inserted ") 
+  },
+  saveAPIKey(state, apikey) {
+    state.profile = {}
+    state.profile.apikey = apikey
+    localstorage.saveProfile(state.profile)
   },
   newArticles(state, articles) {
     state.profile.articles = articles
+    localstorage.saveProfile(state.profile)
   },
   addFavourite(state, article) {
     state.profile.favourites = state.profile.favourites || {}
@@ -21,6 +26,20 @@ export const mutations = {
   deleteFavourite(state, article) {
     state.profile.favourites = state.profile.favourites || {}
     Vue.delete(state.profile.favourites, article.articleid)
+    localstorage.saveProfile(state.profile)
+  },
+  newFeeds(state, feeds) {
+    state.profile.feeds = feeds
+    localstorage.saveProfile(state.profile)
+  },
+  deleteFeed(state, feedid) {
+    for (let i = 0; i < state.profile.feeds.length ; i++) {
+      const feed = state.profile.feeds[i]
+      if (feed.feedid === feedid) {
+        Vue.delete(state.profile.feeds, i)
+        break
+      }
+    }
     localstorage.saveProfile(state.profile)
   }
 }

@@ -32,7 +32,6 @@
 
 
 <script>
-import localstorage from "~/assets/js/localstorage";
 const config = require("../config.json");
 export default {
   data: function () {
@@ -41,7 +40,7 @@ export default {
       feeds: [],
     };
   },
-  async asyncData({ redirect,store}) {
+  async asyncData({ redirect, store}) {
     // load feed lsit from local storage (profile)
     const profile = store.state.profile.profile;
     if (!profile) {
@@ -50,8 +49,6 @@ export default {
       return
     }
     const feeds = profile.feeds ? profile.feeds : []
-    console.log('feeds from profile', feeds)
-
     return { feeds }
   },
   mounted: async function () {
@@ -60,32 +57,25 @@ export default {
 
     // fetch feed list from API
     const profile = this.$store.state.profile.profile;
-    console.log("asyncdata profile is", profile);
     const url = `${config.getAllFeedsFunctionUrl.value}?apikey=${profile.apikey}`;
     const feeds = await this.$axios.$get(url);
-    this.feeds = feeds.feeds
 
-    // save feed list to localstorage for faster load next time
-    const prof = JSON.parse(JSON.stringify(profile))
-    prof.feeds = feeds.feeds
-    localstorage.saveProfile(prof);
-    
+    // store in profile for faster loading
+    this.$store.commit('profile/newFeeds', feeds.feeds)
+    this.feeds = this.$store.state.profile.profile.feeds
+
     // clear busy indicator
     this.busy = false
-
   },
   methods: {
     deleteFeed: async function (feedid) {
-      //console.log(feedid)
+      // delete a feed using the API
       const profile = this.$store.state.profile.profile;
       const url = `${config.deleteFeedFunctionUrl.value}?apikey=${profile.apikey}&feedid=${feedid}`;
       const articles = await this.$axios.$get(url);
-      console.log("feed deleted!");
-      //now remove the deleted feed from the list of feeds so that it disappears from the UI
-      this.feeds = this.feeds.filter(function (feed) {
-        return feed.feedid != feedid;
-      });
-      this.$router.push("/showfeeds");
+
+      // now remove the deleted feed from the list of feeds so that it disappears from the UI
+      this.$store.commit('profile/deleteFeed', feedid)
     },
   },
 };

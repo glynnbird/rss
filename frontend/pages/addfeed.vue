@@ -35,7 +35,6 @@
 }
 </style>
 
-
 <script>
 const config = require("../config.json");
 
@@ -72,15 +71,12 @@ export default {
       const url = `${config.addFeedFunctionUrl.value}?apikey=${profile.apikey}&url=${this.url}`;
       try {
         const articles = await this.$axios.$get(url);
-        console.log("feed added!")
         this.$router.push("/showfeeds");
       } catch (e) {
         this.submitted = false
         this.error=true
       }
-
-
-    },
-  },
-};
+    }
+  }
+}
 </script>
