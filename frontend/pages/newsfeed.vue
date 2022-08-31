@@ -6,10 +6,8 @@
       ></v-progress-linear>
     <v-list two-line flat dense>
       <v-list-item
-        v-bind:key="article.articleid"
         v-for="article in articlesAgo"
-        :href="article.link"
-        target="_new"
+        :key="article.articleid"
         :class="{ 'v-list-item-divider': article.divider}"
       >
         <v-list-item-avatar>
@@ -17,26 +15,41 @@
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title>
-            <div class="float-right smaller">{{ article.ago }}</div>
-            {{ article.title }}
+            <a :href="article.link" target="_new">{{ article.title }}</a>
           </v-list-item-title>
-          <v-list-item-subtitle
-            v-html="article.content"
-          ></v-list-item-subtitle>
+          <v-list-item-subtitle>
+            <a :href="article.link" target="_new">{{ article.content }}</a>
+          </v-list-item-subtitle>
         </v-list-item-content>
+        <v-list-item-action>
+          <v-list-item-action-text>{{ article.ago }}</v-list-item-action-text>
+          <v-icon 
+            v-if="!article.favourite"
+            color="grey lighten-1"
+            @click="favourite(article)">
+            mdi-star-outline
+          </v-icon>
+          <v-icon 
+            v-else
+            color="yellow darken-3"
+            @click="defavourite(article)">
+            mdi-star
+          </v-icon>
+        </v-list-item-action>
       </v-list-item>
     </v-list>
   </div>
 </template>
 
 <style scoped>
-.evensmaller {
-  font-size:10px
+.v-list-item__title a:link, .v-list-item__title a:visited, .v-list-item__title a:hover {
+  color: rgba(0, 0, 0, 0.87);
+  text-decoration: none;
 }
-.smaller {
-  margin-left: 4px;
-  font-size: 10px;
-  color: rgb(0,0,0,0.6)
+.v-list-item__subtitle a:link, .v-list-item__subtitle a:visited, .v-list-item__subtitle a:hover {
+  color: rgba(0, 0, 0, 0.87);
+  text-decoration: none;
+  font-weight: normal
 }
 .v-list-item__title, .v-list-item__subtitle {
   flex: 1 1 100%;
@@ -55,7 +68,6 @@
 </style>
 
 <script>
-import localstorage from "~/assets/js/localstorage";
 const config = require("../config.json");
 
 // tools for converting ISO timestamps to "3 days ago"-style
@@ -70,6 +82,7 @@ export default {
       timer: 0,
       busy: false,
       articles: [],
+      favourites: {}
     };
   },  
   mounted: async function() {
@@ -77,7 +90,6 @@ export default {
     this.busy = true
 
     // make a note of the id of the current newest article
-    console.log('newest', this.articles[0].articleid)
     let articleid = null
     if (this.articles.length > 0) {
       articleid = this.articles[0].articleid
@@ -85,10 +97,8 @@ export default {
 
     // fetch newest news from the API
     const profile = this.$store.state.profile.profile;
-    console.log("asyncdata profile is", profile);
     const url = `${config.articlesFunctionUrl.value}?apikey=${profile.apikey}`;
-    let articles = await this.$axios.$get(url);
-    this.articles = articles
+    const articles = await this.$axios.$get(url);
 
     // mark the oldest of the new ones (so that it gets highlighted on the page)
     if (articleid) {
@@ -96,15 +106,14 @@ export default {
         const article = this.articles[i]
         article.divider = false
         if (article.articleid === articleid && i > 0) {
-          this.articles[i - 1].divider = true
+          articles[i - 1].divider = true
         }
       }
     }
 
     // save recent articles to localstorage for faster load next time
-    const prof = JSON.parse(JSON.stringify(profile))
-    prof.articles = articles
-    localstorage.saveProfile(prof);
+    this.$store.commit('profile/newArticles', articles)
+    this.articles = this.$store.state.profile.profile.articles
     
     // stop busy indicator
     this.busy = false
@@ -120,8 +129,9 @@ export default {
       redirect('/')
       return
     }
-    let articles = profile.articles ? profile.articles : []
-    return { articles }
+    const articles = profile.articles ? profile.articles : []
+    const favourites = profile.favourites ? profile.favourites : {}
+    return { articles, favourites }
   },
   computed: {
     articlesAgo () {
@@ -129,15 +139,26 @@ export default {
       // this computed element depends on this.timer, so it gets
       // run every second - so the "ago" timings get updated as the page sits.
       this.timer
+      
+      // clone the articles
+      const clonedArticles = JSON.parse(JSON.stringify(this.articles))
 
       // add "ago"-style date to each article
-      return this.articles.map((a) => {
+      return clonedArticles.map((a) => {
         a.ago = timeAgo.format(new Date(a.timestamp), 'mini')
+        a.favourite = !!this.favourites[a.articleid]
         return a
       })
     }
   },
 
-  methods: {},
+  methods: {
+    favourite: function(article) {
+      this.$store.commit('profile/addFavourite', article)
+    },
+    defavourite: function(article) {
+      this.$store.commit('profile/deleteFavourite', article)
+    }
+  },
 }
 </script>
