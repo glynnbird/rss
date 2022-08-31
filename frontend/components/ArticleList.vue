@@ -46,10 +46,10 @@
   font-size: 16px
 }
 .v-list-item__subtitle a:link, .v-list-item__subtitle a:visited, .v-list-item__subtitle a:hover {
-  color: rgba(0, 0, 0, 0.70);
+  color: rgba(0, 0, 0, 0.60);
   text-decoration: none;
   font-weight: normal;
-  font-size: 14px
+  font-size: 15px
 }
 .v-list-item__title, .v-list-item__subtitle {
   flex: 1 1 100%;
