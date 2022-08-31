@@ -6,7 +6,7 @@
         @click="$refs.drawer.show = !$refs.drawer.show"
       ></v-app-bar-nav-icon>
       <v-toolbar-title @click="onHome">
-        <span class="apptitle">RSS Wrangler</span>
+        RSS Wrangler
       </v-toolbar-title>
     </v-app-bar>
     <v-main>
