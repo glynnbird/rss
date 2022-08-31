@@ -43,11 +43,13 @@
 .v-list-item__title a:link, .v-list-item__title a:visited, .v-list-item__title a:hover {
   color: rgba(0, 0, 0, 0.87);
   text-decoration: none;
+  font-size: 16px
 }
 .v-list-item__subtitle a:link, .v-list-item__subtitle a:visited, .v-list-item__subtitle a:hover {
   color: rgba(0, 0, 0, 0.87);
   text-decoration: none;
-  font-weight: normal
+  font-weight: normal;
+  font-size: 14px
 }
 .v-list-item__title, .v-list-item__subtitle {
   flex: 1 1 100%;
