@@ -30,7 +30,15 @@ export default {
   },
   computed: {
     articles () {
-      return  Object.values(this.favourites)
+      function compareFn(a, b) {
+        if (a.timestamp < b.timestamp) {
+          return 1
+        } else if (a.timestamp > b.timestamp) {
+          return -1
+        }
+        return 0
+      }
+      return Object.values(this.favourites).sort(compareFn)
     }
   }
 }
