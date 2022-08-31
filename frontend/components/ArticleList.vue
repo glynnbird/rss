@@ -32,6 +32,7 @@
             @click="defavourite(article)">
             mdi-star
           </v-icon>
+          <SocialShare :url="article.link" title="Shared via RSS Wrangler"/>
         </v-list-item-action>
       </v-list-item>
     </v-list>
