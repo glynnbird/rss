@@ -140,6 +140,7 @@ export default {
       setTimeout(() => {
         // scroll beyond the search field
         window.scrollTo(0,70)
+        document.activeElement.blur()
       },10)
     },
   },
