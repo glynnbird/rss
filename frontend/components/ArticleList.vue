@@ -44,13 +44,13 @@
 .v-list-item__title a:link, .v-list-item__title a:visited, .v-list-item__title a:hover {
   color: rgba(0, 0, 0, 0.87);
   text-decoration: none;
-  font-size: 16px
+  font-size: 18px
 }
 .v-list-item__subtitle a:link, .v-list-item__subtitle a:visited, .v-list-item__subtitle a:hover {
   color: rgba(0, 0, 0, 0.60);
   text-decoration: none;
   font-weight: normal;
-  font-size: 15px
+  font-size: 16px
 }
 .v-list-item__title, .v-list-item__subtitle {
   flex: 1 1 100%;
@@ -69,6 +69,9 @@
 .v-list-item__action-text {
   width: 24px;
   text-align: center
+}
+.v-application--is-ltr .v-list-item__action:last-of-type:not(:only-child), .v-application--is-ltr .v-list-item__avatar:last-of-type:not(:only-child), .v-application--is-ltr .v-list-item__icon:last-of-type:not(:only-child) {
+    margin-left: 0px;
 }
 </style>
 
