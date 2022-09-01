@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-progress-linear v-if="busy" indeterminate></v-progress-linear>
-    <v-text-field v-model="searchTerm" label="Search"></v-text-field>
+    <v-text-field v-model="searchTerm" label="Search" clearable @click:clear="clickClear"></v-text-field>
     <a name="top"></a>
     <v-list two-line flat dense>
       <v-list-item
@@ -95,10 +95,7 @@ export default {
   mounted: function () {
     // increment the timer every second - to force the computed function to recalculate
     setInterval(() => { this.timer++ }, 1000)
-    setTimeout(() => {
-      // scroll beyond the search field
-      window.scrollTo(0,70)
-    },10)
+    this.clickClear()
   },
   computed: {
     articlesAgo () {
@@ -137,7 +134,14 @@ export default {
     },
     defavourite: function(article) {
       this.$store.commit('profile/deleteFavourite', article)
-    }
+    },
+    clickClear: function() {
+      console.log('click clear')
+      setTimeout(() => {
+        // scroll beyond the search field
+        window.scrollTo(0,70)
+      },10)
+    },
   },
 };
 </script>
