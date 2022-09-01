@@ -64,7 +64,7 @@
   border-bottom: 1px solid #eee
 }
 .v-list-item-divider {
-  border-bottom: 3px solid #aaa
+  border-bottom: 3px dashed #aaa
 }
 .v-list-item__action-text {
   width: 24px;
