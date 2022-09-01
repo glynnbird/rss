@@ -1,6 +1,8 @@
 <template>
   <div>
     <v-progress-linear v-if="busy" indeterminate></v-progress-linear>
+    <v-text-field v-model="searchTerm" label="Search"></v-text-field>
+    <a name="top"></a>
     <v-list two-line flat dense>
       <v-list-item
         v-for="article in articlesAgo"
@@ -86,12 +88,17 @@ export default {
   props: ["articles", "favourites", "busy", "dividerId"],
   data: function () {
     return {
-      timer: 0
+      timer: 0,
+      searchTerm: ''
     }
   },
   mounted: function () {
     // increment the timer every second - to force the computed function to recalculate
     setInterval(() => { this.timer++ }, 1000)
+    setTimeout(() => {
+      // scroll beyond the search field
+      window.scrollTo(0,70)
+    },10)
   },
   computed: {
     articlesAgo () {
@@ -101,14 +108,27 @@ export default {
       this.timer
       
       // clone the articles
-      const clonedArticles = JSON.parse(JSON.stringify(this.articles))
+      let clonedArticles = JSON.parse(JSON.stringify(this.articles))
 
       // add "ago"-style date to each article
-      return clonedArticles.map((a) => {
+      clonedArticles =  clonedArticles.map((a) => {
         a.ago = timeAgo.format(new Date(a.timestamp), 'mini')
         a.favourite = !!this.favourites[a.articleid]
         return a
       })
+ 
+      // if there's a search term, filter the results
+      if (this.searchTerm) {
+        clonedArticles = clonedArticles.filter((a) => {
+          const term = this.searchTerm.toLowerCase()
+          if (a.title.toLowerCase().includes(term) ||
+            a.content.toLowerCase().includes(term)) {
+            return true
+          }
+          return false
+        })
+      }
+      return clonedArticles
     }
   },
   methods: {
