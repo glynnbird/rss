@@ -54,6 +54,7 @@ export default {
       redirect('/')
       return
     }
+    store.commit('page/setTitle', 'Add Feed')
   },
   computed: {
     saveDisabled: function () {

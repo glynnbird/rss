@@ -1,30 +1,27 @@
 <template>
   <div>
     <v-progress-linear v-if="busy" indeterminate></v-progress-linear>
-    <v-card outlined>
-      <v-card-title>Your Feeds</v-card-title>
-      <v-card-text>
-        <v-list-item :key="feed.feedid" v-for="feed in feeds"        >
-          <v-list-item-avatar>
-            <v-img :src="feed.icon" max-height="50"> </v-img>
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title>
-              <v-icon v-if="feed.feed_type && feed.feed_type==='twitter'">mdi-twitter</v-icon>
-              <v-icon v-if="!feed.feed_type || feed.feed_type==='rss'">mdi-rss</v-icon>
-              {{ feed.feed_name }}
-            </v-list-item-title>
-            <v-list-item-subtitle>{{ feed.link}} {{feed.timestamp}}
-            </v-list-item-subtitle>
-          </v-list-item-content>
-          <v-list-item-action>
-            <v-btn icon @click="deleteFeed (feed.feedid)"> 
-              <v-icon color="light-blue darken-3"> mdi-delete </v-icon> 
-            </v-btn>
-          </v-list-item-action>
-        </v-list-item>
-      </v-card-text>
-    </v-card>
+    <v-list two-line flat dense>
+      <v-list-item :key="feed.feedid" v-for="feed in feeds">
+        <v-list-item-avatar>
+          <v-img :src="feed.icon" max-height="50"> </v-img>
+        </v-list-item-avatar>
+        <v-list-item-content>
+          <v-list-item-title>
+            <v-icon v-if="feed.feed_type && feed.feed_type === 'twitter'">mdi-twitter</v-icon>
+            <v-icon v-if="!feed.feed_type || feed.feed_type === 'rss'">mdi-rss</v-icon>
+            {{ feed.feed_name }}
+          </v-list-item-title>
+          <v-list-item-subtitle>{{ feed.link }} {{ feed.timestamp }}
+          </v-list-item-subtitle>
+        </v-list-item-content>
+        <v-list-item-action>
+          <v-btn icon @click="deleteFeed(feed.feedid)">
+            <v-icon color="light-blue darken-3"> mdi-delete </v-icon>
+          </v-btn>
+        </v-list-item-action>
+      </v-list-item>
+    </v-list>
     <br />
     <v-btn nuxt to="addfeed" color="primary">Add Feed</v-btn>
   </div>
@@ -40,7 +37,7 @@ export default {
       feeds: [],
     };
   },
-  async asyncData({ redirect, store}) {
+  async asyncData({ redirect, store }) {
     // load feed lsit from local storage (profile)
     const profile = store.state.profile.profile;
     if (!profile) {
@@ -48,6 +45,7 @@ export default {
       redirect('/')
       return
     }
+    store.commit('page/setTitle', 'Feeds')
     const feeds = profile.feeds ? profile.feeds : []
     return { feeds }
   },

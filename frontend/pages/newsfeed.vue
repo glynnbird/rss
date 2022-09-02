@@ -60,6 +60,7 @@ export default {
       redirect('/')
       return
     }
+    store.commit('page/setTitle', 'News')
     const articles = profile.articles ? profile.articles : []
     const favourites = profile.favourites ? profile.favourites : {}
     return { articles, favourites }

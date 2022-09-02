@@ -20,8 +20,9 @@ export default {
   async asyncData({ store, redirect }) {
     if (store.state.profile.profile) {
       //already logged in, so bounce to newsfeed
-      redirect("/newsfeed");
+      return redirect("/newsfeed");
     }
+    store.commit('page/setTitle', '')
   },
 
   methods: {

@@ -25,6 +25,7 @@ export default {
       redirect('/')
       return
     }
+    store.commit('page/setTitle', 'Favourites')
     const favourites = profile.favourites ? profile.favourites : {}
     return { favourites }
   },
