@@ -7,6 +7,8 @@
       ></v-app-bar-nav-icon>
       <v-toolbar-title @click="onHome">
         RSS Wrangler
+        <span v-if="this.$store.state.page.title"> - </span>
+        {{ this.$store.state.page.title }}
       </v-toolbar-title>
     </v-app-bar>
     <v-main>
