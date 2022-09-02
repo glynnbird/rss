@@ -1,27 +1,38 @@
 <template>
   <div>
+    <!-- busy indicator-->
     <v-progress-linear v-if="busy" indeterminate></v-progress-linear>
+    <!-- search form -->
     <v-text-field v-model="searchTerm" label="Search" clearable @click:clear="clickClear"></v-text-field>
-    <a name="top"></a>
+    <!-- list of articles-->
     <v-list two-line flat dense>
+      <!-- one item per article - the divider changes if it's the divider between
+           old news and new news-->
       <v-list-item
         v-for="article in articlesAgo"
-        :key="article.articleid"
+        :key="article.articleid" 
         :class="{ 'v-list-item-divider': dividerId === article.articleid }"
       >
         <v-list-item-avatar>
+          <!-- RSS feed icon-->
           <img :src="article.icon" />
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title>
-            <a :href="article.link" target="_new">{{ article.title }}</a>
+            <a :href="article.link" target="_new">
+              <!-- new icon - only for articles newer than the dividing line -->
+              <v-icon color="blue" v-if="dateOfDivider && article.timestamp >= dateOfDivider">mdi-new-box</v-icon>
+              {{ article.title }}
+            </a>
           </v-list-item-title>
           <v-list-item-subtitle>
             <a :href="article.link" target="_new">{{ article.content }}</a>
           </v-list-item-subtitle>
         </v-list-item-content>
         <v-list-item-action>
+          <!-- how long ago the article was published -->
           <v-list-item-action-text>{{ article.ago }}</v-list-item-action-text>
+          <!-- favourite * button -->
           <v-icon 
             v-if="!article.favourite"
             color="grey lighten-1"
@@ -34,12 +45,12 @@
             @click="defavourite(article)">
             mdi-star
           </v-icon>
+          <!-- social sharing widget -->
           <SocialShare :url="article.link" title="Shared via RSS Wrangler"/>
         </v-list-item-action>
       </v-list-item>
     </v-list>
   </div>
-  
 </template>
 
 <style scoped>
@@ -126,20 +137,35 @@ export default {
         })
       }
       return clonedArticles
+    },
+    dateOfDivider: function() {
+      if (!this.dividerId) {
+        return null
+      }
+      // calculate the date of the divider between old news and old news
+      for(let article of this.articles) {
+        if (article.articleid === this.dividerId) {
+          return article.timestamp
+        }
+      }
     }
   },
   methods: {
     favourite: function(article) {
+      // favourite an article
       this.$store.commit('profile/addFavourite', article)
     },
     defavourite: function(article) {
+      // defavourite an article
       this.$store.commit('profile/deleteFavourite', article)
     },
     clickClear: function() {
-      console.log('click clear')
+      // clear the search form
       setTimeout(() => {
         // scroll beyond the search field
         window.scrollTo(0,70)
+
+        // stop focus being on the search box (to hide the mobile keyboard)
         document.activeElement.blur()
       },10)
     },
