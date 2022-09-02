@@ -1,9 +1,9 @@
 <template>
   <div>
-    <!-- busy indicator-->
-    <v-progress-linear v-if="busy" indeterminate></v-progress-linear>
     <!-- search form -->
     <v-text-field v-model="searchTerm" label="Search" clearable @click:clear="clickClear"></v-text-field>
+    <!-- busy indicator-->
+    <v-progress-linear v-if="busy" indeterminate></v-progress-linear>
     <!-- list of articles-->
     <v-list two-line flat dense>
       <!-- one item per article - the divider changes if it's the divider between
