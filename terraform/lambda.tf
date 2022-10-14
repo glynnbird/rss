@@ -12,7 +12,7 @@ resource "aws_lambda_function" "feedFetch" {
   function_name    = "feedfetch"
   role             = aws_iam_role.rssLambdaRole.arn
   handler          = "feedfetch.handler"
-  runtime          = "nodejs14.x"
+  runtime          = "nodejs16.x"
   timeout          = 10
   source_code_hash = data.archive_file.lambda.output_base64sha256
   
@@ -35,7 +35,7 @@ resource "aws_lambda_function" "feedDispatch" {
   function_name    = "feeddispatch"
   role             = aws_iam_role.rssLambdaRole.arn
   handler          = "feeddispatch.handler"
-  runtime          = "nodejs14.x"
+  runtime          = "nodejs16.x"
   timeout          = 10
   source_code_hash = data.archive_file.lambda.output_base64sha256
 
@@ -58,7 +58,7 @@ resource "aws_lambda_function" "articles" {
   function_name    = "articles"
   role             = aws_iam_role.rssLambdaRole.arn
   handler          = "articles.handler"
-  runtime          = "nodejs14.x"
+  runtime          = "nodejs16.x"
   timeout          = 10
   source_code_hash = data.archive_file.lambda.output_base64sha256
 
@@ -95,7 +95,7 @@ resource "aws_lambda_function" "addFeed" {
   function_name    = "addfeed"
   role             = aws_iam_role.rssLambdaRole.arn
   handler          = "addfeed.handler"
-  runtime          = "nodejs14.x"
+  runtime          = "nodejs16.x"
   timeout          = 10
   source_code_hash = data.archive_file.lambda.output_base64sha256
 
@@ -133,7 +133,7 @@ resource "aws_lambda_function" "deleteFeed" {
   function_name    = "deletefeed"
   role             = aws_iam_role.rssLambdaRole.arn
   handler          = "deletefeed.handler"
-  runtime          = "nodejs14.x"
+  runtime          = "nodejs16.x"
   timeout          = 10
   source_code_hash = data.archive_file.lambda.output_base64sha256
 
@@ -170,7 +170,7 @@ resource "aws_lambda_function" "getAllFeeds" {
   function_name    = "getallfeeds"
   role             = aws_iam_role.rssLambdaRole.arn
   handler          = "getallfeeds.handler"
-  runtime          = "nodejs14.x"
+  runtime          = "nodejs16.x"
   timeout          = 10
   source_code_hash = data.archive_file.lambda.output_base64sha256
 

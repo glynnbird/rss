@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_event_rule" "runFeedDispatcher" {
     name = "runFeedDispatcher"
     description = "Fires every five minutes to poll each feed"
-    schedule_expression = "rate(5 minutes)"
+    schedule_expression = "rate(30 minutes)"
 }
 
 resource "aws_cloudwatch_event_target" "runFeedDispatcherEventTarget" {
