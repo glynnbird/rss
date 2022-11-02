@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- search form -->
-    <v-text-field v-model="searchTerm" label="Search" clearable @click:clear="clickClear"></v-text-field>
+    <v-text-field ref="search" v-model="searchTerm" label="Search" clearable @click:clear="clickClear"></v-text-field>
     <!-- busy indicator-->
     <v-progress-linear v-if="busy" indeterminate></v-progress-linear>
     <!-- list of articles-->
@@ -50,6 +50,20 @@
         </v-list-item-action>
       </v-list-item>
     </v-list>
+    <v-bottom-navigation app>
+      <v-btn @click="clickSearch">
+        <span>Search</span>
+        <v-icon>mdi-file-search</v-icon>
+      </v-btn>
+      <v-btn @click="clickFavourite">
+        <span>{{ middleLabel }}</span>
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
+      <v-btn @click="clickClear">
+        <span>Top</span>
+        <v-icon>mdi-format-align-top</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
   </div>
 </template>
 
@@ -96,7 +110,7 @@ TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-GB')
 
 export default {
-  props: ["articles", "favourites", "busy", "dividerId"],
+  props: ["articles", "favourites", "busy", "dividerId", "middleLabel", "middleLink"],
   data: function () {
     return {
       timer: 0,
@@ -169,6 +183,16 @@ export default {
         document.activeElement.blur()
       },10)
     },
+    clickSearch: function() {
+      // scroll beyond the search field
+      setTimeout(() => {
+        window.scrollTo(0,0)
+        this.$refs["search"].focus()
+      },10)
+    },
+    clickFavourite: function() {
+      this.$router.push(`/${this.middleLink}`);
+    }
   },
 };
 </script>

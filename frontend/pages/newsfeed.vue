@@ -4,6 +4,8 @@
     :favourites="favourites"
     :busy="busy"
     :dividerId="dividerId"
+    middleLink="favourites"
+    middleLabel="Favourites"
   />
 </template>
 
