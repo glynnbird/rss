@@ -51,13 +51,17 @@
       </v-list-item>
     </v-list>
     <v-bottom-navigation app>
+      <v-btn @click="clickHome">
+        <span>Home</span>
+        <v-icon>mdi-home</v-icon>
+      </v-btn>      
+      <v-btn @click="clickFavourite">
+        <span>Favourites</span>
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
       <v-btn @click="clickSearch">
         <span>Search</span>
         <v-icon>mdi-file-search</v-icon>
-      </v-btn>
-      <v-btn @click="clickFavourite">
-        <span>{{ middleLabel }}</span>
-        <v-icon>mdi-heart</v-icon>
       </v-btn>
       <v-btn @click="clickClear">
         <span>Top</span>
@@ -110,7 +114,7 @@ TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-GB')
 
 export default {
-  props: ["articles", "favourites", "busy", "dividerId", "middleLabel", "middleLink"],
+  props: ["articles", "favourites", "busy", "dividerId"],
   data: function () {
     return {
       timer: 0,
@@ -190,8 +194,11 @@ export default {
         this.$refs["search"].focus()
       },10)
     },
+    clickHome: function() {
+      this.$router.push('/newsfeed');
+    },
     clickFavourite: function() {
-      this.$router.push(`/${this.middleLink}`);
+      this.$router.push('/favourites');
     }
   },
 };
