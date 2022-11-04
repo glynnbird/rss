@@ -189,6 +189,7 @@ export default {
     clickClear: function() {
       // clear the search form
       this.searchMode = false
+      this.searchTerm = ''
     },
     clickSearch: function() {
       // scroll beyond the search field
