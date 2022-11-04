@@ -1,8 +1,16 @@
 <template>
   <div>
     <!-- search form -->
-    <v-text-field ref="search" v-model="searchTerm" label="Search" clearable @click:clear="clickClear"></v-text-field>
-    <!-- busy indicator-->
+    <v-row  v-if="searchMode">
+      <v-col cols="10">
+        <v-text-field ref="search" v-model="searchTerm" label="Search"></v-text-field>
+      </v-col>
+      <v-col cols="2">
+        <v-btn @click="clickClear"  color="primary" icon><v-icon>mdi-close</v-icon></v-btn>
+      </v-col>
+    </v-row>
+
+        <!-- busy indicator-->
     <v-progress-linear v-if="busy" indeterminate></v-progress-linear>
     <!-- list of articles-->
     <v-list two-line flat dense>
@@ -50,7 +58,7 @@
         </v-list-item-action>
       </v-list-item>
     </v-list>
-    <v-bottom-navigation app>
+    <v-bottom-navigation app v-if="!searchMode">
       <v-btn @click="clickHome">
         <span>Home</span>
         <v-icon>mdi-home</v-icon>
@@ -118,7 +126,8 @@ export default {
   data: function () {
     return {
       timer: 0,
-      searchTerm: ''
+      searchTerm: '',
+      searchMode: false
     }
   },
   mounted: function () {
@@ -181,7 +190,8 @@ export default {
       // clear the search form
       setTimeout(() => {
         // scroll beyond the search field
-        window.scrollTo(0,70)
+        this.searchMode = false
+        window.scrollTo(0,0)
 
         // stop focus being on the search box (to hide the mobile keyboard)
         document.activeElement.blur()
@@ -191,6 +201,7 @@ export default {
       // scroll beyond the search field
       setTimeout(() => {
         window.scrollTo(0,0)
+        this.searchMode = true
         this.$refs["search"].focus()
       },10)
     },
