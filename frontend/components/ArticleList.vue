@@ -190,6 +190,7 @@ export default {
       // clear the search form
       this.searchMode = false
       this.searchTerm = ''
+      window.scrollTo(0,0)
     },
     clickSearch: function() {
       // scroll beyond the search field
