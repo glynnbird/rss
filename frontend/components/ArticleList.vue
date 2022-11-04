@@ -188,20 +188,13 @@ export default {
     },
     clickClear: function() {
       // clear the search form
-      setTimeout(() => {
-        // scroll beyond the search field
-        this.searchMode = false
-        window.scrollTo(0,0)
-
-        // stop focus being on the search box (to hide the mobile keyboard)
-        document.activeElement.blur()
-      },10)
+      this.searchMode = false
     },
     clickSearch: function() {
       // scroll beyond the search field
+      this.searchMode = true
       setTimeout(() => {
         window.scrollTo(0,0)
-        this.searchMode = true
         this.$refs["search"].focus()
       },10)
     },
