@@ -201,9 +201,11 @@ export default {
       },10)
     },
     clickHome: function() {
+      window.scrollTo(0,0)
       this.$router.push('/newsfeed');
     },
     clickFavourite: function() {
+      window.scrollTo(0,0)
       this.$router.push('/favourites');
     }
   },
