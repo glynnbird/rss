@@ -71,10 +71,6 @@
         <span>Search</span>
         <v-icon>mdi-file-search</v-icon>
       </v-btn>
-      <v-btn @click="clickClear">
-        <span>Top</span>
-        <v-icon>mdi-format-align-top</v-icon>
-      </v-btn>
     </v-bottom-navigation>
   </div>
 </template>
