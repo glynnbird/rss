@@ -65,6 +65,9 @@ const handler = async function (spec) {
       doc.GSI2PK = 'article'
       doc.GSI2SK = `#time#${item.isoDate}`
       doc.TTL = TTL
+      if (item.media) {
+        doc.media = item.media
+      }
 
       // only keep first line of content - keep data items smaller
       const c = doc.content.replace(/(<\/[^>]+>)/, '$1\n')
