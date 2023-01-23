@@ -1,7 +1,25 @@
-const Parser = require('rss-parser')
+
 const crypto = require('crypto')
 const AWS = require('aws-sdk')
-const parser = new Parser()
+const Parser = require('rss-parser')
+const parser = new Parser({
+  customFields: {
+    item: [
+      ['media:content', 'media:content', {keepArray: true}],
+    ]
+  }
+})
+
+// return the last image's URL
+const returnImageURL = function (media) {
+  const lastItem = media[media.length - 1]
+  if (lastItem && lastItem['$'] && lastItem['$'].url) {
+    return lastItem['$'].url
+  } else {
+    return null
+  }
+}
+
 const TABLE = process.env.TABLE
 const documentClient = new AWS.DynamoDB.DocumentClient()
 const stripHtml = require('string-strip-html').stripHtml
@@ -65,8 +83,16 @@ const handler = async function (spec) {
       doc.GSI2PK = 'article'
       doc.GSI2SK = `#time#${item.isoDate}`
       doc.TTL = TTL
+      // Twitter media
       if (item.media) {
         doc.media = item.media
+      }
+      // RSS media
+      if (item['media:content']) {
+        const url = returnImageURL(item['media:content'])
+        if (url) {
+          doc.media = url
+        }
       }
 
       // only keep first line of content - keep data items smaller
