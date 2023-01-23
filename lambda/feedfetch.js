@@ -2,10 +2,11 @@
 const crypto = require('crypto')
 const AWS = require('aws-sdk')
 const Parser = require('rss-parser')
+const getMetaData = require('metadata-scraper')
 const parser = new Parser({
   customFields: {
     item: [
-      ['media:content', 'media:content', {keepArray: true}],
+      ['media:content', 'media:content', { keepArray: true }]
     ]
   }
 })
@@ -13,11 +14,25 @@ const parser = new Parser({
 // return the last image's URL
 const returnImageURL = function (media) {
   const lastItem = media[media.length - 1]
-  if (lastItem && lastItem['$'] && lastItem['$'].url) {
-    return lastItem['$'].url
+  if (lastItem && lastItem.$ && lastItem.$.url) {
+    return lastItem.$.url
   } else {
     return null
   }
+}
+
+// fetch an image URL from a URLs
+const scrapeImageURL = async function (url) {
+  console.log('scraping', url)
+  try {
+    const response = await getMetaData(url)
+    console.log('found', response.image)
+    return response.image
+  } catch (e) {
+    console.log(e)
+  }
+  console.log('found nothing')
+  return null
 }
 
 const TABLE = process.env.TABLE
@@ -57,7 +72,8 @@ const handler = async function (spec) {
   }
 
   const cutoffDate = new Date(feeddata.timestamp).getTime()
-  feed.items.forEach(item => {
+  for (let i = 0; i < feed.items.length; i++) {
+    const item = feed.items[i]
     const doc = {}
     const ts = new Date(item.isoDate)
     // TTL is the current time in seconds + the number of seconds in a month. In other words, expire docs after a month
@@ -94,6 +110,13 @@ const handler = async function (spec) {
           doc.media = url
         }
       }
+      // scrape image if there isn't one
+      if (!doc.media && feeddata.feed_type !== 'twitter') {
+        const url = await scrapeImageURL(doc.link)
+        if (url) {
+          doc.media = url
+        }
+      }
 
       // only keep first line of content - keep data items smaller
       const c = doc.content.replace(/(<\/[^>]+>)/, '$1\n')
@@ -105,7 +128,7 @@ const handler = async function (spec) {
       // insert it into the array
       docs.push(doc)
     }
-  })
+  }
 
   // now you have a docs array that you can push into dynamodb
   if (docs.length > 0) {
