@@ -36,7 +36,7 @@
           <v-list-item-subtitle>
             <a :href="article.link" target="_new">{{ article.content }}</a>
           </v-list-item-subtitle>
-          <v-img :src="article.media" v-if="article.media" />
+          <v-img lazy-src="/lazy.jpg" :src="article.media" v-if="article.media" />
         </v-list-item-content>
         <v-list-item-action>
           <!-- how long ago the article was published -->
