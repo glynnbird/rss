@@ -41,6 +41,14 @@ export const mutations = {
       }
     }
     localstorage.saveProfile(state.profile)
+  },
+  zoom(state) {
+    //console.log('zoom', state.profile)
+    if (typeof state.profile.zoom === 'undefined') {
+      state.profile.zoom = false
+    }
+    state.profile.zoom = !state.profile.zoom
+    localstorage.saveProfile(state.profile)
   }
 }
   

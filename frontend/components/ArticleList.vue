@@ -10,8 +10,9 @@
       </v-col>
     </v-row>
 
-        <!-- busy indicator-->
+    <!-- busy indicator-->
     <v-progress-linear v-if="busy" indeterminate></v-progress-linear>
+
     <!-- list of articles-->
     <v-list two-line flat dense>
       <!-- one item per article - the divider changes if it's the divider between
@@ -21,12 +22,15 @@
         :key="article.articleid" 
         :class="{ 'v-list-item-divider': dividerId === article.articleid }"
       >
-        <v-list-item-avatar>
+        <v-list-item-avatar v-if="!$store.state.profile.profile.zoom">
           <!-- RSS feed icon-->
           <img :src="article.icon" />
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title>
+            <v-avatar v-if="$store.state.profile.profile.zoom" size="22">
+              <img :src="article.icon">
+            </v-avatar>
             <a :href="article.link" target="_new">
               <!-- new icon - only for articles newer than the dividing line -->
               <v-icon color="blue" v-if="dateOfDivider && article.timestamp >= dateOfDivider">mdi-new-box</v-icon>
@@ -35,10 +39,11 @@
           </v-list-item-title>
           <v-list-item-subtitle>
             <a :href="article.link" target="_new">{{ article.content }}</a>
+            <span v-if="$store.state.profile.profile.zoom">{{ article.ago }}</span>
           </v-list-item-subtitle>
           <v-img lazy-src="/lazy.jpg" :src="article.media" v-if="article.media" />
         </v-list-item-content>
-        <v-list-item-action>
+        <v-list-item-action v-if="!$store.state.profile.profile.zoom">
           <!-- how long ago the article was published -->
           <v-list-item-action-text>{{ article.ago }}</v-list-item-action-text>
           <!-- favourite * button -->
@@ -71,6 +76,11 @@
       <v-btn @click="clickSearch">
         <span>Search</span>
         <v-icon>mdi-file-search</v-icon>
+      </v-btn>
+      <v-btn @click="clickZoom">
+        <span>Zoom</span>
+        <v-icon v-if="!$store.state.profile.profile.zoom">mdi-magnify-plus</v-icon>
+        <v-icon v-if="$store.state.profile.profile.zoom">mdi-magnify-minus</v-icon>
       </v-btn>
     </v-bottom-navigation>
   </div>
@@ -204,6 +214,9 @@ export default {
     clickFavourite: function() {
       window.scrollTo(0,0)
       this.$router.push('/favourites');
+    },
+    clickZoom: function() {
+      this.$store.commit('profile/zoom')
     }
   },
 };
