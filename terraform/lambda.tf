@@ -13,7 +13,7 @@ resource "aws_lambda_function" "feedFetch" {
   role             = aws_iam_role.rssLambdaRole.arn
   handler          = "feedfetch.handler"
   runtime          = "nodejs18.x"
-  timeout          = 10
+  timeout          = 30
   source_code_hash = data.archive_file.lambda.output_base64sha256
   
   environment {
@@ -57,7 +57,7 @@ resource "aws_lambda_function" "articles" {
   function_name    = "articles"
   role             = aws_iam_role.rssLambdaRole.arn
   handler          = "articles.handler"
-  runtime          = "nodejs16.x"
+  runtime          = "nodejs18.x"
   timeout          = 10
   source_code_hash = data.archive_file.lambda.output_base64sha256
 
@@ -168,7 +168,7 @@ resource "aws_lambda_function" "getAllFeeds" {
   function_name    = "getallfeeds"
   role             = aws_iam_role.rssLambdaRole.arn
   handler          = "getallfeeds.handler"
-  runtime          = "nodejs16.x"
+  runtime          = "nodejs18.x"
   timeout          = 10
   source_code_hash = data.archive_file.lambda.output_base64sha256
 
