@@ -12,7 +12,7 @@ resource "aws_lambda_function" "feedFetch" {
   function_name    = "feedfetch"
   role             = aws_iam_role.rssLambdaRole.arn
   handler          = "feedfetch.handler"
-  runtime          = "nodejs16.x"
+  runtime          = "nodejs18.x"
   timeout          = 10
   source_code_hash = data.archive_file.lambda.output_base64sha256
   
@@ -20,7 +20,6 @@ resource "aws_lambda_function" "feedFetch" {
     variables = {
       TABLE = aws_dynamodb_table.rssDB.name
       API_KEY = var.API_KEY
-      TWITTER_BEARER_TOKEN = var.TWITTER_BEARER_TOKEN
     }
   }
 }
@@ -35,7 +34,7 @@ resource "aws_lambda_function" "feedDispatch" {
   function_name    = "feeddispatch"
   role             = aws_iam_role.rssLambdaRole.arn
   handler          = "feeddispatch.handler"
-  runtime          = "nodejs16.x"
+  runtime          = "nodejs18.x"
   timeout          = 10
   source_code_hash = data.archive_file.lambda.output_base64sha256
 
@@ -95,7 +94,7 @@ resource "aws_lambda_function" "addFeed" {
   function_name    = "addfeed"
   role             = aws_iam_role.rssLambdaRole.arn
   handler          = "addfeed.handler"
-  runtime          = "nodejs16.x"
+  runtime          = "nodejs18.x"
   timeout          = 10
   source_code_hash = data.archive_file.lambda.output_base64sha256
 
@@ -103,7 +102,6 @@ resource "aws_lambda_function" "addFeed" {
     variables = {
       TABLE = aws_dynamodb_table.rssDB.name
       API_KEY = var.API_KEY
-      TWITTER_BEARER_TOKEN = var.TWITTER_BEARER_TOKEN
     }
   }
 }
@@ -133,7 +131,7 @@ resource "aws_lambda_function" "deleteFeed" {
   function_name    = "deletefeed"
   role             = aws_iam_role.rssLambdaRole.arn
   handler          = "deletefeed.handler"
-  runtime          = "nodejs16.x"
+  runtime          = "nodejs18.x"
   timeout          = 10
   source_code_hash = data.archive_file.lambda.output_base64sha256
 

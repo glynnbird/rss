@@ -7,12 +7,11 @@
     <v-card>
       <v-card-title>Add Feed</v-card-title>
       <v-card-subtitle>
-        Enter the full URL of the RSS feed you want to add or the Twitter handle of
-        the Twitter feed you wish to follow (with the @ sign)
+        Enter the full URL of the RSS feed you want to add.
       </v-card-subtitle>
       <v-card-text>
         <v-form ref="form">
-          <v-text-field v-model="url" label="https://myurl.com or @Twitter" required></v-text-field>
+          <v-text-field v-model="url" label="https://myurl.com" required></v-text-field>
 
           <v-btn
             :disabled="saveDisabled || submitted"

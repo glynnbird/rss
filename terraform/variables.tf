@@ -4,8 +4,3 @@ variable "API_KEY" {
   sensitive   = true
 }
 
-variable "TWITTER_BEARER_TOKEN" {
-  description = "twitter api bearer token"
-  type        = string
-  sensitive   = true
-}

@@ -20,11 +20,10 @@
   },
   "homepage": "https://github.com/glynnbird/rss#readme",
   "dependencies": {
-    "@glynnbird/tweetfetch": "^1.1.0",
     "faviconer": "^1.0.0",
     "jsdom": "^19.0.0",
     "metadata-scraper": "^0.2.61",
-    "rss-parser": "^3.12.0",
+    "rss-parser": "^3.13.0",
     "string-strip-html": "^8.3.0"
   }
 }

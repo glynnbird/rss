@@ -57,13 +57,8 @@ const handler = async function (spec) {
 
   if (feeddata.feed_type && feeddata.feed_type === 'twitter') {
     // this is a Twitter feed
-    const tweetfetch = require('@glynnbird/tweetfetch')
-    feed = await tweetfetch.fetch(feeddata.link)
-    if (!feed.ok) {
-      return
-    }
-    // the following code expects "items" not "tweets"
-    feed.items = feed.tweets
+    console.log('We no longer do Twitter feeds')
+    return
   } else {
     // this is an RSS feed
     // now get data from the rss feed

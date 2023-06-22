@@ -51,7 +51,7 @@ resource "aws_s3_bucket_acl" "rssWebsiteACL" {
 }
 
 output "applicationURL" {
-  value = aws_s3_bucket.rssWebsite.website_endpoint
+  value = aws_s3_bucket_website_configuration.rssWebsiteConfig.website_endpoint
   
 }
 
