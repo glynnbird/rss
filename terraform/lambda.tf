@@ -13,7 +13,7 @@ resource "aws_lambda_function" "feedFetch" {
   role             = aws_iam_role.rssLambdaRole.arn
   handler          = "feedfetch.handler"
   runtime          = "nodejs18.x"
-  timeout          = 30
+  timeout          = 60
   source_code_hash = data.archive_file.lambda.output_base64sha256
   
   environment {
