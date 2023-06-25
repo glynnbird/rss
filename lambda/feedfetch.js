@@ -67,7 +67,7 @@ const handler = async function (spec) {
   }
 
   const cutoffDate = new Date(feeddata.timestamp).getTime()
-  for (let i = 0; i < feed.items.length; i++) {
+  for (let i = 0; i < Math.max(10, feed.items.length); i++) {
     const item = feed.items[i]
     const doc = {}
     const ts = new Date(item.isoDate)
