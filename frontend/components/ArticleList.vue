@@ -60,7 +60,7 @@
             mdi-star
           </v-icon>
           <!-- social sharing widget -->
-          <SocialShare :url="article.link" title="Shared via RSS Wrangler"/>
+          <SocialShare :url="article.link" title="Shared via RSS"/>
         </v-list-item-action>
       </v-list-item>
     </v-list>
