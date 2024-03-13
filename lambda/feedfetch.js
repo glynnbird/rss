@@ -71,8 +71,8 @@ const handler = async function (spec) {
     const item = feed.items[i]
     const doc = {}
     const ts = new Date(item.isoDate)
-    // TTL is the current time in seconds + the number of seconds in a month. In other words, expire docs after a month
-    const TTL = Math.floor(new Date().getTime() / 1000) + (60 * 60 * 24 * 30)
+    // TTL is the current time in seconds + the number of seconds in a week. In other words, expire docs after a week
+    const TTL = Math.floor(new Date().getTime() / 1000) + (60 * 60 * 24 * 7)
     if (ts.getTime() > cutoffDate) {
       console.log(item)
       // create a unique id for the article
