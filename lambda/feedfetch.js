@@ -77,7 +77,7 @@ const handler = async function (spec) {
       console.log(item)
       // create a unique id for the article
       const shasum = crypto.createHash('sha1')
-      shasum.update(item.guid)
+      shasum.update(item.link)
       const articleid = shasum.digest('hex')
       // build a line for dynamodb
       doc.pk = `article#${articleid}`
