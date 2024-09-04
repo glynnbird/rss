@@ -2,11 +2,21 @@ locals {
   s3_origin_id = "myS3ForRSSWebsite"
 }
 
+# describes how Cloudfront will communicate with S3
+resource "aws_cloudfront_origin_access_control" "oac" {
+  name                              = "oac"
+  description                       = "oac Policy"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
+
 # CloudFront distribution for the main choirless website
 resource "aws_cloudfront_distribution" "s3_distribution" {
   //origin says where the website is located. In our case it is an S3 bucket
   origin {
     domain_name              = aws_s3_bucket.rssWebsite.bucket_regional_domain_name
+    origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
     origin_id                = local.s3_origin_id
   }
 
