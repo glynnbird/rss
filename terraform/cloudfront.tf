@@ -15,9 +15,15 @@ resource "aws_cloudfront_origin_access_control" "oac" {
 resource "aws_cloudfront_distribution" "s3_distribution" {
   //origin says where the website is located. In our case it is an S3 bucket
   origin {
-    domain_name              = aws_s3_bucket.rssWebsite.bucket_regional_domain_name
-    origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
-    origin_id                = local.s3_origin_id
+    custom_origin_config {
+      // These are all the defaults.
+      http_port              = "80"
+      https_port             = "443"
+      origin_protocol_policy = "http-only"
+      origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2","SSLv3"]
+    }
+    domain_name = aws_s3_bucket_website_configuration.rssWebsiteConfig.website_endpoint
+    origin_id   = local.s3_origin_id
   }
 
   enabled             = true
