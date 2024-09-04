@@ -2,26 +2,19 @@ locals {
   s3_origin_id = "myS3ForRSSWebsite"
 }
 
-# describes how Cloudfront will communicate with S3
-resource "aws_cloudfront_origin_access_control" "oac" {
-  name                              = "oac"
-  description                       = "oac Policy"
-  origin_access_control_origin_type = "s3"
-  signing_behavior                  = "always"
-  signing_protocol                  = "sigv4"
-}
 
 # CloudFront distribution for the main choirless website
 resource "aws_cloudfront_distribution" "s3_distribution" {
   //origin says where the website is located. In our case it is an S3 bucket
   origin {
     custom_origin_config {
-      // These are all the defaults.
+      // this has to be here, even though we're saying that S3 is http-only
       http_port              = "80"
       https_port             = "443"
       origin_protocol_policy = "http-only"
-      origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2","SSLv3"]
+      origin_ssl_protocols   = ["SSLv3"]
     }
+    // we're pointing Cloudfront to S3's http-only website endpoint (not a programmatic Cloudfront->S3 connection)
     domain_name = aws_s3_bucket_website_configuration.rssWebsiteConfig.website_endpoint
     origin_id   = local.s3_origin_id
   }
@@ -58,7 +51,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
 
-  //this is the SSL certificate used by the distribution
+  //this is the SSL certificate used by the distribution - as we're not using a custom certificate, the default will do
   viewer_certificate {
     cloudfront_default_certificate = true
   }
@@ -71,6 +64,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 }
 
+// the hostname where our website is served out over https
 output "cloudfrontHostname" {
   value = aws_cloudfront_distribution.s3_distribution.domain_name
 }
