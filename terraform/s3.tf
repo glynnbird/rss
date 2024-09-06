@@ -28,10 +28,10 @@ resource "aws_s3_bucket_policy" "rssWebsitePolicy" {
       "Sid": "Allow Public Browsing",
       "Effect": "Allow",
       "Principal": {
-        "AWS": "*"
+        "Service": "cloudfront.amazonaws.com"
       },
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::${random_string.bucketName.result}/*"
+      "Resource": "${aws_s3_bucket.rssWebsite.arn}/*"
     }
   ]
 }
