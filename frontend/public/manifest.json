@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "short_name": "",
+  "name": "RSS Reader",
+  "short_name": "RSS",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
