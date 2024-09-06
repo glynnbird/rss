@@ -12,7 +12,7 @@ resource "aws_s3_bucket" "rssWebsite" {
   force_destroy = true
 }
 
-# access control set to private
+# access control set to public-read
 resource "aws_s3_bucket_acl" "bucketACL" {
   bucket = aws_s3_bucket.rssWebsite.id
   acl    = "public-read"
