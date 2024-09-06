@@ -35,7 +35,7 @@
   setTimeout(async () => {
     // run the API fetch in the background
     await fetchArticles()
-  }, 200)
+  }, 10)
 
 </script>
 <style setup>
