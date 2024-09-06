@@ -1,6 +1,4 @@
 <script setup>
-  const router = useRouter()
-  const color = useColor() 
   const auth = useAuth()
   const articles = ref(0)
   articles.value = []
@@ -17,23 +15,9 @@
   const busy = ref(1)
   busy.value = false
 
-  // marks the divide between new and old articles
-  const dividerId = ref(2)
-  dividerId.value = null
-
-  // marks the date that divides new and old articles
-  const dateOfDivider = ref(3)
-  dateOfDivider.value = null
-
   const fetchArticles = async () => {
     // we're busy
     busy.value = true
- 
-    // make a note of the id of the current newest article
-    let articleid = null
-    if (articles.value.length > 0) {
-      articleid = articles.value[0].articleid
-    }
 
     // make the API call
     const url = 'https://nucx5di6gfl63ngdpr4sehcrbi0yzaao.lambda-url.eu-west-1.on.aws?apikey=' + auth.value.apiKey
@@ -42,20 +26,6 @@
 
     // store articles in localstorage
     localStorage.setItem(ARTICLES_KEY, JSON.stringify(articles.value))
-
-    // mark the oldest of the new ones (so that it gets highlighted on the page)
-    if (articleid) {
-      for(let i =0 ; i < articles.value.length; i++) {
-        const article = articles.value[i]
-        if (article.articleid === articleid && i > 0) {
-          dividerId.value = articles[i - 1].articleid
-          if (i < articles.value.length - 1) {
-            dateOfDivider.value = articles.value[i + 1].timestamp
-          }
-          break
-        }
-      }
-    }
 
     // not busy
     busy.value = false
@@ -104,8 +74,6 @@
         <v-img v-if="article.icon" alt="Avatar" :src="article.icon"></v-img>
         <v-icon v-else></v-icon>
       </v-avatar>
-      <!-- new icon - only for articles newer than the dividing line -->
-      <v-icon color="blue" v-if="dateOfDivider && article.timestamp >= dateOfDivider">mdi-new-box</v-icon>
       {{ article.title }}
     </v-card-title>
     <v-card-subtitle>
