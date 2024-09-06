@@ -25,7 +25,7 @@ export default defineNuxtConfig({
   },
   app: {
     head: { 
-      link: [ { rel: 'manifest', href: '/manifest.json'} ]
+      link: [ { rel: 'manifest', href: '/rss.webmanifest'} ]
     }
   }
 })
