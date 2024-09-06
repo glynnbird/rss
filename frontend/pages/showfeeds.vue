@@ -2,12 +2,22 @@
   const auth = useAuth()
   const feeds = ref(0)
   feeds.value = []
+  const busy = ref(1)
+  busy.value = false
 
   // get list of feeds from the API
   // make the API call
-  const url = 'https://lmbpr7aueajdi3uxedcnipzxfm0huais.lambda-url.eu-west-1.on.aws?apikey=' + auth.value.apiKey
-  const { data } = await useFetch(url)
-  feeds.value = data.value.feeds
+  const getFeeds = async () => {
+    busy.value = true
+    const url = 'https://lmbpr7aueajdi3uxedcnipzxfm0huais.lambda-url.eu-west-1.on.aws?apikey=' + auth.value.apiKey
+    const { data } = await useFetch(url)
+    feeds.value = data.value.feeds
+    busy.value = false
+  }
+  setTimeout(async () => {
+    await getFeeds()
+  }, 10)
+
 
   // delete a feed
   const deleteFeed = async (feedid, index) => {
@@ -20,6 +30,8 @@
 </script>
 <template>
   <h3>Feeds List</h3>
+  <!-- busy indicator-->
+  <v-progress-linear v-if="busy" indeterminate></v-progress-linear>
   <v-list>
     <v-list-item v-for="feed,index in feeds">
       <template v-slot:prepend>
