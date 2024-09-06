@@ -22,5 +22,10 @@ export default defineNuxtConfig({
         transformAssetUrls,
       },
     },
+  },
+  app: {
+    head: { 
+      link: [ { rel: 'manifest', href: '/manifest.json'} ]
+    }
   }
 })
