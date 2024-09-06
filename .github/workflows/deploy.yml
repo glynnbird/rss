@@ -16,7 +16,9 @@ jobs:
           node-version: "20"
       # Pick your own package manager and build script
       - run: cd frontend; npm install
-      - run: cd frontend; NUXT_APP_BASE_URL=/rss/ npx nuxt build --preset github_pages
+      # NUXT_APP_BASE_URL=/rss/ npx.... if running on default github pages
+      # but we're running on rss.glynnbird.com
+      - run: cd frontend; npx nuxt build --preset github_pages
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
