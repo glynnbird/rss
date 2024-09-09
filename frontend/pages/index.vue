@@ -83,6 +83,7 @@
     :href="article.link"
     max-width="640"
     target="_new"
+    :ripple="false"
   >
     <v-card-item>
       <v-card-title>
