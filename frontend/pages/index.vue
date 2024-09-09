@@ -18,11 +18,27 @@
   const fetchArticles = async () => {
     // we're busy
     busy.value = true
+    let articleid
+
+    // make a note of the current newest article
+    if (articles.value.length > 0) {
+      articleid = articles.value[0].articleid
+    }
 
     // make the API call
     const url = 'https://nucx5di6gfl63ngdpr4sehcrbi0yzaao.lambda-url.eu-west-1.on.aws?apikey=' + auth.value.apiKey
     const { data } = await useFetch(url)
     articles.value = data.value
+
+    // mark the new articles as "new"
+    for(let i = 0; i < articles.value.length; i++) {
+      const a = articles.value[i]
+      if (articleid && a.articleid !== articleid) {
+        articles.value[i].new = true
+      } else {
+        break
+      }
+    }
 
     // store articles in localstorage
     localStorage.setItem(ARTICLES_KEY, JSON.stringify(articles.value))
@@ -66,21 +82,22 @@
     class="mx-auto"
     :href="article.link"
     max-width="640"
-    rel="noopener"
     target="_new"
   >
-    <v-card-title>
-      <v-avatar size="18px">
-        <v-img v-if="article.icon" alt="Avatar" :src="article.icon"></v-img>
-        <v-icon v-else></v-icon>
-      </v-avatar>
-      {{ article.title }}
-    </v-card-title>
-    <v-card-subtitle>
-      {{  article.content }}
-    </v-card-subtitle>
+    <v-card-item>
+      <v-card-title>
+        <v-avatar size="18px">
+          <v-img v-if="article.icon" alt="Avatar" :src="article.icon"></v-img>
+          <v-icon v-else></v-icon>
+        </v-avatar>
+        <v-icon color="blue" v-if="article.new">mdi-new-box</v-icon>
+        {{ article.title }}
+      </v-card-title>
+      <v-card-subtitle>
+        {{  article.content }}
+      </v-card-subtitle>
+    </v-card-item>
     <v-img v-if="article.media"
-      height="200px"
       :src="article.media"
       cover
     ></v-img>
