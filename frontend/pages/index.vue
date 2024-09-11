@@ -65,7 +65,7 @@
 }
 .v-card-title {
   font-size:18px;
-  line-height: 1.3rem !important;
+  line-height: 1.6rem !important;
 }
 .v-card-subtitle {
   font-size:16px;
@@ -91,7 +91,7 @@
           <v-img v-if="article.icon" alt="Avatar" :src="article.icon"></v-img>
           <v-icon v-else></v-icon>
         </v-avatar>
-        <v-icon color="blue" v-if="article.new">mdi-new-box</v-icon>
+        <v-icon size="small" color="blue" v-if="article.new">mdi-new-box</v-icon>
         {{ article.title }}
       </v-card-title>
       <v-card-subtitle>
@@ -100,6 +100,7 @@
     </v-card-item>
     <v-img v-if="article.media"
       :src="article.media"
+      lazy-src="/lazy.jpg"
       cover
     ></v-img>
   </v-card>
