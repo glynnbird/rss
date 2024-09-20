@@ -55,6 +55,9 @@
     // store articles in localstorage
     localStorage.setItem(ARTICLES_KEY, JSON.stringify(articles.value))
 
+    // calculate age of articles
+    calculateAgo()
+    
     // not busy
     busy.value = false
   }
@@ -63,8 +66,13 @@
   setTimeout(async () => {
     // run the API fetch in the background
     await fetchArticles()
-    calculateAgo()
+
   }, 10)
+  // recalculate "ago" every minute
+  setInterval(() => {
+    calculateAgo()
+  }, 1000 * 60)
+  // recalculate ago on page load
   calculateAgo()
 
 </script>
@@ -101,12 +109,13 @@
   >
     <v-card-item>
       <v-card-title>
-        <v-avatar size="18px">
+        <v-avatar size="18px" style="margin-right:5px">
           <v-img v-if="article.icon" alt="Avatar" :src="article.icon"></v-img>
           <v-icon v-else></v-icon>
         </v-avatar>
         <v-icon size="small" color="blue" v-if="article.new">mdi-new-box</v-icon>
-        {{ article.title }} <v-chip size="x-small">{{ article.ago}}</v-chip>
+        <v-chip size="x-small">{{ article.ago}}</v-chip>
+        {{ article.title }}
       </v-card-title>
       <v-card-subtitle>
         {{  article.content }}
