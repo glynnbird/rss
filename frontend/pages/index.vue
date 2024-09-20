@@ -3,6 +3,18 @@
   const articles = ref(0)
   articles.value = []
 
+  // time ago library
+  import TimeAgo from 'javascript-time-ago'
+  import en from 'javascript-time-ago/locale/en'
+  TimeAgo.addDefaultLocale(en)
+  const timeAgo = new TimeAgo('en-GB')
+
+  const calculateAgo = function() {
+    for (let j = 0; j < articles.value.length; j++) {
+      articles.value[j].ago = timeAgo.format(new Date(articles.value[j].timestamp), 'mini')
+    }
+  }
+
   // get items from localStorage
   const ARTICLES_KEY = 'articles'
   const ls = localStorage.getItem(ARTICLES_KEY)
@@ -51,7 +63,9 @@
   setTimeout(async () => {
     // run the API fetch in the background
     await fetchArticles()
+    calculateAgo()
   }, 10)
+  calculateAgo()
 
 </script>
 <style setup>
@@ -92,7 +106,7 @@
           <v-icon v-else></v-icon>
         </v-avatar>
         <v-icon size="small" color="blue" v-if="article.new">mdi-new-box</v-icon>
-        {{ article.title }}
+        {{ article.title }} <v-chip size="x-small">{{ article.ago}}</v-chip>
       </v-card-title>
       <v-card-subtitle>
         {{  article.content }}
