@@ -20,11 +20,11 @@
   },
   "homepage": "https://github.com/glynnbird/rss#readme",
   "dependencies": {
-    "aws-sdk": "^2.1402.0",
-    "faviconer": "^1.0.0",
-    "jsdom": "^19.0.0",
+    "aws-sdk": "^2.1691.0",
+    "faviconer": "^1.1.0",
+    "jsdom": "^25.0.1",
     "metadata-scraper": "^0.2.61",
     "rss-parser": "^3.13.0",
-    "string-strip-html": "^8.3.0"
+    "string-strip-html": "^8.5.0"
   }
 }
