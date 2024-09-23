@@ -1,7 +1,9 @@
-const AWS = require('aws-sdk')
+const { DynamoDBDocument } = require('@aws-sdk/lib-dynamodb');
+const { DynamoDB } = require('@aws-sdk/client-dynamodb');
+
 const TABLE = process.env.TABLE
 const API_KEY = process.env.API_KEY
-const documentClient = new AWS.DynamoDB.DocumentClient()
+const documentClient = DynamoDBDocument.from(new DynamoDB())
 const Parser = require('rss-parser')
 const parser = new Parser()
 const crypto = require('crypto')
@@ -68,7 +70,7 @@ const handler = async function (spec) {
     Item: item
   }
   console.log('writing this:', item)
-  await documentClient.put(params).promise()
+  await documentClient.put(params)
   return { statusCode: 200, body: `{"ok": true, "feedid":"${feedid}"}` }
 }
 

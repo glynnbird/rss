@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/glynnbird/rss#readme",
   "dependencies": {
-    "aws-sdk": "^2.1691.0",
+    "@aws-sdk/client-dynamodb": "^3.656.0",
+    "@aws-sdk/client-lambda": "^3.656.0",
+    "@aws-sdk/lib-dynamodb": "^3.656.0",
     "faviconer": "^1.1.0",
     "jsdom": "^25.0.1",
     "metadata-scraper": "^0.2.61",

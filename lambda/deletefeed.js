@@ -1,7 +1,9 @@
-const AWS = require('aws-sdk')
+const { DynamoDBDocument } = require('@aws-sdk/lib-dynamodb');
+const { DynamoDB } = require('@aws-sdk/client-dynamodb');
+
 const TABLE = process.env.TABLE
 const API_KEY = process.env.API_KEY
-const documentClient = new AWS.DynamoDB.DocumentClient()
+const documentClient = DynamoDBDocument.from(new DynamoDB())
 let params
 
 const handler = async function (spec) {
@@ -21,7 +23,7 @@ const handler = async function (spec) {
     }
   }
   console.log('deleting this: ', params)
-  await documentClient.delete(params).promise()
+  await documentClient.delete(params)
   return { statusCode: 200, body: `{"ok": true, "feedid":"${feedid}"}` }
 }
 

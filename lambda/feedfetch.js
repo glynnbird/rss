@@ -1,6 +1,9 @@
 
 const crypto = require('crypto')
-const AWS = require('aws-sdk')
+
+const { DynamoDBDocument } = require('@aws-sdk/lib-dynamodb');
+const { DynamoDB } = require('@aws-sdk/client-dynamodb');
+
 const Parser = require('rss-parser')
 const getMetaData = require('metadata-scraper')
 const parser = new Parser({
@@ -36,7 +39,7 @@ const scrapeImageURL = async function (url) {
 }
 
 const TABLE = process.env.TABLE
-const documentClient = new AWS.DynamoDB.DocumentClient()
+const documentClient = DynamoDBDocument.from(new DynamoDB())
 const stripHtml = require('string-strip-html').stripHtml
 let params
 
@@ -49,7 +52,7 @@ const handler = async function (spec) {
     }
   }
   console.log('loading feed ', spec.feed)
-  const response = await documentClient.get(params).promise()
+  const response = await documentClient.get(params)
   const feeddata = response.Item
   console.log('feeddata is ', feeddata)
   let docs = []
@@ -139,7 +142,7 @@ const handler = async function (spec) {
         return { PutRequest: { Item: doc } }
       })
 
-      await documentClient.batchWrite(params).promise()
+      await documentClient.batchWrite(params)
     } catch (e) {
       console.log('Error writing to DynamoDB:', e)
     }
@@ -151,7 +154,7 @@ const handler = async function (spec) {
       Item: feeddata
     }
     console.log('updating feed timestamp to ', feeddata.timestamp)
-    await documentClient.put(params).promise()
+    await documentClient.put(params)
   } else {
     console.log('No items to write')
   }

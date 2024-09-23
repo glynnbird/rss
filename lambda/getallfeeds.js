@@ -1,7 +1,9 @@
-const AWS = require('aws-sdk')
+const { DynamoDBDocument } = require('@aws-sdk/lib-dynamodb');
+const { DynamoDB } = require('@aws-sdk/client-dynamodb');
+
 const TABLE = process.env.TABLE
 const API_KEY = process.env.API_KEY
-const documentClient = new AWS.DynamoDB.DocumentClient()
+const documentClient = DynamoDBDocument.from(new DynamoDB())
 
 const handler = async function (spec) {
   // first check if the API KEY is correct
@@ -18,7 +20,7 @@ const handler = async function (spec) {
     }
   }
   console.log('loading feed list ')
-  const response = await documentClient.query(req).promise()
+  const response = await documentClient.query(req)
   const feeds = response.Items
   console.log('feeds', feeds)
   const feedobj = {
