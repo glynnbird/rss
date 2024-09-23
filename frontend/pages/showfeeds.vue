@@ -9,7 +9,7 @@
   // make the API call
   const getFeeds = async () => {
     busy.value = true
-    const url = 'https://lmbpr7aueajdi3uxedcnipzxfm0huais.lambda-url.eu-west-1.on.aws?apikey=' + auth.value.apiKey
+    const url = 'https://6jcv2yx5cwzlkflvvtvnlp2wei0ztaff.lambda-url.eu-west-1.on.aws?apikey=' + auth.value.apiKey
     const { data } = await useFetch(url)
     feeds.value = data.value.feeds
     busy.value = false
@@ -22,7 +22,7 @@
   // delete a feed
   const deleteFeed = async (feedid, index) => {
    console.log('Delete feed', feedid)
-   const u = `https://zkjkrn6wtzczz4mqjkqhfi7pzy0eeeyr.lambda-url.eu-west-1.on.aws/?apikey=${auth.value.apiKey}&feedid=${feedid}`
+   const u = `https://ecmj4evtl2dmio3ipaiziiugwe0izgti.lambda-url.eu-west-1.on.aws/?apikey=${auth.value.apiKey}&feedid=${feedid}`
    await $fetch(u)
    feeds.value.splice(index, 1)
   }

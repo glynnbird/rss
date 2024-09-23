@@ -38,7 +38,7 @@
     }
 
     // make the API call
-    const url = 'https://nucx5di6gfl63ngdpr4sehcrbi0yzaao.lambda-url.eu-west-1.on.aws?apikey=' + auth.value.apiKey
+    const url = 'https://n2gyw7qpcf6kyvkobval7o5geq0dpbiy.lambda-url.eu-west-1.on.aws/?apikey=' + auth.value.apiKey
     const { data } = await useFetch(url)
     articles.value = data.value
 

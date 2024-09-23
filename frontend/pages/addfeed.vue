@@ -5,7 +5,7 @@
 
   const addFeed = async () => {
     console.log('Add Feed', url.value)
-    const u = `https://zi6rsqxfkxflmgqmw4f7cg3wme0upapm.lambda-url.eu-west-1.on.aws/?apikey=${auth.value.apiKey}&url=${url.value}`
+    const u = `https://5fkvznf2si4aryacliozypfb5i0hwths.lambda-url.eu-west-1.on.aws/?apikey=${auth.value.apiKey}&url=${url.value}`
     await $fetch(u)
     await navigateTo('/showfeeds')
   }
