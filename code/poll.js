@@ -41,7 +41,7 @@ export async function onRequest (context) {
       // parse the feed
       const items = parser.parse(content).rss.channel.item.map((i) => {
         i.description = i.description.trim()
-        i.guid = hash(JSON.stringify(i.guid))
+        i.guid = hash(i.link)
         if (i['media:thumbnail'] && i['media:thumbnail']['@_url']) {
           i.media = i['media:thumbnail']['@_url']
         }
