@@ -5,8 +5,8 @@ import { get } from './lib/db.js'
 
 const options = {
   ignoreAttributes: false,
-  attributeNamePrefix : "@_"
-};
+  attributeNamePrefix: '@_'
+}
 const parser = new fxp.XMLParser(options)
 
 const hash = async (str) => {
@@ -28,7 +28,6 @@ export async function onRequest (context) {
 
   // if the mandatiry fields are there
   if (json.id) {
-
     const dbr = await get(context.env.KV, json.id)
     console.log('dbr', dbr)
     if (dbr.ok) {
@@ -40,7 +39,7 @@ export async function onRequest (context) {
       const content = await r.text()
 
       // parse the feed
-      const items =  parser.parse(content).rss.channel.item.map((i) => {
+      const items = parser.parse(content).rss.channel.item.map((i) => {
         i.description = i.description.trim()
         i.guid = hash(JSON.stringify(i.guid))
         if (i['media:thumbnail'] && i['media:thumbnail']['@_url']) {
@@ -54,18 +53,17 @@ export async function onRequest (context) {
         delete i['media:content']
         delete i['dc:creator']
         delete i['dc:date']
-        delete i['category']
+        delete i.category
         delete i['content:encoded']
+        return i
       })
       response = {
         ok: true,
         feed: items
       }
-      console.log('polledFeed', polledFeed)
-        
+
       // send response
       return new Response(JSON.stringify(response), okResponse)
-
     }
   }
 

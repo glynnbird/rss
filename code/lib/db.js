@@ -1,4 +1,4 @@
-export const get = async function(kv, id) {
+export const get = async function (kv, id) {
   const r = await kv.get(id)
   if (r === null) {
     return { ok: false }
@@ -9,8 +9,8 @@ export const get = async function(kv, id) {
   }
 }
 
-export const list = async function(kv) {
-  const l = await kv.list(/*{ prefix: 'doc:' }*/)
+export const list = async function (kv) {
+  const l = await kv.list(/* { prefix: 'doc:' } */)
   const output = l.keys.map((k) => {
     return {
       id: k.name,

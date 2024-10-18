@@ -6,8 +6,8 @@ import { add } from './lib/db.js'
 
 const options = {
   ignoreAttributes: false,
-  attributeNamePrefix : "@_"
-};
+  attributeNamePrefix: '@_'
+}
 const parser = new fxp.XMLParser(options)
 
 export async function onRequest (context) {
@@ -20,13 +20,12 @@ export async function onRequest (context) {
 
   // if the mandatiry fields are there
   if (json.url) {
-
     // load the URL
     const r = await fetch(json.url)
     const content = await r.text()
 
     // parse the feed
-    const feed =  parser.parse(str).rss.channel
+    const feed = parser.parse(content).rss.channel
     console.log('feed', feed)
 
     // if an id is not supplied, generate one

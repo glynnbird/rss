@@ -9,4 +9,3 @@ export const generateid = function () {
   }
   return treeid
 }
-
