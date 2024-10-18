@@ -2,6 +2,7 @@ import * as htmlparser2 from "htmlparser2";
 import { okResponse, notOkResponse, notOk } from './lib/constants.js'
 import { mustBePOST, mustBeJSON, apiKey, handleCORS } from './lib/checks.js'
 import { generateid } from './lib/utils.js'
+import { add } from './lib/db.js'
 
 export async function onRequest (context) {
   // handle POST/JSON/apikey chcecks
@@ -19,7 +20,8 @@ export async function onRequest (context) {
     const content = await r.text()
 
     // parse the feed
-    const feed = htmlparser2.parseFeed(content, { 
+    const feed = htmlparser2.parseFeed(content, {
+      xmlMode: true,
       decodeEntities: true,
       recognizeCDATA: true
     });
