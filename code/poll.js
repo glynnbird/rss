@@ -22,7 +22,7 @@ export async function onRequest (context) {
       console.log('Got feed', feed)
 
       // load the URL
-      const r = await fetch(json.url)
+      const r = await fetch(feed.link)
       const content = await r.text()
 
       // parse the feed
