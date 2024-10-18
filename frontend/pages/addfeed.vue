@@ -2,16 +2,33 @@
   const auth = useAuth()
   const url = ref(0)
   url.value = ''
+  const busy = ref(1)
+  busy.value = false
+
+  // config
+  const config = useRuntimeConfig()
+  const apiHome = config.public['apiBase'] || window.location.origin
 
   const addFeed = async () => {
     console.log('Add Feed', url.value)
-    const u = `https://5fkvznf2si4aryacliozypfb5i0hwths.lambda-url.eu-west-1.on.aws/?apikey=${auth.value.apiKey}&url=${url.value}`
-    await $fetch(u)
+    console.log('API', '/add', `${apiHome}/api/add`)
+    busy.value = true
+    const r = await useFetch(`${apiHome}/api/add`, {
+      method: 'post',
+      headers: {
+        'content-type': 'application/json',
+        apikey: auth.value.apiKey
+      },
+      body: JSON.stringify({ url: url.value })
+    })
+    busy.value = false
     await navigateTo('/showfeeds')
   }
 </script>
 <template>
   <h3>Add Feed</h3>
+  <!-- busy indicator-->
+  <v-progress-linear v-if="busy" indeterminate></v-progress-linear>
   <v-text-field
     v-model="url"
     type="url"

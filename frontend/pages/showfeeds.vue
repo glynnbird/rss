@@ -32,7 +32,7 @@
   const deleteFeed = async (feedid, index) => {
     busy.value = true
     console.log('Delete feed', feedid)
-    console.log('API', '/list', `${apiHome}/api/del`)
+    console.log('API', '/del', `${apiHome}/api/del`)
     const r = await useFetch(`${apiHome}/api/del`, {
       method: 'post',
       headers: {
@@ -41,7 +41,6 @@
       },
       body: JSON.stringify({ id: feedid })
     })
-    await $fetch(u)
     feeds.value.splice(index, 1)
     busy.value = false
   }

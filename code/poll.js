@@ -45,8 +45,9 @@ export async function onRequest (context) {
         if (i['media:thumbnail'] && i['media:thumbnail']['@_url']) {
           i.media = i['media:thumbnail']['@_url']
         }
-        if (i['media:content'] && i['media:content'][0] && i['media:content'][0]['@_url']) {
-          i.media = i['media:content'][0]['@_url']
+        if (i['media:content'] && i['media:content'].length > 0) {
+          const l = i['media:content'].length
+          i.media = i['media:content'][l - 1]['@_url']
         }
         i.pubDate = new Date(i.pubDate).toISOString()
         delete i['media:thumbnail']
