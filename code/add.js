@@ -19,7 +19,10 @@ export async function onRequest (context) {
     const content = await r.text()
 
     // parse the feed
-    const feed = htmlparser2.parseFeed(content, {});
+    const feed = htmlparser2.parseFeed(content, { 
+      decodeEntities: true,
+      recognizeCDATA: true
+    });
     console.log('feed', feed)
 
     // if an id is not supplied, generate one
@@ -29,7 +32,7 @@ export async function onRequest (context) {
       timestamp: '2000-01-01T00:00:00.000Z',
       link: json.url,
       feed_name: feed.title,
-      icon: iconURL,
+      //icon: iconURL,
       feed_type: 'rss'
     }
     const metadata = {
