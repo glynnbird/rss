@@ -5,3 +5,6 @@ terraform.tfvars
 terraform.tfstate
 terraform/terraform.tfstate.backup
 *.zip
+code/dist
+code/node_modules
+functions/api/*.js
