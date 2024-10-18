@@ -41,7 +41,7 @@ export async function onRequest (context) {
       // parse the feed
       const items = parser.parse(content).rss.channel.item.map((i) => {
         i.description = i.description.trim()
-        i.guid = hash(i.link)
+        i.guid = ''
         if (i['media:thumbnail'] && i['media:thumbnail']['@_url']) {
           i.media = i['media:thumbnail']['@_url']
         }
@@ -57,6 +57,9 @@ export async function onRequest (context) {
         delete i['content:encoded']
         return i
       })
+      for(let i = 0 ; i < items.length; i++) {
+        items[i].guid = await hash(items[i].link)
+      }
       response = {
         ok: true,
         feed: items
