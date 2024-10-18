@@ -16,11 +16,22 @@
   TimeAgo.addDefaultLocale(en)
   const timeAgo = new TimeAgo('en-GB')
 
-  const calculateAgo = function() {
-    for (let j = 0; j < articles.value.length; j++) {
-      articles.value[j].ago = timeAgo.format(new Date(articles.value[j].timestamp), 'mini')
+  // display the 
+  const timeOrderedArticles = computed(() => {
+    const sorter = function (a, b) {
+      if (a.pubDate < b.pubDate) {
+        return 1
+      } else if (a.pubDate > b.pubDate) {
+        return -1
+      } else {
+        return 0
+      }
     }
-  }
+    for (let j = 0; j < articles.value.length; j++) {
+      articles.value[j].ago = timeAgo.format(new Date(articles.value[j].pubDate), 'mini')
+    }
+    return articles.value.sort(sorter)
+  })
 
   // get items from localStorage
   const ARTICLES_KEY = 'articles'
@@ -35,7 +46,7 @@
   busy.value = false
 
   // merge the incoming articles into the existing data set
-  const addArticles = (newArticles) => {
+  const addArticles = (newArticles, icon) => {
     console.log('new batch of articles', newArticles.length)
     let newCount = 0
     // only add articles we don't already have
@@ -48,6 +59,7 @@
         }
       }
       if (!found) {
+        newArticles[i].icon = icon
         articles.value.push(newArticles[i])
         newCount++
       }
@@ -87,7 +99,7 @@
         body: JSON.stringify({ id: feeds.value[i].id })
 
       })
-      addArticles(req.data.value.feed)
+      addArticles(req.data.value.feed, feeds.value[i].icon)
     }
     // // make the API call
     // const url = 'https://n2gyw7qpcf6kyvkobval7o5geq0dpbiy.lambda-url.eu-west-1.on.aws/?apikey=' + auth.value.apiKey
@@ -106,9 +118,6 @@
 
     // // store articles in localstorage
     localStorage.setItem(ARTICLES_KEY, JSON.stringify(articles.value))
-
-    // calculate age of articles
-    calculateAgo()
     
     // not busy
     busy.value = false
@@ -120,13 +129,6 @@
     await fetchArticles()
 
   }, 1)
-  // recalculate "ago" every minute
-  setInterval(() => {
-    calculateAgo()
-  }, 1000 * 60)
-
-  // recalculate ago on page load
-  calculateAgo()
 
 </script>
 <style setup>
@@ -155,7 +157,7 @@
 
   {{ feeds }}
   <!-- list of articles -->
-  <v-card v-for="article in articles"
+  <v-card v-for="article in timeOrderedArticles"
     class="mx-auto"
     :href="article.link"
     max-width="640"
@@ -173,7 +175,7 @@
         {{ article.title }}
       </v-card-title>
       <v-card-subtitle>
-        {{  article.content }}
+        <div v-html="article.description"></div>
       </v-card-subtitle>
     </v-card-item>
     <v-img v-if="article.media"
