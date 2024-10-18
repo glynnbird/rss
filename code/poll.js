@@ -10,6 +10,7 @@ export async function onRequest (context) {
 
   // parse the json
   const json = await context.request.json()
+  let response
 
   // if the mandatiry fields are there
   if (json.id) {
@@ -21,20 +22,25 @@ export async function onRequest (context) {
       console.log('Got feed', feed)
 
       // load the URL
-      // const r = await ftch(json.url)
-      // const content = await r.text()
+      const r = await fetch(json.url)
+      const content = await r.text()
 
       // parse the feed
-      // const feed = htmlparser2.parseFeed(content, {
-      //   xmlMode: true,
-      //   decodeEntities: true,
-      //   recognizeCDATA: true
-      // });
-      // console.log('feed', feed)
-    }
+      const polledFeed = htmlparser2.parseFeed(content, {
+        xmlMode: true,
+        decodeEntities: true,
+        recognizeCDATA: true
+      });
+      resoponse = {
+        ok: true,
+        feed: polledFeed
+      }
+      console.log('polledFeed', polledFeed)
+        
+      // send response
+      return new Response(JSON.stringify(response), okResponse)
 
-    // send response
-    return new Response(JSON.stringify(response), okResponse)
+    }
   }
 
   // everyone else gets a 400 response
