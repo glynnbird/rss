@@ -1,8 +1,14 @@
-import * as htmlparser2 from "htmlparser2";
+import { XMLParser } from 'fast-xml-parser'
 import { okResponse, notOkResponse, notOk } from './lib/constants.js'
 import { mustBePOST, mustBeJSON, apiKey, handleCORS } from './lib/checks.js'
 import { generateid } from './lib/utils.js'
 import { add } from './lib/db.js'
+
+const options = {
+  ignoreAttributes: false,
+  attributeNamePrefix : "@_"
+};
+const parser = new XMLParser(options)
 
 export async function onRequest (context) {
   // handle POST/JSON/apikey chcecks
@@ -20,25 +26,21 @@ export async function onRequest (context) {
     const content = await r.text()
 
     // parse the feed
-    const feed = htmlparser2.parseFeed(content, {
-      xmlMode: true,
-      decodeEntities: true,
-      recognizeCDATA: true
-    });
+    const feed =  parser.parse(str).rss.channel
     console.log('feed', feed)
 
     // if an id is not supplied, generate one
     const id = 'feed#' + generateid()
 
     const doc = {
-      timestamp: '2000-01-01T00:00:00.000Z',
       link: json.url,
       feed_name: feed.title,
-      //icon: iconURL,
+      icon: (feed.image && feed.image.url) ? feed.image.url : '',
       feed_type: 'rss'
     }
     const metadata = {
-      feed_name: feed.title
+      feed_name: feed.title,
+      icon: doc.icon
     }
 
     // add to KV store
