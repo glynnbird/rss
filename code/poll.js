@@ -1,4 +1,4 @@
-import { XMLParser } from 'fast-xml-parser'
+import fxp from 'fast-xml-parser'
 import { okResponse, notOkResponse, notOk } from './lib/constants.js'
 import { mustBePOST, mustBeJSON, apiKey, handleCORS } from './lib/checks.js'
 import { get } from './lib/db.js'
@@ -7,7 +7,15 @@ const options = {
   ignoreAttributes: false,
   attributeNamePrefix : "@_"
 };
-const parser = new XMLParser(options)
+const parser = new fxp.XMLParser(options)
+
+const hash = async (str) => {
+  const msgUint8 = new TextEncoder().encode(str) // encode as (utf-8) Uint8Array
+  const hashBuffer = await crypto.subtle.digest('MD5', msgUint8) // hash the message
+  const hashArray = Array.from(new Uint8Array(hashBuffer)) // convert buffer to byte array
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('') // convert bytes to hex string
+  return hashHex
+}
 
 export async function onRequest (context) {
   // handle POST/JSON/apikey chcecks
@@ -32,7 +40,7 @@ export async function onRequest (context) {
       const content = await r.text()
 
       // parse the feed
-      const items =  parser.parse(str).rss.channel.item.map((i) => {
+      const items =  parser.parse(content).rss.channel.item.map((i) => {
         i.description = i.description.trim()
         i.guid = hash(JSON.stringify(i.guid))
         if (i['media:thumbnail'] && i['media:thumbnail']['@_url']) {

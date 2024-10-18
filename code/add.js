@@ -1,4 +1,4 @@
-import { XMLParser } from 'fast-xml-parser'
+import fxp from 'fast-xml-parser'
 import { okResponse, notOkResponse, notOk } from './lib/constants.js'
 import { mustBePOST, mustBeJSON, apiKey, handleCORS } from './lib/checks.js'
 import { generateid } from './lib/utils.js'
@@ -8,7 +8,7 @@ const options = {
   ignoreAttributes: false,
   attributeNamePrefix : "@_"
 };
-const parser = new XMLParser(options)
+const parser = new fxp.XMLParser(options)
 
 export async function onRequest (context) {
   // handle POST/JSON/apikey chcecks
