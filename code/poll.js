@@ -31,7 +31,7 @@ export async function onRequest (context) {
         decodeEntities: true,
         recognizeCDATA: true
       });
-      resoponse = {
+      response = {
         ok: true,
         feed: polledFeed
       }
