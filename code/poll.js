@@ -1,4 +1,5 @@
 import fxp from 'fast-xml-parser'
+import { stripHtml } from 'string-strip-html'
 import { okResponse, notOkResponse, notOk } from './lib/constants.js'
 import { mustBePOST, mustBeJSON, apiKey, handleCORS } from './lib/checks.js'
 import { get } from './lib/db.js'
@@ -40,7 +41,9 @@ export async function onRequest (context) {
 
       // parse the feed
       const items = parser.parse(content).rss.channel.item.map((i) => {
-        i.description = i.description.trim()
+        const  c = i.content || i.description
+        const lines = c.split('\n')
+        i.description = stripHtml(lines[0]).result
         i.guid = ''
         if (i['media:thumbnail'] && i['media:thumbnail']['@_url']) {
           i.media = i['media:thumbnail']['@_url']
