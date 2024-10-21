@@ -33,7 +33,7 @@ export async function onRequest (context) {
 
     const doc = {
       link: json.url,
-      feed_name: feed.description || feed.title,
+      feed_name: feed.title + ' ' + feed.description,
       feed_type: 'rss'
     }
     const metadata = {
