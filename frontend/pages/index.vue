@@ -125,7 +125,6 @@
     // build the work array
     const work = []
     const workerClosure = (f) => {
-      console.log('wokerClosure', JSON.stringify(f))
       return async () => {
         console.log('API', '/poll', `${apiHome}/api/poll`, f.feed_name)
         req = await useFetch(`${apiHome}/api/poll`, {
@@ -140,7 +139,9 @@
           })
 
         })
-        addArticles(req.data.value.feed)
+        if (req && req.data && req.data.value) {
+          addArticles(req.data.value.feed)
+        }
       }
     }
     for (let i = 0; i < feeds.value.length; i++) {
@@ -148,7 +149,9 @@
     }
     
     // wait for all the feeds to return
-    await Promise.all(work)
+    if (work.length > 0) {
+      await Promise.all(work)
+    }
 
     // // store last polled date in localstorage
     localStorage.setItem(SINCE_KEY, newSince)
