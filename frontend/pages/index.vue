@@ -29,37 +29,38 @@
     }
 
     // sort the articles
-    articles.value.sort(sorter)
+    const clonedArticles = JSON.parse(JSON.stringify(articles.value))
+    clonedArticles.sort(sorter)
 
     // delete articles older than a month
     const oneMonthAgo = new Date().getTime() - 1000 * 60 * 60 * 24 * 30
     const oneMonthAgoTS = new Date(oneMonthAgo).toISOString()
     console.log('culling articles oldert than', oneMonthAgoTS)
-    for (let j = 0; j < articles.value.length; j++) {
-      if (articles.value[j].pubDate < oneMonthAgoTS) {
+    for (let j = 0; j < clonedArticles.length; j++) {
+      if (clonedArticles[j].pubDate < oneMonthAgoTS) {
         // delete all subsequent articles
-        articles.value.splice(j, Infinity)
+        clonedArticles.splice(j, Infinity)
         break
       }
     }
 
     // store our articles in localStorage
-    localStorage.setItem(ARTICLES_KEY, JSON.stringify(articles.value))
+    localStorage.setItem(ARTICLES_KEY, JSON.stringify(clonedArticles))
 
     // go through the articles again
-    for (let j = 0; j < articles.value.length; j++) {
+    for (let j = 0; j < clonedArticles.length; j++) {
 
       // add a new flag to articles that are newer
-      if (articles.value[j].pubDate > since) {
+      if (clonedArticles[j].pubDate > since) {
         // delete all subsequent articles
-        articles.value[j].new = true
+        clonedArticles[j].new = true
       }
 
       // add ago field
-      articles.value[j].ago = timeAgo.format(new Date(articles.value[j].pubDate), 'mini')
+      clonedArticles[j].ago = timeAgo.format(new Date(clonedArticles[j].pubDate), 'mini')
     }
 
-    return articles.value
+    return clonedArticles
   })
 
   // get items from localStorage
@@ -82,12 +83,14 @@
   // merge the incoming articles into the existing data set
   const addArticles = (newArticles) => {
     console.log('new batch of articles', newArticles.length)
-    console.log('articles',JSON.stringify(newArticles))
     let newCount = 0
     // only add articles we don't already have
     for(let i = 0; i < newArticles.length; i++) {
       let found = false
       for (let j = 0; i < articles.value.length; j++) {
+        if (!articles.value[j]) {
+          break
+        }
         if (articles.value[j].guid === newArticles[i].guid) {
           found = true
           break
@@ -123,35 +126,25 @@
     })
     feeds.value = req.data.value.list
 
-    // build the work array
-    const work = []
-    const workerClosure = (f) => {
-      return async () => {
-        console.log('API', '/poll', `${apiHome}/api/poll`, f.feed_name)
-        req = await useFetch(`${apiHome}/api/poll`, {
-          method: 'post',
-          headers: {
-            'content-type': 'application/json',
-            apikey: auth.value.apiKey
-          },
-          body: JSON.stringify({ 
-            id: f.id,
-            since
-          })
-
-        })
-        if (req && req.data && req.data.value) {
-          addArticles(req.data.value.feed)
-        }
-      }
-    }
+    // poll the feeds, one at a time
     for (let i = 0; i < feeds.value.length; i++) {
-      work.push(workerClosure(feeds.value[i])())
-    }
-    
-    // wait for all the feeds to return
-    if (work.length > 0) {
-      await Promise.all(work)
+      const f = feeds.value[i]
+      console.log('API', '/poll', `${apiHome}/api/poll`, f.feed_name)
+      req = await useFetch(`${apiHome}/api/poll`, {
+        method: 'post',
+        headers: {
+          'content-type': 'application/json',
+          apikey: auth.value.apiKey
+        },
+        body: JSON.stringify({ 
+          id: f.id,
+          since
+        })
+
+      })
+      if (req && req.data && req.data.value) {
+        addArticles(req.data.value.feed)
+      }
     }
 
     // // store last polled date in localstorage
