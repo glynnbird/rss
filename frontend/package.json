@@ -12,12 +12,12 @@
   "dependencies": {
     "@mdi/font": "^7.4.47",
     "javascript-time-ago": "^2.5.11",
-    "nuxt": "^3.13.0",
+    "nuxt": "^3.13.2",
     "vue": "latest",
     "vue-router": "latest"
   },
   "devDependencies": {
     "vite-plugin-vuetify": "^2.0.4",
-    "vuetify": "^3.7.1"
+    "vuetify": "^3.7.3"
   }
 }

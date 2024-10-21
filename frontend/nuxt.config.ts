@@ -5,6 +5,11 @@ export default defineNuxtConfig({
     transpile: ['vuetify'],
   },
   ssr: false,
+  runtimeConfig: {
+    public: {
+      apiBase: 'https://rss.glynnbird.com'
+    }
+  },
   modules: [
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
