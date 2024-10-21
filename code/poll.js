@@ -44,6 +44,10 @@ export async function onRequest (context) {
         const  c = i.content || i.description
         const lines = c.split('\n')
         i.description = stripHtml(lines[0]).result
+        const sentences = i.description.split('.')
+        if (sentences.length > 1) {
+          i.description = sentences[0] + '.'
+        }
         i.guid = ''
         if (i['media:thumbnail'] && i['media:thumbnail']['@_url']) {
           i.media = i['media:thumbnail']['@_url']
@@ -64,6 +68,15 @@ export async function onRequest (context) {
       for(let i = 0 ; i < items.length; i++) {
         items[i].guid = await hash(items[i].link)
       }
+
+      // apply filter, if supplied
+      if (json.since) {
+        items = items.filter((i) => {
+          return i.pubDate > json.since
+        })
+      }
+
+      // response
       response = {
         ok: true,
         feed: items
