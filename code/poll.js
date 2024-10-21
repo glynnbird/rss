@@ -40,8 +40,8 @@ export async function onRequest (context) {
       const content = await r.text()
 
       // parse the feed
-      const items = parser.parse(content).rss.channel.item.map((i) => {
-        const  c = i.content || i.description
+      let items = parser.parse(content).rss.channel.item.map((i) => {
+        const c = i.content || i.description
         const lines = c.split('\n')
         i.description = stripHtml(lines[0]).result
         const sentences = i.description.split('.')
@@ -65,7 +65,7 @@ export async function onRequest (context) {
         delete i['content:encoded']
         return i
       })
-      for(let i = 0 ; i < items.length; i++) {
+      for (let i = 0; i < items.length; i++) {
         items[i].guid = await hash(items[i].link)
       }
 
