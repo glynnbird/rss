@@ -52,12 +52,6 @@
   <v-progress-linear v-if="busy" indeterminate></v-progress-linear>
   <v-list>
     <v-list-item v-for="feed,index in feeds">
-      <template v-slot:prepend>
-        <v-avatar size="18px">
-          <v-img v-if="feed.icon" alt="icon" :src="feed.icon"></v-img>
-          <v-icon v-else></v-icon>
-        </v-avatar>
-      </template>
       <v-list-item-title>{{ feed.feed_name }}</v-list-item-title>
       <template v-slot:append>
         <v-btn
