@@ -87,17 +87,17 @@ Now you can add feeds and enjoy your articles!
 
 ```sh
 # add a feed
-curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" -d'{"url":"http://newsrss.bbc.co.uk/rss/sportonline_uk_edition/football/rss.xml"}' "https://rss2.glynnbird.com/api/add"
+curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" -d'{"url":"http://newsrss.bbc.co.uk/rss/sportonline_uk_edition/football/rss.xml"}' "https://rss.glynnbird.com/api/add"
 
 # list feeds
-curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" "https://rss2.glynnbird.com/api/list"
+curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" "https://rss.glynnbird.com/api/list"
 
 # poll a feed
-curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" -d'{"id":"feed#MXHRAVDG"}' "https://rss2.glynnbird.com/api/poll"
+curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" -d'{"id":"feed#MXHRAVDG"}' "https://rss.glynnbird.com/api/poll"
 
 # poll a feed with a since date
-curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" -d'{"id":"feed#MXHRAVDG","since":"2024-10-21T06:56:22.000Z"}' "https://rss2.glynnbird.com/api/poll"
+curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" -d'{"id":"feed#MXHRAVDG","since":"2024-10-21T06:56:22.000Z"}' "https://rss.glynnbird.com/api/poll"
 
 # delete a feed
-curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" -d'{"id":"feed#MXHRAVDG"}' "https://rss2.glynnbird.com/api/del"
+curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" -d'{"id":"feed#MXHRAVDG"}' "https://rss.glynnbird.com/api/del"
 ```

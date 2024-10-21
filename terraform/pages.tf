@@ -2,7 +2,7 @@
 resource "cloudflare_pages_project" "frontend_project" {
   account_id        = var.cloudflare_account_id
   name              = "rss"
-  production_branch = "cf"
+  production_branch = "main"
   
   build_config {
     build_command       = "./build.sh"
@@ -15,7 +15,7 @@ resource "cloudflare_pages_project" "frontend_project" {
     config {
       owner                         = "glynnbird"
       repo_name                     = "rss"
-      production_branch             = "cf"
+      production_branch             = "main"
       # pr_comments_enabled           = true
       # deployments_enabled           = true
       # production_deployment_enabled = true
@@ -49,7 +49,7 @@ resource "cloudflare_pages_domain" "frontend_domain" {
 
 resource "cloudflare_record" "frontend_dns" {
   zone_id = var.cloudflare_zone_id
-  name    = "rss2"
+  name    = "rss"
   content   = cloudflare_pages_project.frontend_project.subdomain
   type    = "CNAME"
   ttl     = 3600

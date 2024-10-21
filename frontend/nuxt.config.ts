@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   ssr: false,
   runtimeConfig: {
     public: {
-      apiBase: 'https://rss2.glynnbird.com'
+      apiBase: 'https://rss.glynnbird.com'
     }
   },
   modules: [
