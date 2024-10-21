@@ -82,6 +82,7 @@
   // merge the incoming articles into the existing data set
   const addArticles = (newArticles) => {
     console.log('new batch of articles', newArticles.length)
+    console.log('articles',JSON.stringify(newArticles))
     let newCount = 0
     // only add articles we don't already have
     for(let i = 0; i < newArticles.length; i++) {
