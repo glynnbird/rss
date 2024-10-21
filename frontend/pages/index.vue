@@ -87,7 +87,7 @@
     for(let i = 0; i < newArticles.length; i++) {
       let found = false
       for (let j = 0; i < articles.value.length; j++) {
-        if (articles.value[j].id === newArticles[i].id) {
+        if (articles.value[j].guid === newArticles[i].guid) {
           found = true
           break
         }
