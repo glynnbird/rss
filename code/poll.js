@@ -71,8 +71,8 @@ export async function onRequest (context) {
 
       // apply filter, if supplied
       if (json.since) {
-        items = items.filter((i) => {
-          return i.pubDate > json.since
+        items = items.filter((item) => {
+          return item.pubDate > json.since
         })
       }
 
