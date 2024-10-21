@@ -1,4 +1,5 @@
 import fxp from 'fast-xml-parser'
+import { get } from 'faviconer'
 import { okResponse, notOkResponse, notOk } from './lib/constants.js'
 import { mustBePOST, mustBeJSON, apiKey, handleCORS } from './lib/checks.js'
 import { generateid } from './lib/utils.js'
@@ -28,13 +29,16 @@ export async function onRequest (context) {
     const feed = parser.parse(content).rss.channel
     console.log('feed', feed)
 
+    // get the favicon
+    const iconURL = await get(feed.link)
+
     // if an id is not supplied, generate one
     const id = 'feed#' + generateid()
 
     const doc = {
       link: json.url,
       feed_name: feed.title,
-      icon: (feed.image && feed.image.url) ? feed.image.url : '',
+      icon: iconURL,
       feed_type: 'rss'
     }
     const metadata = {
@@ -44,6 +48,7 @@ export async function onRequest (context) {
 
     // add to KV store
     const index = {}
+    console.log('Adding', id, doc)
     const response = await add(context.env.KV, { id, doc, metadata, index })
 
     // send response
