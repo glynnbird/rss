@@ -4,6 +4,8 @@
   articles.value = []
   const feeds = ref(1)
   feeds.value = []
+  const pollingProgress = ref(2)
+  pollingProgress.value = 0
 
   // config
   const config = useRuntimeConfig()
@@ -109,6 +111,7 @@
     busy.value = true
     let articleid
     const newSince = new Date().toISOString()
+    pollingProgress.value = 0
 
     // make a note of the current newest article
     if (articles.value.length > 0) {
@@ -145,6 +148,7 @@
       if (req && req.data && req.data.value) {
         addArticles(req.data.value.feed)
       }
+      pollingProgress.value++
     }
 
     // // store last polled date in localstorage
@@ -183,7 +187,7 @@
 </style>
 <template>
   <!-- busy indicator-->
-  <v-progress-linear v-if="busy" indeterminate></v-progress-linear>
+  <v-progress-linear v-if="busy" :model-value="pollingProgress" :max="feeds.length"></v-progress-linear>
 
   <!-- list of articles -->
   <v-card v-for="article in timeOrderedArticles"
