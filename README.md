@@ -1,12 +1,6 @@
 # rss
 
-A news feed aggregator that can be deployed on AWS for near $0 for personal use.
-
-- static web app hosted on S3
-- HTTP API hosted on Lambda
-- periodic polling of RSS/Atom news feeds
-- state stored in DynamoDB
-- PWA with LocalStorage to store state on the client side
+A news feed aggregator that can be deployed on Cloudflare's cloud.
 
 ## How it works
 
@@ -16,11 +10,9 @@ A news feed aggregator that can be deployed on AWS for near $0 for personal use.
 
 ### Pre-requisites
 
-1. An [AWS account](https://portal.aws.amazon.com/billing/signup?)
-2. A secret access key and access key ID to deploy infrastructure (follow the Security Credentials link in your account)
-3. [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
-4. The [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) tool installed on your machine.
-5. [NodeJS and npm](https://nodejs.org/en/download/) 
+1. A Cloudflare and a domain name that is under Cloudflare's DNS control
+2. [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
+3. [NodeJS and npm](https://nodejs.org/en/download/) 
 
 
 ### Step 1 - Clone repo
@@ -35,7 +27,11 @@ cd rss
 In the `terraform` directory, create a file called terraform.tfvars with the following data
 
 ```
-API_KEY = "<create a random string>"
+cloudflare_api_token="xxx"
+cloudflare_api_token="yyy"
+cloudflare_account_id="zzz"
+cloudflare_zone_id="axaxa"
+cloudflare_domain="some.domain.com"
 ```
 
 ### Step 3 - Create Infrastructure
@@ -43,43 +39,10 @@ API_KEY = "<create a random string>"
 In the root of the project type:
 
 ```
-cd lambda
-npm install
-cd ../terraform
+cd terraform
 terraform init
 terraform apply --auto-approve
-terraform output -json > ../frontend/config.json
 ```
-
-This will deploy the s3 buckets, lambda function and databases required by the project. It will then copy some variables needed by the frontend into the `frontend` directory.
-
-### Step 4 - Generate the static website files
-
-In the `frontend` directory type:
-
-```
-npm ci
-npm run generate
-```
-
-### Step 5 - Deploy website to S3
-
-Still in the `frontend` directory, inspect the `config.json` file, locate the `s3Bucket` object and make a note of the `value` field. 
-Then in the terminal type:
-
-```
-aws s3 sync dist/ "s3://<s3Bucket_value>"
-# e.g. aws s3 sync dist/ "s3://d7rndzct013phmlp2vww"
-```
-
-### Step 6 - Visit your website!
-
-Inspect the `config.json` file again and locate the `applicationURL` object. It will be something like: `http://d7rndzct013phmlp2vww.s3-website-eu-west-1.amazonaws.com/`
-
-Visit that URL! The first time you visit, you'll need to provide the API key that you created in Step 2.
-Now you can add feeds and enjoy your articles!
-
-*NOTE*: The RSS feeds are refreshed every 5 minutes. Be patient!
 
 ------
 
@@ -93,7 +56,7 @@ curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" -d'{"url":"ht
 curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" "https://rss.glynnbird.com/api/list"
 
 # poll a feed
-curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" -d'{"id":"feed#MXHRAVDG"}' "https://rss.glynnbird.com/api/poll"
+curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" -d'{"id":"feed#UZJXCNHQ"}' "https://rss.glynnbird.com/api/poll"
 
 # poll a feed with a since date
 curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" -d'{"id":"feed#MXHRAVDG","since":"2024-10-21T06:56:22.000Z"}' "https://rss.glynnbird.com/api/poll"
