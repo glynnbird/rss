@@ -117,7 +117,7 @@
   // get a list of RSS feeds from the API
   const fetchFeeds = async () => {
     console.log('API', '/list', `${apiHome}/api/list`)
-    req = await $fetch(`${apiHome}/api/list`, {
+    req = await useFetch(`${apiHome}/api/list`, {
       method: 'post',
       headers: {
         'content-type': 'application/json',
@@ -159,7 +159,7 @@
     for (let i = 0; i < feeds.value.length; i++) {
       const f = feeds.value[i]
       console.log('API', '/poll', `${apiHome}/api/poll`, f.feed_name)
-      req = await $fetch(`${apiHome}/api/poll`, {
+      req = await useFetch(`${apiHome}/api/poll`, {
         method: 'post',
         headers: {
           'content-type': 'application/json',
