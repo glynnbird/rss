@@ -4,7 +4,14 @@ A news feed aggregator that can be deployed on Cloudflare's cloud.
 
 ## How it works
 
-![schematic](rss_diagram.png)
+The Cloudflare KV store is used to keep a list of feeds. A website produce by Nuxt is deployed to Cloudflare Pages with and API built from the `code` directory and served out at the websites `/api/xxx` path. e..g
+
+- `POST /api/list` - get a list of RSS feeds
+- `POST /api/add` - add an RSS feed to the list
+- `POST /api/del` - delete an RSS feed from the list
+- `POST /api/poll` - poll a single RSS feed
+
+The web front end calls `/api/poll` for each feed in the list when the page is refreshed and stores the resultant articles in `localStorage`. The next time the feeds are polled a `since` parameter is sent so that the same stories are not sent more than once. Stories are deduped using the `guid` of the story which is calculated as the hash of the story's `link url.
 
 ## How to deploy
 

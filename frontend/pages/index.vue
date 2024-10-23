@@ -12,6 +12,11 @@
   const apiHome = config.public['apiBase'] || window.location.origin
   let req
 
+  // localStorage keys
+  const ARTICLES_KEY = 'articles'
+  const SINCE_KEY = 'since'
+  const FEEDS_KEY = 'feeds'
+
   // time ago library
   import TimeAgo from 'javascript-time-ago'
   import en from 'javascript-time-ago/locale/en'
@@ -37,7 +42,7 @@
     // delete articles older than a month
     const oneMonthAgo = new Date().getTime() - 1000 * 60 * 60 * 24 * 30
     const oneMonthAgoTS = new Date(oneMonthAgo).toISOString()
-    console.log('culling articles oldert than', oneMonthAgoTS)
+    console.log('culling articles older than', oneMonthAgoTS)
     for (let j = 0; j < clonedArticles.length; j++) {
       if (clonedArticles[j].pubDate < oneMonthAgoTS) {
         // delete all subsequent articles
@@ -66,17 +71,20 @@
   })
 
   // get items from localStorage
-  const ARTICLES_KEY = 'articles'
-  const ls = localStorage.getItem(ARTICLES_KEY)
+  let ls = localStorage.getItem(ARTICLES_KEY)
   if (ls) {
     articles.value = JSON.parse(ls)
     console.log('got articles from localStorage')
   }
 
   // get last polled date from local storage
-  const SINCE_KEY = 'since'
   const since = localStorage.getItem(SINCE_KEY) || '1970-01-01T00:00:00.000Z'
   console.log('Last polled', since)
+
+  // get last known feeds list
+  ls = localStorage.getItem(FEEDS_KEY)
+  feeds.value = ls ? JSON.parse(ls) : []
+  console.log('cached feeds', feeds.value)
 
   // flag indicating whether we're making an API call
   const busy = ref(2)
@@ -106,6 +114,21 @@
     console.log('net new', newCount)
   }
 
+  // get a list of RSS feeds from the API
+  const fetchFeeds = async () => {
+    console.log('API', '/list', `${apiHome}/api/list`)
+    req = await $fetch(`${apiHome}/api/list`, {
+      method: 'post',
+      headers: {
+        'content-type': 'application/json',
+        apikey: auth.value.apiKey
+      }
+    })
+    feeds.value = req.data.value.list
+    localStorage.setItem(FEEDS_KEY, JSON.stringify(feeds.value))
+  }
+
+  // fetch all the latest news by polling each news feed
   const fetchArticles = async () => {
     // we're busy
     busy.value = true
@@ -119,21 +142,24 @@
     }
 
     // get a list of feeds
-    console.log('API', '/list', `${apiHome}/api/list`)
-    req = await useFetch(`${apiHome}/api/list`, {
-      method: 'post',
-      headers: {
-        'content-type': 'application/json',
-        apikey: auth.value.apiKey
-      }
-    })
-    feeds.value = req.data.value.list
+    if (feeds.value.length === 0) {
+      // if we've no feeds fetch them now
+      console.log('fetching feeds for the first time')
+      await fetchFeeds()
+    } else {
+      // do it in the background
+      setTimeout(async () => {
+        // fetch the feeds in the background
+        console.log('fetching feeds in the background')
+        await fetchFeeds()
+      }, 1)
+    }
 
     // poll the feeds, one at a time
     for (let i = 0; i < feeds.value.length; i++) {
       const f = feeds.value[i]
       console.log('API', '/poll', `${apiHome}/api/poll`, f.feed_name)
-      req = await useFetch(`${apiHome}/api/poll`, {
+      req = await $fetch(`${apiHome}/api/poll`, {
         method: 'post',
         headers: {
           'content-type': 'application/json',
