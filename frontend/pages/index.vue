@@ -209,6 +209,7 @@
         if (req && req.data && req.data.value) {
           console.log('response', req.data.value)
           article.media = req.data.value.image
+          article.title = '! '+ article.title
         }
       }
     }
