@@ -94,6 +94,7 @@
   const addArticles = (newArticles) => {
     console.log('new batch of articles', newArticles.length)
     let newCount = 0
+    const ids = []
     // only add articles we don't already have
     for(let i = 0; i < newArticles.length; i++) {
       let found = false
@@ -108,10 +109,12 @@
       }
       if (!found) {
         articles.value.push(newArticles[i])
+        ids.push(newArticles[i].guid)
         newCount++
       }
     }
     console.log('net new', newCount)
+    return ids
   }
 
   // get a list of RSS feeds from the API
@@ -156,6 +159,7 @@
     }
 
     // poll the feeds, one at a time
+    let newNewIds = []
     for (let i = 0; i < feeds.value.length; i++) {
       const f = feeds.value[i]
       console.log('API', '/poll', `${apiHome}/api/poll`, f.feed_name)
@@ -169,16 +173,45 @@
           id: f.id,
           since
         })
-
       })
       if (req && req.data && req.data.value) {
-        addArticles(req.data.value.feed)
+        const ids = addArticles(req.data.value.feed)
+        newNewIds = newNewIds.concat(ids)
       }
       pollingProgress.value++
     }
 
-    // // store last polled date in localstorage
+    // store last polled date in localstorage
     localStorage.setItem(SINCE_KEY, newSince)
+
+    // poll each new item's url to fetch a good image
+    console.log('fetching images for new articles', netNewIds)
+    for(const id of newNewIds) {
+      let article = null
+      for(let i = 0 ; i < articles.value.length; i++) {
+        if (articles.value[i].guid === id) {
+          article = articles.value[i]
+          break
+        }
+      }
+      if (article) {
+        console.log('API', '/poll', `${apiHome}/api/image`, article.link)
+        req = await useFetch(`${apiHome}/api/image`, {
+          method: 'post',
+          headers: {
+            'content-type': 'application/json',
+            apikey: auth.value.apiKey
+          },
+          body: JSON.stringify({ 
+            url: article.link
+          })
+        })
+        if (req && req.data && req.data.value) {
+          console.log('response', req.data.value)
+          article.media = req.data.value.image
+        }
+      }
+    }
     
     // not busy
     busy.value = false
