@@ -159,7 +159,7 @@
     }
 
     // poll the feeds, one at a time
-    let newNewIds = []
+    let netNewIds = []
     for (let i = 0; i < feeds.value.length; i++) {
       const f = feeds.value[i]
       console.log('API', '/poll', `${apiHome}/api/poll`, f.feed_name)
@@ -176,7 +176,7 @@
       })
       if (req && req.data && req.data.value) {
         const ids = addArticles(req.data.value.feed)
-        newNewIds = newNewIds.concat(ids)
+        netNewIds = netNewIds.concat(ids)
       }
       pollingProgress.value++
     }
@@ -186,7 +186,7 @@
 
     // poll each new item's url to fetch a good image
     console.log('fetching images for new articles', netNewIds)
-    for(const id of newNewIds) {
+    for(const id of netNewIds) {
       let article = null
       for(let i = 0 ; i < articles.value.length; i++) {
         if (articles.value[i].guid === id) {
