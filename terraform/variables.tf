@@ -1,9 +1,3 @@
-variable "API_KEY" {
-  description = "the apikey from the user"
-  type        = string
-  sensitive   = true
-}
-
 variable "cloudflare_api_token" {
   type = string
   sensitive = true
