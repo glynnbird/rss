@@ -185,34 +185,34 @@
     localStorage.setItem(SINCE_KEY, newSince)
 
     // poll each new item's url to fetch a good image
-    console.log('fetching images for new articles', netNewIds)
-    for(const id of netNewIds) {
-      let article = null
-      for(let i = 0 ; i < articles.value.length; i++) {
-        if (articles.value[i].guid === id) {
-          article = articles.value[i]
-          break
-        }
-      }
-      if (article) {
-        console.log('API', '/poll', `${apiHome}/api/image`, article.link)
-        req = await useFetch(`${apiHome}/api/image`, {
-          method: 'post',
-          headers: {
-            'content-type': 'application/json',
-            apikey: auth.value.apiKey
-          },
-          body: JSON.stringify({ 
-            url: article.link
-          })
-        })
-        if (req && req.data && req.data.value) {
-          console.log('response', req.data.value)
-          article.media = req.data.value.image
-          article.title = '! '+ article.title
-        }
-      }
-    }
+    // console.log('fetching images for new articles', netNewIds)
+    // for(const id of netNewIds) {
+    //   let article = null
+    //   for(let i = 0 ; i < articles.value.length; i++) {
+    //     if (articles.value[i].guid === id) {
+    //       article = articles.value[i]
+    //       break
+    //     }
+    //   }
+    //   if (article) {
+    //     console.log('API', '/poll', `${apiHome}/api/image`, article.link)
+    //     req = await useFetch(`${apiHome}/api/image`, {
+    //       method: 'post',
+    //       headers: {
+    //         'content-type': 'application/json',
+    //         apikey: auth.value.apiKey
+    //       },
+    //       body: JSON.stringify({ 
+    //         url: article.link
+    //       })
+    //     })
+    //     if (req && req.data && req.data.value) {
+    //       console.log('response', req.data.value)
+    //       article.media = req.data.value.image
+    //       article.title = '! '+ article.title
+    //     }
+    //   }
+    // }
     
     // not busy
     busy.value = false
