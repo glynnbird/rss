@@ -65,6 +65,9 @@ curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" "https://rss.
 # poll a feed
 curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" -d'{"id":"feed#UZJXCNHQ"}' "https://rss.glynnbird.com/api/poll"
 
+# get image data for a url
+curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" -d'{"url":"https://www.theguardian.com/football/2024/oct/21/big-stat-replaces-big-sam-how-premier-league-clubs-recruit-elite-managers"}' "https://rss.glynnbird.com/api/image"
+
 # poll a feed with a since date
 curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" -d'{"id":"feed#MXHRAVDG","since":"2024-10-21T06:56:22.000Z"}' "https://rss.glynnbird.com/api/poll"
 
