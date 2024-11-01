@@ -46,7 +46,7 @@ export async function onRequest (context) {
       const content = await r.text()
 
       // parse the feed
-      let items = parser.parse(content).items.rss.channel.item
+      let items = parser.parse(content).rss.channel.item
       items.splice(15) // remove everything but the first 15 items
       console.log('parsed', items.length)
       items = items.map((i) => {
