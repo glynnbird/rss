@@ -46,7 +46,11 @@ export async function onRequest (context) {
       const content = await r.text()
 
       // parse the feed
-      let items = parser.parse(content).rss.channel.item.map((i) => {
+      let items = parser.parse(content)
+      items.splice(15) // remove everything but the first 15 items
+      console.log('parsed', items.length)
+      
+      items = items.rss.channel.item.map((i) => {
         const c = i.content || i.description
         const lines = c.split('\n')
         i.description = stripHtml(lines[0]).result
@@ -75,15 +79,18 @@ export async function onRequest (context) {
         delete i['content:encoded']
         return i
       })
+      console.log('hashing', items.length)
       for (let i = 0; i < items.length; i++) {
         items[i].guid = await hash(items[i].link)
       }
 
       // apply filter, if supplied
       if (json.since) {
+        console.log('filtering')
         items = items.filter((item) => {
           return item.pubDate > json.since
         })
+        console.log(items.length)
       }
 
       // response
