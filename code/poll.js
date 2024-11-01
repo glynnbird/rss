@@ -46,11 +46,10 @@ export async function onRequest (context) {
       const content = await r.text()
 
       // parse the feed
-      let items = parser.parse(content)
+      let items = parser.parse(content).items.rss.channel.item
       items.splice(15) // remove everything but the first 15 items
       console.log('parsed', items.length)
-      
-      items = items.rss.channel.item.map((i) => {
+      items = items.map((i) => {
         const c = i.content || i.description
         const lines = c.split('\n')
         i.description = stripHtml(lines[0]).result
