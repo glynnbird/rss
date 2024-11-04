@@ -39,12 +39,12 @@
     const clonedArticles = JSON.parse(JSON.stringify(articles.value))
     clonedArticles.sort(sorter)
 
-    // delete articles older than a month
-    const oneMonthAgo = new Date().getTime() - 1000 * 60 * 60 * 24 * 30
-    const oneMonthAgoTS = new Date(oneMonthAgo).toISOString()
-    console.log('culling articles older than', oneMonthAgoTS)
+    // delete articles older than a week
+    const oneWeekAgo = new Date().getTime() - 1000 * 60 * 60 * 24 * 7
+    const oneWeekAgoTS = new Date(oneWeekAgo).toISOString()
+    console.log('culling articles older than', oneWeekAgoTS)
     for (let j = 0; j < clonedArticles.length; j++) {
-      if (clonedArticles[j].pubDate < oneMonthAgoTS) {
+      if (clonedArticles[j].pubDate < oneWeekAgoTS) {
         // delete all subsequent articles
         clonedArticles.splice(j, Infinity)
         break
