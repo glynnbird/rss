@@ -19,7 +19,7 @@
       <template v-slot:prepend>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       </template>
-      <v-app-bar-title @click="clickHome()">RSS</v-app-bar-title>
+      <v-app-bar-title @click="clickHome()" style="user-select:none;">RSS</v-app-bar-title>
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" location="left">
       <v-list>
