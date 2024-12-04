@@ -48,12 +48,11 @@ export async function onRequest (context) {
       // parse the feed
       let items = parser.parse(content).rss.channel.item
       items.splice(15) // remove everything but the first 15 items
-      console.log('parsed', items.length)
       items = items.map((i) => {
         const c = i.content || i.description
         const lines = c.split('\n')
         i.description = stripHtml(lines[0]).result
-        const sentences = i.description.split('.')
+        const sentences = i.description.split('. ')
         if (sentences.length > 1) {
           i.description = sentences[0] + '.'
         }
