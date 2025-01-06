@@ -1,11 +1,8 @@
 <script setup>
   const auth = useAuth()
-  const articles = ref(0)
-  articles.value = []
-  const feeds = ref(1)
-  feeds.value = []
-  const pollingProgress = ref(2)
-  pollingProgress.value = 0
+  const articles = ref([])
+  const feeds = ref([])
+  const pollingProgress = ref(0)
 
   // config
   const config = useRuntimeConfig()
@@ -87,8 +84,7 @@
   console.log('cached feeds', feeds.value)
 
   // flag indicating whether we're making an API call
-  const busy = ref(2)
-  busy.value = false
+  const busy = ref(false)
 
   // merge the incoming articles into the existing data set
   const addArticles = (newArticles) => {

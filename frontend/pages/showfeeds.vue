@@ -1,9 +1,7 @@
 <script setup>
   const auth = useAuth()
-  const feeds = ref(0)
-  feeds.value = []
-  const busy = ref(1)
-  busy.value = false
+  const feeds = ref([])
+  const busy = ref(false)
   
   // config
   const config = useRuntimeConfig()

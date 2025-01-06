@@ -3,8 +3,7 @@
   const auth = useAuth()
 
   // local page items
-  const apiKey = ref(0)
-  apiKey.value = ''
+  const apiKey = ref('')
 
   // methods
   const saveKey = async () => {

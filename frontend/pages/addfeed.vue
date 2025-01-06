@@ -1,9 +1,7 @@
 <script setup>
   const auth = useAuth()
-  const url = ref(0)
-  url.value = ''
-  const busy = ref(1)
-  busy.value = false
+  const url = ref('')
+  const busy = ref(false)
 
   // config
   const config = useRuntimeConfig()
