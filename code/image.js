@@ -1,70 +1,54 @@
-import fxp from 'fast-xml-parser'
-import { okResponse, notOkResponse, notOk } from './lib/constants.js'
+import { okResponse, missingResponse, notOkResponse, notOk } from './lib/constants.js'
 import { mustBePOST, mustBeJSON, apiKey, handleCORS } from './lib/checks.js'
 
-// our HTML/XML parser
-const options = {
-  ignoreAttributes: false,
-  //preserveOrder: true,
-  unpairedTags: ["hr", "br", "link", "meta"],
-  stopNodes : [ "*.pre", "*.script"],
-  processEntities: true,
-  htmlEntities: true
+const parser = function(str) {
+  // remove everything past the end head
+  let i
+  i = str.search('</head>')
+  str = str.slice(0, i)
+  // break into lines
+  str = str.replace(/</g, '\n')
+  str = str.replace(/\>/g, '\n')
+  // only consider lines containing the twitter image
+  const lines = str.split('\n').filter((l) => { return l.includes('name="twitter:image"') || l.includes('name="twitter:image:src"')})
+  if (lines.length > 0) {
+    const line = lines[0]
+    str = line.replace(/.*content="/, '').replace(/".*/, '')
+    return str
+  }
+  return str
 }
-const parser = new fxp.XMLParser(options)
 
 export async function onRequest(context) {
-  // handle POST/JSON/apikey chcecks
-  const r = handleCORS(context.request) || apiKey(context.request, context.env) || mustBePOST(context.request) || mustBeJSON(context.request)
-  if (r) return r
 
   // parse the json
-  const json = await context.request.json()
+  const { searchParams } = new URL(context.request.url)
+  const id = searchParams.get('url')
+  if (!url) {
+    return new Response(notOk, notOkResponse)
+  }
 
-  // if the mandatory fields are there
-  if (json.url) {
-    // fetch meta data for the supplied url
-    // load the URL
+  // if there's a id
+  if (url) {
     const r = await fetch(json.url)
     const content = await r.text()
-    let p = parser.parse(content)
-
-    // sometimes there's a !doctype layer above the html object
-    // which we don't want
-    if (p['!doctype']) {
-      p = p['!doctype']
+    const parsed = parser(content)
+    if (parsed) {
+      // send 302 response
+      const redirectResponse = {
+        status: 302,
+        headers: {
+          location: parsed
+        }
+      }
+      return new Response('', redirectResponse)
+    } else {
+      // send 404 response
+      return new Response(notOk, missingResponse)
     }
-    
-    // this is the output object
-    const obj = {}
-
-    // map through all of the meta attributes
-    console.log('p', p)
-    p.html.head.meta.map((m) => {
-      if (m['@_property'] === 'og:title') {
-        obj.title = m['@_content']
-      }
-      if (m['@_property'] === 'og:description') {
-        obj.description = m['@_content']
-      }
-      if (m['@_property'] === 'og:image') {
-        obj.image = m['@_content']
-      }
-      if (m['@_property'] === 'twitter:image:src') {
-        obj.image = m['@_content']
-      }
-      if (m['@_property'] === 'twitter:description') {
-        obj.description = m['@_content']
-      }
-      if (m['@_property'] === 'twitter:title') {
-        obj.title = m['@_content']
-      }
-    })
-    
-     // send response
-     return new Response(JSON.stringify(obj), okResponse)
   }
 
   // everyone else gets a 400 response
   return new Response(notOk, notOkResponse)
+
 }
