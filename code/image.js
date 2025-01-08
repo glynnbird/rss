@@ -23,14 +23,14 @@ export async function onRequest(context) {
 
   // parse the json
   const { searchParams } = new URL(context.request.url)
-  const id = searchParams.get('url')
+  const url = searchParams.get('url')
   if (!url) {
     return new Response(notOk, notOkResponse)
   }
 
   // if there's a id
   if (url) {
-    const r = await fetch(json.url)
+    const r = await fetch(url)
     const content = await r.text()
     const parsed = parser(content)
     if (parsed) {
