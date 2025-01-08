@@ -39,6 +39,7 @@ export async function onRequest(context) {
     const obj = {}
 
     // map through all of the meta attributes
+    console.log('p', p)
     p.html.head.meta.map((m) => {
       if (m['@_property'] === 'og:title') {
         obj.title = m['@_content']
