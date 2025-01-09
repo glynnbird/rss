@@ -264,8 +264,8 @@
       </v-card-subtitle>
     </v-card-item>
     <v-img v-if="article.media"
-      :src="`${apiHome}/api/image?url=${article.link}`"
-      :lazy-src="article.media"
+      :src="article.media"
+      lazy-src="/lazy.jpg"
       cover
     ></v-img>
   </v-card>
