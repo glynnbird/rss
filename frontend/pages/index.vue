@@ -129,6 +129,7 @@
 
   // fetch all the latest news by polling each news feed
   const fetchArticles = async () => {
+    return
     // we're busy
     busy.value = true
     let articleid
@@ -193,7 +194,7 @@
 </script>
 <style setup>
 .title {
-  font-size: 15px;
+  font-size: 18px;
 }
 </style>
 <template>
@@ -228,7 +229,9 @@
         <v-chip size="x-small" color="green">{{ article.ago}}</v-chip>
       </v-col>
       <v-col>
-        <v-img :src="article.media" lazy-src="/lazy.jpg" cover />
+        <a :href="article.link" target="_new">
+          <v-img :src="article.media" lazy-src="/lazy.jpg" cover />
+        </a>
       </v-col>
     </v-row>
   </v-table>
