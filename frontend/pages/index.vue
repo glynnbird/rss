@@ -179,36 +179,6 @@
 
     // store last polled date in localstorage
     localStorage.setItem(SINCE_KEY, newSince)
-
-    // poll each new item's url to fetch a good image
-    // console.log('fetching images for new articles', netNewIds)
-    // for(const id of netNewIds) {
-    //   let article = null
-    //   for(let i = 0 ; i < articles.value.length; i++) {
-    //     if (articles.value[i].guid === id) {
-    //       article = articles.value[i]
-    //       break
-    //     }
-    //   }
-    //   if (article) {
-    //     console.log('API', '/poll', `${apiHome}/api/image`, article.link)
-    //     req = await useFetch(`${apiHome}/api/image`, {
-    //       method: 'post',
-    //       headers: {
-    //         'content-type': 'application/json',
-    //         apikey: auth.value.apiKey
-    //       },
-    //       body: JSON.stringify({ 
-    //         url: article.link
-    //       })
-    //     })
-    //     if (req && req.data && req.data.value) {
-    //       console.log('response', req.data.value)
-    //       article.media = req.data.value.image
-    //       article.title = '! '+ article.title
-    //     }
-    //   }
-    // }
     
     // not busy
     busy.value = false
@@ -222,23 +192,8 @@
 
 </script>
 <style setup>
-.v-card {
-  margin-bottom: 20px;
-}
-.v-card-title, .v-card-subtitle {
-  flex: 1 1 100%;
-  white-space: unset !important;
-
-}
-.v-card-title {
-  font-size:18px;
-  line-height: 1.6rem !important;
-}
-.v-card-subtitle {
-  font-size:16px;
-}
-.card-divider {
-  border-bottom: 3px dashed #aaa
+.title {
+  font-size: 15px;
 }
 </style>
 <template>
@@ -246,27 +201,35 @@
   <v-progress-linear v-if="busy" :model-value="pollingProgress" :max="feeds.length"></v-progress-linear>
 
   <!-- list of articles -->
-  <v-card v-for="article in timeOrderedArticles"
-    class="mx-auto"
+  <!--  <v-card v-for="article in timeOrderedArticles"
+    class="mx-auto cardsep"
     :href="article.link"
     max-width="640"
     target="_new"
     :ripple="false"
   >
-    <v-card-item>
-      <v-card-title>
-        <v-icon size="small" color="blue" v-if="article.new">mdi-new-box</v-icon>
-        <v-chip size="x-small">{{ article.ago}}</v-chip>
-        {{ article.title }}
-      </v-card-title>
-      <v-card-subtitle>
-        <div v-html="article.description"></div>
-      </v-card-subtitle>
-    </v-card-item>
-    <v-img v-if="article.media"
+    <v-img
       :src="article.media"
       lazy-src="/lazy.jpg"
-      cover
-    ></v-img>
-  </v-card>
+      cover>
+      <v-card-title class="text-white shadow">{{ article.title }}</v-card-title>
+      <v-card-subtitle class="position-absolute bottom-0 left-0 offbot">
+        <v-icon size="small" color="blue" v-if="article.new">mdi-new-box</v-icon>
+        <v-chip size="x-small" color="white">{{ article.ago}}</v-chip>
+      </v-card-subtitle>
+    </v-img>
+  </v-card>  -->
+  <v-table>
+    <v-row v-for="article in timeOrderedArticles">
+      <v-col class="title">
+        {{ article.title }}
+        <br />
+        <v-icon size="small" color="blue" v-if="article.new">mdi-new-box</v-icon>
+        <v-chip size="x-small" color="green">{{ article.ago}}</v-chip>
+      </v-col>
+      <v-col>
+        <v-img :src="article.media" lazy-src="/lazy.jpg" cover />
+      </v-col>
+    </v-row>
+  </v-table>
 </template>
