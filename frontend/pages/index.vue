@@ -129,7 +129,6 @@
 
   // fetch all the latest news by polling each news feed
   const fetchArticles = async () => {
-    return
     // we're busy
     busy.value = true
     let articleid
