@@ -227,7 +227,6 @@
     <v-img
       :src="article.media"
       lazy-src="/lazy.jpg"
-      gradient="to top right, rgba(0,0,0,.33), rgba(200,200,200,.7)"
       cover>
       <v-card-title class="text-white shadow title">{{ article.title }}</v-card-title>
       <v-card-subtitle class="position-absolute bottom-0 left-0 offbot">
