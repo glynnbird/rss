@@ -194,6 +194,22 @@
 <style setup>
 .title {
   font-size: 18px;
+  overflow:visible !important;
+  height: 100px !important;
+  white-space: unset !important;
+}
+.sep {
+  margin-right:10px;
+}
+.cardsep {
+  margin-top: 10px;
+  margin-bottom:10px; 
+}
+.shadow {
+  text-shadow: 1px 1px 1px rgba(0,0,0, 1);
+}
+.offbot {
+  margin-bottom: 10px;
 }
 </style>
 <template>
@@ -201,7 +217,7 @@
   <v-progress-linear v-if="busy" :model-value="pollingProgress" :max="feeds.length"></v-progress-linear>
 
   <!-- list of articles -->
-  <!--  <v-card v-for="article in timeOrderedArticles"
+  <v-card v-for="article in timeOrderedArticles"
     class="mx-auto cardsep"
     :href="article.link"
     max-width="640"
@@ -211,27 +227,13 @@
     <v-img
       :src="article.media"
       lazy-src="/lazy.jpg"
+      gradient="to top right, rgba(0,0,0,.33), rgba(200,200,200,.7)"
       cover>
-      <v-card-title class="text-white shadow">{{ article.title }}</v-card-title>
+      <v-card-title class="text-white shadow title">{{ article.title }}</v-card-title>
       <v-card-subtitle class="position-absolute bottom-0 left-0 offbot">
         <v-icon size="small" color="blue" v-if="article.new">mdi-new-box</v-icon>
         <v-chip size="x-small" color="white">{{ article.ago}}</v-chip>
       </v-card-subtitle>
     </v-img>
-  </v-card>  -->
-  <v-table>
-    <v-row v-for="article in timeOrderedArticles">
-      <v-col class="title">
-        {{ article.title }}
-        <br />
-        <v-icon size="small" color="blue" v-if="article.new">mdi-new-box</v-icon>
-        <v-chip size="x-small" color="green">{{ article.ago}}</v-chip>
-      </v-col>
-      <v-col>
-        <a :href="article.link" target="_new">
-          <v-img :src="article.media" lazy-src="/lazy.jpg" cover />
-        </a>
-      </v-col>
-    </v-row>
-  </v-table>
+  </v-card>
 </template>
