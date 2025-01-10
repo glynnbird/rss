@@ -231,8 +231,8 @@
       cover>
       <v-card-title class="text-white shadow title">{{ article.title }}</v-card-title>
       <v-card-subtitle class="position-absolute bottom-0 left-0 offbot">
-        <v-icon size="small" color="blue" v-if="article.new">mdi-new-box</v-icon>
-        <v-chip size="x-small" color="white">{{ article.ago}}</v-chip>
+        <v-icon size="default" color="blue" v-if="article.new">mdi-new-box</v-icon>
+        <v-chip size="default" color="white">{{ article.ago}}</v-chip>
       </v-card-subtitle>
     </v-img>
   </v-card>
