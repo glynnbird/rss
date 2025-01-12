@@ -193,9 +193,8 @@
 </script>
 <style setup>
 .title {
-  font-size: 18px;
+  font-size: 16px;
   overflow:visible !important;
-  height: 100px !important;
   white-space: unset !important;
 }
 .sep {
@@ -205,10 +204,11 @@
   margin-top: 10px;
   margin-bottom:10px; 
 }
-.shadow {
-  text-shadow: 1px 1px 1px rgba(0,0,0, 1);
-}
 .offbot {
+  margin-bottom: 10px;
+}
+.space {
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 </style>
@@ -228,11 +228,13 @@
       :src="article.media"
       lazy-src="/lazy.jpg"
       cover>
-      <v-card-title class="text-white shadow title">{{ article.title }}</v-card-title>
-      <v-card-subtitle class="position-absolute bottom-0 left-0 offbot">
-        <v-icon size="default" color="blue" v-if="article.new">mdi-new-box</v-icon>
-        <v-chip size="default" color="white">{{ article.ago}}</v-chip>
-      </v-card-subtitle>
     </v-img>
+    <v-card-title class="title">
+      <v-icon size="default" color="blue" v-if="article.new">mdi-new-box</v-icon>
+      {{ article.title }}
+    </v-card-title>
+    <v-card-subtitle class="space">
+      <v-chip size="small" color="black">{{ article.ago}}</v-chip>
+    </v-card-subtitle>
   </v-card>
 </template>
