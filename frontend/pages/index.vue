@@ -129,6 +129,7 @@
 
   // fetch all the latest news by polling each news feed
   const fetchArticles = async () => {
+    return
     // we're busy
     busy.value = true
     let articleid
@@ -224,7 +225,7 @@
     target="_new"
     :ripple="false"
   >
-    <v-img
+    <v-img v-if="article.media"
       :src="article.media"
       lazy-src="/lazy.jpg"
       cover>
@@ -232,9 +233,8 @@
     <v-card-title class="title">
       <v-icon size="default" color="blue" v-if="article.new">mdi-new-box</v-icon>
       {{ article.title }}
-    </v-card-title>
-    <v-card-subtitle class="space">
+      <br />
       <v-chip size="small" color="black">{{ article.ago}}</v-chip>
-    </v-card-subtitle>
+    </v-card-title>
   </v-card>
 </template>
