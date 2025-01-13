@@ -184,6 +184,12 @@
     busy.value = false
   }
 
+  const extractSource = (s) => {
+    const u = new URL(s)
+    const h = u.hostname.split('.')
+    return h.slice(h.length - 2).join('.')
+  }
+
   // fetch the articles
   setTimeout(async () => {
     // run the API fetch in the background
@@ -224,16 +230,14 @@
     target="_new"
     :ripple="false"
   >
-    <v-img v-if="article.media"
-      :src="article.media"
-      lazy-src="/lazy.jpg"
-      cover>
-    </v-img>
+    <!-- lazy-src="/lazy.jpg" --> 
+    <v-img v-if="article.media" :src="article.media" cover />
     <v-card-title class="title">
       <v-icon size="default" color="blue" v-if="article.new">mdi-new-box</v-icon>
       {{ article.title }}
-      <br />
-      <v-chip size="small" color="black">{{ article.ago}}</v-chip>
     </v-card-title>
+    <v-card-subtitle>
+      {{ extractSource(article.link) }} - {{ article.ago}}
+    </v-card-subtitle>
   </v-card>
 </template>
