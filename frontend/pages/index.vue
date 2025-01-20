@@ -217,6 +217,9 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
+.newsimg {
+  min-height: 191px;
+}
 </style>
 <template>
   <!-- busy indicator-->
@@ -231,7 +234,7 @@
     :ripple="false"
   >
     <!-- lazy-src="/lazy.jpg" --> 
-    <v-img v-if="article.media" :src="article.media" cover />
+    <v-img v-if="article.media" :src="article.media" cover class="newsimg" />
     <v-card-title class="title">
       <v-icon size="default" color="blue" v-if="article.new">mdi-new-box</v-icon>
       {{ article.title }}
