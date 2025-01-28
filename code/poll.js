@@ -36,10 +36,10 @@ export async function onRequest (context) {
   // if the mandatory fields are there
   if (json.id) {
     const dbr = await get(context.env.KV, json.id)
-    console.log('dbr', dbr)
+    //console.log('dbr', dbr)
     if (dbr.ok) {
       const feed = dbr.doc
-      console.log('Got feed', feed)
+      //console.log('Got feed', feed)
 
       // load the URL
       const r = await fetch(feed.link)
@@ -77,18 +77,18 @@ export async function onRequest (context) {
         delete i['content:encoded']
         return i
       })
-      console.log('hashing', items.length)
+      //console.log('hashing', items.length)
       for (let i = 0; i < items.length; i++) {
         items[i].guid = await hash(items[i].link)
       }
 
       // apply filter, if supplied
       if (json.since) {
-        console.log('filtering')
+        //console.log('filtering')
         items = items.filter((item) => {
           return item.pubDate > json.since
         })
-        console.log(items.length)
+        //console.log(items.length)
       }
 
       // response

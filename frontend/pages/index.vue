@@ -177,6 +177,29 @@
       pollingProgress.value++
     }
 
+    // fetch better images for new articles
+    console.log('polling for better images', articles.value.length, 'articles')
+    for (let i = 0 ; i < articles.value.length;  i++) {
+      const article = articles.value[i]
+      if (!article.polled) {
+        req = await useFetch(`${apiHome}/api/image`, {
+          method: 'post',
+          headers: {
+            'content-type': 'application/json',
+            apikey: auth.value.apiKey
+          },
+          body: JSON.stringify({ 
+            url: article.link
+          })
+        })
+        if (req && req.data && req.data.value && req.data.value.url) {
+          articles.value[i].media = req.data.value.url
+        }
+        
+      }
+      articles.value[i].polled = true
+    }
+
     // store last polled date in localstorage
     localStorage.setItem(SINCE_KEY, newSince)
     
