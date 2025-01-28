@@ -21,34 +21,25 @@ const parser = function(str) {
 
 export async function onRequest(context) {
 
+  // handle POST/JSON/apikey chcecks
+  const r = handleCORS(context.request) || apiKey(context.request, context.env) || mustBePOST(context.request) || mustBeJSON(context.request)
+  if (r) return r
+
   // parse the json
-  const { searchParams } = new URL(context.request.url)
-  const url = searchParams.get('url')
+  const json = await context.request.json()
+  const url = json.url
   if (!url) {
     return new Response(notOk, notOkResponse)
   }
 
-  // if there's a id
-  if (url) {
-    const r = await fetch(url)
-    const content = await r.text()
-    const parsed = parser(content)
-    if (parsed) {
-      // send 302 response
-      const redirectResponse = {
-        status: 302,
-        headers: {
-          location: parsed
-        }
-      }
-      return new Response('', redirectResponse)
-    } else {
-      // send 404 response
-      return new Response(notOk, missingResponse)
-    }
+  // if there's a url
+  const fr = await fetch(url)
+  const content = await fr.text()
+  const parsed = parser(content)
+  if (parsed) {
+    return new Response(okResponse, { url: parsed })
+  } else {
+    // send 404 response
+    return new Response(notOk, missingResponse)
   }
-
-  // everyone else gets a 400 response
-  return new Response(notOk, notOkResponse)
-
 }
