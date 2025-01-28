@@ -85,6 +85,7 @@
 
   // flag indicating whether we're making an API call
   const busy = ref(false)
+  const pollingImages = ref(false)
 
   // merge the incoming articles into the existing data set
   const addArticles = (newArticles) => {
@@ -177,6 +178,13 @@
       pollingProgress.value++
     }
 
+    // not busy, but polling images
+    busy.value = false
+    pollingImages.value = true
+
+    // store last polled date in localstorage
+    localStorage.setItem(SINCE_KEY, newSince)
+
     // fetch better images for new articles
     console.log('polling for better images', articles.value.length, 'articles')
     for (let i = 0 ; i < articles.value.length;  i++) {
@@ -200,11 +208,8 @@
       articles.value[i].polled = true
     }
 
-    // store last polled date in localstorage
-    localStorage.setItem(SINCE_KEY, newSince)
-    
-    // not busy
-    busy.value = false
+    // finished polling images
+    pollingImages.value = false
   }
 
   const extractSource = (s) => {
@@ -247,7 +252,8 @@
 <template>
   <!-- busy indicator-->
   <v-progress-linear v-if="busy" :model-value="pollingProgress" :max="feeds.length"></v-progress-linear>
-
+  <v-progress-linear v-if="pollingImages" color="yellow-darken-2" indeterminate></v-progress-linear>
+  
   <!-- list of articles -->
   <v-card v-for="article in timeOrderedArticles"
     class="mx-auto cardsep"
