@@ -37,7 +37,7 @@ export async function onRequest(context) {
   const content = await fr.text()
   const parsed = parser(content)
   if (parsed) {
-    return new Response(okResponse, { url: parsed })
+    return new Response(JSON.stringify({ url: parsed }), okResponse)
   } else {
     // send 404 response
     return new Response(notOk, missingResponse)
