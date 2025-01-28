@@ -74,3 +74,9 @@ curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" -d'{"id":"fee
 # delete a feed
 curl -X POST -H'Content-type:application/json' -H"apikey: $APIKEY" -d'{"id":"feed#MXHRAVDG"}' "https://rss.glynnbird.com/api/del"
 ```
+
+## Tail the logs
+
+```sh
+wrangler pages deployment tail --project-name rss
+```
