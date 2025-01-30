@@ -5,6 +5,7 @@ export async function onRequest(context) {
   const ACCOUNT_ID = context.env.CF_ACCOUNT_ID
   const TOKEN = context.env.CF_API_TOKEN
   const API_URL = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/images/v1`
+  console.log('API_URL', API_URL)
   
   const formData = new FormData()
   formData.append('url', imageURL)
