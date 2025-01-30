@@ -6,11 +6,8 @@ export async function onRequest(context) {
   const TOKEN = context.env.CF_API_TOKEN
   const API_URL = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/images/v1`
   
-  const image = await fetch(imageURL);
-  const bytes = await image.bytes();
-  
-  const formData = new FormData();
-  formData.append('file', new File([bytes], 'image.png'));
+  const formData = new FormData()
+  formData.append('url', imageURL)
   const response = await fetch(API_URL, {
     method: 'POST',
     headers: {
