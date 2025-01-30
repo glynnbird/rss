@@ -1,45 +1,23 @@
 import { okResponse, missingResponse, notOkResponse, notOk } from './lib/constants.js'
-import { mustBePOST, mustBeJSON, apiKey, handleCORS } from './lib/checks.js'
-
-const parser = function(str) {
-  // remove everything past the end head
-  let i
-  i = str.search('</head>')
-  str = str.slice(0, i)
-  // break into lines
-  str = str.replace(/</g, '\n')
-  str = str.replace(/\>/g, '\n')
-  // only consider lines containing the twitter image
-  const lines = str.split('\n').filter((l) => { return l.includes('name="twitter:image"') || l.includes('name="twitter:image:src"')})
-  if (lines.length > 0) {
-    const line = lines[0]
-    str = line.replace(/.*content="/, '').replace(/".*/, '')
-    return str
-  }
-  return str
-}
-
 export async function onRequest(context) {
-
-  // handle POST/JSON/apikey chcecks
-  const r = handleCORS(context.request) || apiKey(context.request, context.env) || mustBePOST(context.request) || mustBeJSON(context.request)
-  if (r) return r
-
-  // parse the json
-  const json = await context.request.json()
-  const url = json.url
-  if (!url) {
-    return new Response(notOk, notOkResponse)
-  }
-
-  // if there's a url
-  const fr = await fetch(url)
-  const content = await fr.text()
-  const parsed = parser(content)
-  if (parsed) {
-    return new Response(JSON.stringify({ url: parsed }), okResponse)
-  } else {
-    // send 404 response
-    return new Response(notOk, missingResponse)
-  }
+  
+  const imageURL = 'https://ichef.bbci.co.uk/ace/standard/976/cpsprodpb/e1fb/live/befd0bb0-b5fe-11ef-a0f2-fd81ae5962f4.jpg.webp'
+  const ACCOUNT_ID = context.env.CF_ACCOUNT_ID
+  const TOKEN = context.env.CF_API_TOKEN
+  const API_URL = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/images/v1`
+  
+  const image = await fetch(imageURL);
+  const bytes = await image.bytes();
+  
+  const formData = new FormData();
+  formData.append('file', new File([bytes], 'image.png'));
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${TOKEN}`,
+    },
+    body: formData,
+  })
+  const j = await response.json()
+  return new Response(JSON.stringify(j), okResponse)
 }

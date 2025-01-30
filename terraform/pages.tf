@@ -32,6 +32,8 @@ resource "cloudflare_pages_project" "frontend_project" {
         environment_variables = {
           NODE_VERSION = "20"
           API_KEY = random_string.apiKey.id
+          CF_ACCOUNT_ID = var.cloudflare_account_id
+          CF_API_TOKEN = var.cloudflare_api_token
         }
 
         kv_namespaces = {
