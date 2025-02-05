@@ -1,4 +1,5 @@
 <script setup>
+  const { $pwa } = useNuxtApp()
   const auth = useAuth()
   const articles = ref([])
   const feeds = ref([])
@@ -250,6 +251,12 @@
 }
 </style>
 <template>
+  <!-- pwa update indicator -->
+  <v-alert color="warning" v-show="$pwa.needRefresh">
+    <h4> New content available, click on reload button to update. </h4>
+    <v-btn @click="$pwa.updateServiceWorker()">Reload</v-btn>
+  </v-alert>
+
   <!-- busy indicator-->
   <v-progress-linear v-if="busy" :model-value="pollingProgress" :max="feeds.length"></v-progress-linear>
   <v-progress-linear v-if="pollingImages" color="yellow-darken-2" indeterminate></v-progress-linear>
