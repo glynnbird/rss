@@ -2,6 +2,7 @@
   // composables
   const auth = useAuth()
   const route = useRoute()
+  const count = useArticleCount()
 
   // local page items
   const drawer = ref(false)
@@ -19,6 +20,9 @@
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       </template>
       <v-app-bar-title @click="clickHome()" style="user-select:none;">RSS</v-app-bar-title>
+      <template v-slot:append>
+        <v-chip size="small" label color="blue">{{ count }}</v-chip>
+      </template>
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" location="left">
       <v-list>

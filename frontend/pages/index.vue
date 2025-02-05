@@ -1,6 +1,7 @@
 <script setup>
   const { $pwa } = useNuxtApp()
   const auth = useAuth()
+  const count = useArticleCount()
   const articles = ref([])
   const feeds = ref([])
   const pollingProgress = ref(0)
@@ -64,6 +65,9 @@
       // add ago field
       clonedArticles[j].ago = timeAgo.format(new Date(clonedArticles[j].pubDate), 'mini')
     }
+
+    // count of articles
+    count.value = clonedArticles.length
 
     return clonedArticles
   })
