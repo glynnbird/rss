@@ -39,11 +39,11 @@
     clonedArticles.sort(sorter)
 
     // delete articles older than a 4 days
-    const twoDaysAgo = new Date().getTime() - 1000 * 60 * 60 * 24 * 2
-    const twoDaysAgoTS = new Date(twoDaysAgo).toISOString()
-    console.log('culling articles older than', twoDaysAgoTS)
+    const oneDaysAgo = new Date().getTime() - 1000 * 60 * 60 * 24 * 1
+    const oneDaysAgoTS = new Date(oneDaysAgo).toISOString()
+    console.log('culling articles older than', oneDaysAgoTS)
     for (let j = 0; j < clonedArticles.length; j++) {
-      if (clonedArticles[j].pubDate < twoDaysAgoTS) {
+      if (clonedArticles[j].pubDate < oneDaysAgoTS) {
         // delete all subsequent articles
         clonedArticles.splice(j, Infinity)
         break
