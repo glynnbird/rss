@@ -21,7 +21,7 @@
       </template>
       <v-app-bar-title @click="clickHome()" style="user-select:none;">RSS</v-app-bar-title>
       <template v-slot:append>
-        <v-chip size="small" label color="blue">{{ count }}</v-chip>
+        <v-chip size="small" label color="white">{{ count }}</v-chip>
       </template>
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" location="left">
