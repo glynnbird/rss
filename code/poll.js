@@ -1,4 +1,4 @@
-import fxp from 'fast-xml-parser'
+import { XMLParser } from 'fast-xml-parser'
 import { stripHtml } from 'string-strip-html'
 import { okResponse, notOkResponse, notOk } from './lib/constants.js'
 import { mustBePOST, mustBeJSON, apiKey, handleCORS } from './lib/checks.js'
@@ -8,7 +8,7 @@ const options = {
   ignoreAttributes: false,
   attributeNamePrefix: '@_'
 }
-const parser = new fxp.XMLParser(options)
+const parser = new XMLParser(options)
 
 const hash = async (str) => {
   const msgUint8 = new TextEncoder().encode(str) // encode as (utf-8) Uint8Array
