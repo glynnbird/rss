@@ -18,7 +18,7 @@
     "@vite-pwa/nuxt": "^0.10.6"
   },
   "devDependencies": {
-    "vite-plugin-vuetify": "^2.0.4",
+    "vite-plugin-vuetify": "^2.1.0",
     "vuetify": "^3.7.19"
   }
 }
