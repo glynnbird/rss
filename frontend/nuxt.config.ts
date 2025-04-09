@@ -4,12 +4,6 @@ export default defineNuxtConfig({
   build: {
     transpile: ['vuetify'],
   },
-  ssr: false,
-  runtimeConfig: {
-    public: {
-      apiBase: 'https://rss.glynnbird.com'
-    }
-  },
   modules: [
     '@vite-pwa/nuxt',
     (_options, nuxt) => {
@@ -19,6 +13,7 @@ export default defineNuxtConfig({
       })
     }
   ],
+  ssr: false,
   pwa: {
     strategies: 'generateSW',
     client: {
@@ -52,13 +47,20 @@ export default defineNuxtConfig({
       type: "module"
     }
   },
-  compatibilityDate: '2024-04-03',
+  runtimeConfig: {
+    public: {
+      apiBase: 'https://rss.glynnbird.com'
+    }
+  },
+  compatibilityDate: '2024-09-24',
   devtools: { enabled: true },
+  css: [
+    'vuetify/lib/styles/main.sass',
+    '@mdi/font/css/materialdesignicons.min.css'
+  ],
   vite: {
-    vue: {
-      template: {
-        transformAssetUrls,
-      },
-    },
+    define: {
+      'process.env.DEBUG': false,
+    }
   }
 })
