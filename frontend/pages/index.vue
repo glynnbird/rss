@@ -258,7 +258,7 @@
   <!-- pwa update indicator -->
   <v-alert color="warning" v-show="$pwa.needRefresh">
     <h4> New content available, click on reload button to update. </h4>
-    <v-btn @click="$pwa.updateServiceWorker()">Reload</v-btn>
+    <v-btn color="primary" @click="$pwa.updateServiceWorker()">Reload</v-btn>
   </v-alert>
 
   <!-- busy indicator-->
