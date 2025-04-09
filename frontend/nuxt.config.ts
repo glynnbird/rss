@@ -54,10 +54,6 @@ export default defineNuxtConfig({
   },
   compatibilityDate: '2024-09-24',
   devtools: { enabled: true },
-  css: [
-    'vuetify/lib/styles/main.sass',
-    '@mdi/font/css/materialdesignicons.min.css'
-  ],
   vite: {
     define: {
       'process.env.DEBUG': false,
