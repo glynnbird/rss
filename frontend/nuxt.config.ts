@@ -49,7 +49,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBase: 'https://rss.glynnbird.com'
+      apiBase: ''
     }
   },
   compatibilityDate: '2024-09-24',

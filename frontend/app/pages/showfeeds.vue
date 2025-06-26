@@ -12,14 +12,14 @@
   const getFeeds = async () => {
     busy.value = true
     console.log('API', '/list', `${apiHome}/api/list`)
-    const r = await useFetch(`${apiHome}/api/list`, {
+    const r = await $fetch(`${apiHome}/api/list`, {
       method: 'post',
       headers: {
         'content-type': 'application/json',
         apikey: auth.value.apiKey
       }
     })
-    feeds.value = r.data.value.list
+    feeds.value = r.list
     busy.value = false
   }
   setTimeout(async () => {
@@ -31,7 +31,7 @@
     busy.value = true
     console.log('Delete feed', feedid)
     console.log('API', '/del', `${apiHome}/api/del`)
-    const r = await useFetch(`${apiHome}/api/del`, {
+    const r = await $fetch(`${apiHome}/api/del`, {
       method: 'post',
       headers: {
         'content-type': 'application/json',

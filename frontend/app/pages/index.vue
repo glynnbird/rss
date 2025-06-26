@@ -122,14 +122,14 @@
   // get a list of RSS feeds from the API
   const fetchFeeds = async () => {
     console.log('API', '/list', `${apiHome}/api/list`)
-    req = await useFetch(`${apiHome}/api/list`, {
+    req = await $fetch(`${apiHome}/api/list`, {
       method: 'post',
       headers: {
         'content-type': 'application/json',
         apikey: auth.value.apiKey
       }
     })
-    feeds.value = req.data.value.list
+    feeds.value = req.list
     localStorage.setItem(FEEDS_KEY, JSON.stringify(feeds.value))
   }
 
@@ -165,7 +165,7 @@
     for (let i = 0; i < feeds.value.length; i++) {
       const f = feeds.value[i]
       console.log('API', '/poll', `${apiHome}/api/poll`, f.feed_name)
-      req = await useFetch(`${apiHome}/api/poll`, {
+      req = await $fetch(`${apiHome}/api/poll`, {
         method: 'post',
         headers: {
           'content-type': 'application/json',
@@ -176,8 +176,8 @@
           since
         })
       })
-      if (req && req.data && req.data.value) {
-        const ids = addArticles(req.data.value.feed)
+      if (req) {
+        const ids = addArticles(req.feed)
         netNewIds = netNewIds.concat(ids)
       }
       pollingProgress.value++
@@ -195,7 +195,7 @@
     for (let i = 0 ; i < articles.value.length;  i++) {
       const article = articles.value[i]
       if (!article.polled) {
-        req = await useFetch(`${apiHome}/api/image`, {
+        req = await $fetch(`${apiHome}/api/image`, {
           method: 'post',
           headers: {
             'content-type': 'application/json',
@@ -205,7 +205,7 @@
             url: article.link
           })
         })
-        if (req && req.data && req.data.value && req.data.value.url) {
+        if (req && req.url) {
           articles.value[i].media = req.data.value.url
         }
         

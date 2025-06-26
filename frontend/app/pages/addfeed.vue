@@ -11,7 +11,7 @@
     console.log('Add Feed', url.value)
     console.log('API', '/add', `${apiHome}/api/add`)
     busy.value = true
-    const r = await useFetch(`${apiHome}/api/add`, {
+    const r = await $fetch(`${apiHome}/api/add`, {
       method: 'post',
       headers: {
         'content-type': 'application/json',
