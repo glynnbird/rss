@@ -212,7 +212,7 @@
           })
           clearInterval(timeoutId)
           if (req && req.url) {
-            articles.value[i].media = req.data.value.url
+            articles.value[i].media = req.url
           }
         } catch (e) {
           console.error('Failed to get image for', article.link, e)
@@ -290,8 +290,5 @@
     <v-card-subtitle>
       {{ extractSource(article.link) }} - {{ article.ago}}
     </v-card-subtitle>
-    <v-card-text>
-      {{ article.link }}
-    </v-card-text>
   </v-card>
 </template>
