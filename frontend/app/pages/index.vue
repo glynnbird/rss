@@ -194,26 +194,34 @@
     console.log('polling for better images', articles.value.length, 'articles')
     for (let i = 0 ; i < articles.value.length;  i++) {
       const article = articles.value[i]
+
       if (!article.polled) {
-        req = await $fetch(`${apiHome}/api/image`, {
-          method: 'post',
-          headers: {
-            'content-type': 'application/json',
-            apikey: auth.value.apiKey
-          },
-          body: JSON.stringify({ 
-            url: article.link
+        try {
+          const controller = new AbortController()
+          const timeoutId = setTimeout(() => controller.abort(), 1000)
+          req = await $fetch(`${apiHome}/api/image`, {
+            method: 'post',
+            headers: {
+              'content-type': 'application/json',
+              apikey: auth.value.apiKey
+            },
+            body: JSON.stringify({ 
+              url: article.link
+            }),
+            signal: controller.signal
           })
-        })
-        if (req && req.url) {
-          articles.value[i].media = req.data.value.url
+          clearInterval(timeoutId)
+          if (req && req.url) {
+            articles.value[i].media = req.data.value.url
+          }
+        } catch (e) {
+          console.error('Failed to get image for', article.link, e)
         }
-        
       }
       articles.value[i].polled = true
     }
 
-    // finished polling images
+    // // finished polling images
     pollingImages.value = false
   }
 
@@ -282,5 +290,8 @@
     <v-card-subtitle>
       {{ extractSource(article.link) }} - {{ article.ago}}
     </v-card-subtitle>
+    <v-card-text>
+      {{ article.link }}
+    </v-card-text>
   </v-card>
 </template>
