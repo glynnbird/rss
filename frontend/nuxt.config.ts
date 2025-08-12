@@ -1,15 +1,19 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+
 export default defineNuxtConfig({
   build: {
     transpile: ['vuetify'],
   },
   modules: [
+    // from https://github.com/vite-pwa/nuxt?tab=readme-ov-file#-usage
     '@vite-pwa/nuxt',
-    (_options, nuxt) => {
-      nuxt.hooks.hook('vite:extendConfig', (config) => {
-        // @ts-expect-error
-        config.plugins.push(vuetify({ autoImport: true }))
+    // from https://vuetifyjs.com/en/getting-started/installation/#manual-setup
+    async (options, nuxt) => {
+      nuxt.hooks.hook('vite:extendConfig', config => {
+        if (config && config.plugins) {
+          config.plugins.push(vuetify({ autoImport: true }))
+        }
       })
     }
   ],
@@ -57,6 +61,11 @@ export default defineNuxtConfig({
   vite: {
     define: {
       'process.env.DEBUG': false,
+    },
+    vue: {
+      template: {
+        transformAssetUrls,
+      }
     }
   }
 })
