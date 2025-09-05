@@ -18,5 +18,10 @@
   },
   "overrides": {
     "vite": "npm:rolldown-vite@latest"
-  }
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "latest"
+  },
+  "os": ["darwin","linux"],
+  "cpu": ["arm64","x64"]
 }

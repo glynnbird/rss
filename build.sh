@@ -3,8 +3,7 @@
 # build frontend
 echo "Building frontend 🏢"
 cd frontend
-rm package-lock.json
-npm install
+npm ci
 npm run generate
 mv dist ../
 cd ..
@@ -12,6 +11,6 @@ cd ..
 # build functions
 echo "Building functions ƛ😉"
 cd code
-npm install
+npm ci
 ./build.sh
 cd ..
