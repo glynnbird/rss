@@ -8,7 +8,7 @@ const options = {
   ignoreAttributes: false,
   attributeNamePrefix: '@_',
   processEntities: {
-    maxTotalExpansions: 2000
+    maxTotalExpansions: 20000
   }
 }
 const parser = new XMLParser(options)
