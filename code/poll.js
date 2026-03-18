@@ -7,7 +7,9 @@ import { get } from './lib/db.js'
 const options = {
   ignoreAttributes: false,
   attributeNamePrefix: '@_',
-  maxTotalExpansions: 2000
+  processEntities: {
+    maxTotalExpansions: 2000
+  }
 }
 const parser = new XMLParser(options)
 
