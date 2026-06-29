@@ -292,7 +292,7 @@
   <!-- list of articles -->
   <v-card v-for="article in timeOrderedArticles"
     class="mx-auto cardsep"
-    :href="article.link"
+    :href="readonly? null : article.link"
     max-width="640"
     target="_new"
     :ripple="false"
@@ -306,5 +306,8 @@
     <v-card-subtitle>
       {{ extractSource(article.link) }} - {{ article.ago}}
     </v-card-subtitle>
+    <v-card-actions v-if="readonly">
+      <v-btn target="_new" :href="article.link">Read</v-btn>
+    </v-card-actions>
   </v-card>
 </template>
