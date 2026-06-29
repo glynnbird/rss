@@ -5,6 +5,16 @@
   const articles = ref([])
   const feeds = ref([])
   const pollingProgress = ref(0)
+  const route = useRoute()
+  const readonly = route.query.readonly === 'true'
+  let layout = 'default'
+
+  // use minimal layout for readonly mode
+  if (readonly) {
+    layout = 'minimal'
+  }
+  console.log('layout', layout)
+  setPageLayout(layout)
 
   // config
   const config = useRuntimeConfig()
@@ -199,6 +209,7 @@
         try {
           const controller = new AbortController()
           const timeoutId = setTimeout(() => controller.abort(), 1000)
+          console.log('API', '/image', `${apiHome}/api/image`, article.link)
           req = await $fetch(`${apiHome}/api/image`, {
             method: 'post',
             headers: {
@@ -228,7 +239,12 @@
   const extractSource = (s) => {
     const u = new URL(s)
     const h = u.hostname.split('.')
-    return h.slice(h.length - 2).join('.')
+    let retval =  h.slice(h.length - 2).join('.')
+    if (retval === 'co.uk') {
+      retval = h.slice(h.length - 3).join('.')
+    }
+    return retval
+
   }
 
   // fetch the articles
