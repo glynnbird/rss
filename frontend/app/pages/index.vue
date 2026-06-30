@@ -8,6 +8,7 @@
   const route = useRoute()
   const readonly = route.query.readonly === 'true'
   let layout = 'default'
+  const apikey = auth.value.apiKey || route.query.apikey
 
   // use minimal layout for readonly mode
   if (readonly) {
@@ -136,7 +137,7 @@
       method: 'post',
       headers: {
         'content-type': 'application/json',
-        apikey: auth.value.apiKey
+        apikey: apikey
       }
     })
     feeds.value = req.list
@@ -179,7 +180,7 @@
         method: 'post',
         headers: {
           'content-type': 'application/json',
-          apikey: auth.value.apiKey
+          apikey: apikey
         },
         body: JSON.stringify({ 
           id: f.id,
@@ -214,7 +215,7 @@
             method: 'post',
             headers: {
               'content-type': 'application/json',
-              apikey: auth.value.apiKey
+              apikey: apikey
             },
             body: JSON.stringify({ 
               url: article.link

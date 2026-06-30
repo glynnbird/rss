@@ -14,7 +14,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
   }
 
   // if we're not already on the login page and we're not logged in... go to login page
-  if (to.fullPath !== '/login' && (!auth.value || !auth.value.authenticated)) {
+  if (to.fullPath !== '/login' && to.name !=='index' &&(!auth.value || !auth.value.authenticated)) {
     return navigateTo('/login')
   }
 })
