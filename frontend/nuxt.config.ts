@@ -66,6 +66,6 @@ export default defineNuxtConfig({
       apiBase: ''
     }
   },
-  compatibilityDate: '2024-09-24',
+  compatibilityDate: '2026-07-21',
   devtools: { enabled: true }
 })
