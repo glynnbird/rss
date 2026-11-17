@@ -23,7 +23,7 @@ resource "cloudflare_pages_project" "frontend_project" {
          env_vars = {
           NODE_VERSION = {
             type = "plain_text"
-            value = "24"
+            value = "26"
           }
           API_KEY = {
             type = "plain_text"
@@ -41,7 +41,7 @@ resource "cloudflare_pages_project" "frontend_project" {
         env_vars = {
           NODE_VERSION = {
             type = "plain_text"
-            value = "24"
+            value = "26"
           }
           API_KEY = {
             type = "plain_text"
